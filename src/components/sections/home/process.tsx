@@ -2,18 +2,21 @@ import type { CSSProperties } from "react";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { processSteps } from "@/content/home";
 
-export function Process() {
+interface ProcessProps {
+  steps?: readonly { title: string; text: string }[];
+  title?: string;
+}
+
+export function Process({
+  steps = processSteps,
+  title = "De la première visite à la réception, en 4 étapes",
+}: ProcessProps) {
   return (
     <section aria-labelledby="methode" className="py-20 md:py-28">
       <div className="container-page">
-        <SectionHeading
-          id="methode"
-          eyebrow="Notre méthode"
-          title="De la première visite à la réception, en 4 étapes"
-          align="center"
-        />
+        <SectionHeading id="methode" eyebrow="Notre méthode" title={title} align="center" />
         <ol className="mt-14 grid gap-6 md:grid-cols-4">
-          {processSteps.map((step, i) => (
+          {steps.map((step, i) => (
             <li
               key={step.title}
               className="reveal relative rounded-card border border-line bg-white p-6"

@@ -1,3 +1,5 @@
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 import { siteConfig } from "@/config/site.config";
 
 /** Teaser du storytelling familial ; le récit complet vit sur /qui-sommes-nous (phase 4). */
@@ -18,6 +20,16 @@ export function FamilyStory() {
             {story.title}
           </h2>
           <p className="mt-5 max-w-xl text-lg leading-relaxed text-ink/85">{story.teaser}</p>
+          <Link
+            href="/qui-sommes-nous"
+            className="group mt-6 inline-flex min-h-11 items-center gap-2 font-bold text-navy"
+          >
+            Lire notre histoire
+            <ArrowRight
+              aria-hidden
+              className="size-4 transition-transform group-hover:translate-x-1"
+            />
+          </Link>
         </div>
       </div>
     </section>

@@ -95,3 +95,11 @@ Je n'invente aucun détail ; j'ai besoin de :
 - Photos de chantiers, paires avant/après, vidéo : **reportées** (aucune pour l'instant). Les sections avant/après et réalisations restent en démo, masquées en production.
 - Lien d'attestation décennale (PDF dans `public/`) : le bouton de téléchargement n'apparaît qu'une fois `certifications.decennale.attestationUrl` renseigné.
 - Fiche Google Business : le bouton « Voir notre fiche Google » n'apparaît qu'une fois l'URL renseignée.
+
+## 11. Relecture des textes de la phase 4 (avant mise en ligne)
+Les trois pages métiers (`src/content/services/*.ts`, ≥ 800 mots chacune) sont rédigées avec des informations générales de métier et de réglementation, **sans prix, délai chiffré, aide financière ni chiffre sur l'entreprise**. À relire par toi :
+- **Exactitude métier** : ce qui est décrit correspond-il à votre façon de travailler (étaiement, étude de structure, écran de sous-toiture, sarking, tuiles canal/romane, etc.) ?
+- **Climatisation** : le texte rappelle que la manipulation des fluides frigorigènes est réservée aux professionnels titulaires de l'attestation de capacité. **Confirme que l'entreprise (ou son installateur) la détient** avant publication, sinon on retire cette phrase.
+- **Seuils d'urbanisme** (déclaration préalable / permis / architecte) : indicatifs et susceptibles d'évoluer ; le texte renvoie à la mairie.
+- **Page `/qui-sommes-nous`** : texte actuel limité aux faits connus (grand-père venu d'Italie, tailleur de pierre ; petits-enfants maçons dans l'entreprise). Récit complet à fournir ; équipe (noms, rôles, photos) à fournir pour activer la section.
+- **Cas concret avant/après** des pages métiers : section en démo (masquée en production) en attendant de vraies photos.

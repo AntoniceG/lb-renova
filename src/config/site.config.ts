@@ -89,6 +89,7 @@ export const siteConfig = defineSiteConfig(
     ],
     nav: {
       servicesLabel: "Nos spécialités",
+      links: [{ label: "Qui sommes-nous", href: "/qui-sommes-nous" }],
       quoteLabel: "Devis gratuit",
       quoteHref: "/#devis",
       callLabel: "Appeler",

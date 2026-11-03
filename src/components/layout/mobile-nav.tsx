@@ -10,11 +10,12 @@ import type { MenuService } from "./services-menu";
 interface MobileNavProps {
   servicesLabel: string;
   services: MenuService[];
+  links: { label: string; href: string }[];
   quote: { label: string; href: string };
   phone: { label: string; href: string };
 }
 
-export function MobileNav({ servicesLabel, services, quote, phone }: MobileNavProps) {
+export function MobileNav({ servicesLabel, services, links, quote, phone }: MobileNavProps) {
   const [open, setOpen] = useState(false);
   const panelId = useId();
 
@@ -68,6 +69,16 @@ export function MobileNav({ servicesLabel, services, quote, phone }: MobileNavPr
               </Link>
             );
           })}
+          {links.map(({ label, href }) => (
+            <Link
+              key={href}
+              href={href}
+              onClick={close}
+              className="flex min-h-12 items-center rounded-xl px-3 text-base font-semibold hover:bg-surface"
+            >
+              {label}
+            </Link>
+          ))}
           <a
             href={phone.href}
             className="mt-2 flex min-h-12 items-center gap-3 rounded-xl px-3 text-base font-semibold hover:bg-surface"

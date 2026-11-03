@@ -13,6 +13,7 @@ import { ServiceArea } from "@/components/sections/home/service-area";
 import { Specialities } from "@/components/sections/home/specialities";
 import { siteConfig } from "@/config/site.config";
 import { demoProjects, showDemo } from "@/content/demo";
+import { getFaq } from "@/content/home";
 
 const { brand, area } = siteConfig;
 
@@ -36,9 +37,9 @@ export default function HomePage() {
       <FamilyStory />
       <Guarantees />
       <ServiceArea />
-      <Faq />
+      <Faq items={getFaq()} />
       <ReviewsStart />
-      <FinalCta />
+      <FinalCta anchorId="devis" />
     </>
   );
 }

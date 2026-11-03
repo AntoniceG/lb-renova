@@ -99,6 +99,8 @@ export const siteConfigSchema = z.object({
   services: z.array(serviceSchema).min(1),
   nav: z.object({
     servicesLabel: z.string(),
+    /** Liens simples du menu, après la liste des spécialités. */
+    links: z.array(z.object({ label: z.string(), href: z.string().startsWith("/") })),
     quoteLabel: z.string(),
     quoteHref: z.string().startsWith("/"),
     callLabel: z.string(),

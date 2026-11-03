@@ -58,6 +58,7 @@ function validInput(): SiteConfigInput {
     ],
     nav: {
       servicesLabel: "Spécialités",
+      links: [],
       quoteLabel: "Devis",
       quoteHref: "/#devis",
       callLabel: "Appeler",

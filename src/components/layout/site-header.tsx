@@ -21,6 +21,15 @@ export function SiteHeader() {
 
         <nav aria-label="Navigation principale" className="hidden items-center gap-1 md:flex">
           <ServicesMenu label={nav.servicesLabel} services={menuServices} />
+          {nav.links.map(({ label, href }) => (
+            <Link
+              key={href}
+              href={href}
+              className="inline-flex min-h-11 items-center rounded-full px-3 text-sm font-semibold text-ink/85 transition-colors hover:text-navy"
+            >
+              {label}
+            </Link>
+          ))}
         </nav>
 
         <div className="hidden items-center gap-4 md:flex">
@@ -39,6 +48,7 @@ export function SiteHeader() {
         <MobileNav
           servicesLabel={nav.servicesLabel}
           services={menuServices}
+          links={nav.links}
           quote={{ label: nav.quoteLabel, href: nav.quoteHref }}
           phone={{ label: contact.phone.display, href: phoneHref }}
         />
