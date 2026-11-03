@@ -1,0 +1,105 @@
+@import "tailwindcss";
+
+/*
+ * Les couleurs de marque (--navy, --blue, --red…) sont injectées sur <html> depuis
+ * src/config/site.config.ts (voir lib/brand.ts). Ce fichier ne contient que des alias.
+ */
+@theme inline {
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+
+  --color-navy: var(--navy);
+  --color-navy-deep: var(--navy-deep);
+  --color-blue: var(--blue);
+  --color-sky: var(--sky);
+  --color-red: var(--red);
+  --color-red-hover: var(--red-hover);
+  --color-red-ink: var(--red-ink);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-surface: var(--surface);
+  --color-line: var(--line);
+
+  --radius-card: 1.25rem;
+  --radius-hero: 1.75rem;
+
+  --shadow-elevated: 0 24px 60px -24px color-mix(in oklab, var(--navy) 40%, transparent);
+  --shadow-cta: 0 14px 32px -12px color-mix(in oklab, var(--red) 60%, transparent);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    background-color: white;
+    color: var(--ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    text-wrap: balance;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--blue);
+    outline-offset: 3px;
+    border-radius: 0.375rem;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--blue) 25%, white);
+  }
+}
+
+@utility container-page {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 76rem;
+  padding-inline: 1.25rem;
+
+  @media (min-width: 768px) {
+    padding-inline: 2rem;
+  }
+}
+
+/* Titres éditoriaux fluides ; la largeur variable de Bricolage resserre les très gros titres. */
+@utility text-display {
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 1.35rem + 4.2vw, 4.75rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  font-weight: 800;
+}
+
+@utility text-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 1.2rem + 2.2vw, 3rem);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+}
+
+@utility eyebrow {
+  font-size: 0.75rem;
+  line-height: 1;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--red-ink);
+}

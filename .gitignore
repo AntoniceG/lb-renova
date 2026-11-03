@@ -1,0 +1,21 @@
+# dépendances et builds
+node_modules/
+.next/
+out/
+build/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+
+# environnement
+.env
+.env.*
+!.env.example
+
+# divers
+.vercel/
+.DS_Store
+npm-debug.log*
+
+# outils locaux
+.claude/
