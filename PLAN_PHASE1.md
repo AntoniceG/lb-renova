@@ -167,6 +167,10 @@ Chaque phase se termine par : lint + `tsc --noEmit` + build verts, tests de la p
 | Statut de l'entreprise | Aucune mention « récemment créée » : seuls le nom et le statut sont nouveaux. |
 | Aides | **MaPrimeRénov' et toute aide : abandonnées** (page, quiz, teaser, FAQ). |
 | Inspiration | Uniquement `azur-window-hub`. |
+| Délai de rappel | **« sous 48 h »** (affiché en puce de réassurance, FAQ, `/merci` et email de confirmation). |
+| Leads partiels | **Option A** : rien d'enregistré avant la validation explicite de l'étape contact (mention d'information visible) ; statut « incomplet » dans l'admin ; aucune relance automatique ; suppression à 30 jours si non finalisé. |
+| Limitation de débit | **Pare-feu Vercel** (Pro) + honeypot + Turnstile ; pas d'Upstash sauf spam avéré (remplace la préférence initiale du §6.6). |
+| Démarrage phase 5 | On attend que Supabase, Resend, Turnstile et n8n soient prêts avant de la lancer. |
 
 ### Reste à confirmer
 1. 🔶 **Dépôt git** : le dossier est à l'intérieur du dépôt parent `CODING`. Par défaut je fais un `git init` **ici** (dépôt séparé, comme demandé dans le prompt) ; le parent verra alors un dépôt imbriqué.

@@ -25,7 +25,7 @@ Légende : 🔴 bloque une phase · 🟡 nécessaire avant mise en ligne · ⚪ 
 | `TODO_GOOGLE_BUSINESS_URL` | URL de la fiche Google Business + lien direct « laisser un avis » | 🟡 |
 | `TODO_SOCIALS` | Liens réseaux sociaux existants | ⚪ |
 | `TODO_CALENDAR_URL` | Lien Cal.com/Calendly pour les visites techniques | ⚪ |
-| `TODO_CALLBACK_PROMISE` | Délai de rappel **que l'équipe s'engage à tenir** (ex. 24 h ouvrées) | 🔴 phase 5 |
+| ~~`TODO_CALLBACK_DELAY`~~ | ✅ Délai de rappel affiché : **« sous 48 h »** (`promise.callbackDelay`). L'équipe s'engage à le tenir. | fait |
 
 ## 3. Zone d'intervention
 - ✅ Ville de base : **Aix-en-Provence**, rayon **50 km**
@@ -77,7 +77,7 @@ Je n'invente aucun détail ; j'ai besoin de :
 | Resend | Compte + domaine d'envoi (SPF/DKIM/DMARC à créer chez le registrar) | 5 |
 | Cloudflare Turnstile | Site key / secret | 5 |
 | n8n | URL du webhook + secret HMAC | 5 |
-| Upstash (rate limit) — si option A retenue | Compte + base Redis | 5 |
+| ~~Upstash (rate limit)~~ | Abandonné : limitation de débit via le pare-feu Vercel (plan Pro) + honeypot + Turnstile. Upstash seulement en cas de spam avéré. | — |
 | Google Tag Manager, GA4 | Conteneur + propriété | 8 |
 | Google Ads | Compte, ID de conversion, accès | 8 |
 | Meta | Pixel ID, token Conversions API, accès Business Manager | 8 |
@@ -88,7 +88,7 @@ Je n'invente aucun détail ; j'ai besoin de :
 - Qui traite les leads et à quelle vitesse ? (impacte la promesse affichée et le tableau de bord) — 🔴 phase 5
 - Valeur indicative d'un lead par métier (pour `generate_lead` dans Google Ads) — 🟡 phase 8
 - Message-match des annonces prévues (mots-clés ciblés → slugs `/lp/…`) — 🟡 phase 8
-- Politique de relance des leads partiels (autorisée ou non) — 🟡 phase 5
+- ~~Politique de relance des leads partiels~~ : ✅ **option A** actée. Rien n'est enregistré avant la validation explicite de l'étape contact (mention d'information visible). Une demande incomplète apparaît dans l'admin avec le statut « incomplet », l'équipe peut rappeler une fois, **aucune relance automatique**, suppression au bout de 30 jours si elle n'est pas finalisée.
 
 ## 10. Ajouts phase 3
 - `TODO_CALLBACK_DELAY` : tant qu'il n'est pas renseigné, la puce « Rappel … » et la question FAQ associée sont masquées (et le build de production échoue).

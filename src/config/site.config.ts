@@ -49,7 +49,7 @@ export const siteConfig = defineSiteConfig(
       rge: { enabled: false },
       decennale: { enabled: true, insurer: todo("INSURER") },
     },
-    promise: { callbackDelay: todo("CALLBACK_DELAY") },
+    promise: { callbackDelay: "sous 48 h" },
     story: {
       since: 1945,
       title: "Une histoire de famille",
