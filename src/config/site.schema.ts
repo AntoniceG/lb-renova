@@ -40,6 +40,8 @@ const serviceSchema = z.object({
   title: z.string().min(2),
   iconKey: z.enum(ICON_KEYS),
   intro: z.string().min(10),
+  /** Prestations réellement proposées, affichées en puces. */
+  highlights: z.array(z.string().min(2)).min(1),
   keywords: z.array(z.string()).min(1),
 });
 export type ServiceConfig = z.infer<typeof serviceSchema>;
@@ -77,7 +79,22 @@ export const siteConfigSchema = z.object({
   certifications: z.object({
     /** Badge de réassurance seul. À n'activer que si la qualification est réellement détenue. */
     rge: z.object({ enabled: z.boolean() }),
-    decennale: z.object({ enabled: z.boolean(), insurer: orTodo(z.string().min(2)) }),
+    decennale: z.object({
+      enabled: z.boolean(),
+      insurer: orTodo(z.string().min(2)),
+      /** Lien vers l'attestation PDF ; le bouton de téléchargement n'apparaît que s'il est renseigné. */
+      attestationUrl: z.string().startsWith("/").optional(),
+    }),
+  }),
+  promise: z.object({
+    /** Délai de rappel que l'équipe s'engage à tenir (ex. « sous 24 h ouvrées »). */
+    callbackDelay: orTodo(z.string().min(2)),
+  }),
+  story: z.object({
+    /** Année d'origine du savoir-faire familial (jamais présentée comme date de fondation). */
+    since: z.number().int().min(1800).max(2100),
+    title: z.string().min(2),
+    teaser: z.string().min(20),
   }),
   services: z.array(serviceSchema).min(1),
   nav: z.object({

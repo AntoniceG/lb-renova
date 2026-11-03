@@ -1,22 +1,44 @@
+import type { Metadata } from "next";
+import { BeforeAfterSection } from "@/components/sections/home/before-after-section";
+import { FamilyStory } from "@/components/sections/home/family-story";
+import { Faq } from "@/components/sections/home/faq";
+import { FinalCta } from "@/components/sections/home/final-cta";
+import { Guarantees } from "@/components/sections/home/guarantees";
+import { Hero } from "@/components/sections/home/hero";
+import { Process } from "@/components/sections/home/process";
+import { ReassuranceBand } from "@/components/sections/home/reassurance";
+import { RecentProjects } from "@/components/sections/home/recent-projects";
+import { ReviewsStart } from "@/components/sections/home/reviews-start";
+import { ServiceArea } from "@/components/sections/home/service-area";
+import { Specialities } from "@/components/sections/home/specialities";
 import { siteConfig } from "@/config/site.config";
+import { demoProjects, showDemo } from "@/content/demo";
 
-/** Page d'attente : la landing « Rénovation » est livrée en phase 3. */
+const { brand, area } = siteConfig;
+
+export const metadata: Metadata = {
+  title: { absolute: `Rénovation complète à ${area.baseCity} | ${brand.name}` },
+  description: `Rénovation complète à ${area.baseCity} et dans un rayon de ${area.radiusKm} km : gros œuvre, climatisation, couverture. Devis gratuit.`,
+  alternates: { canonical: "/" },
+};
+
 export default function HomePage() {
-  const { brand } = siteConfig;
+  const services = siteConfig.services.map(({ slug, title }) => ({ slug, title }));
   return (
-    <section className="bg-navy text-white">
-      <div className="container-page py-24 md:py-32">
-        <p className="text-xs font-bold tracking-[0.18em] text-white/70 uppercase">
-          {brand.tagline}
-        </p>
-        <h1 className="mt-5 max-w-3xl text-display">{brand.name}</h1>
-        <p className="mt-6 max-w-xl text-lg text-white/80">
-          Site en construction. La page d&apos;accueil arrive à la prochaine phase.
-        </p>
-        <div id="devis" className="mt-10 scroll-mt-28 text-sm text-white/60">
-          Emplacement du formulaire de devis (phase 5).
-        </div>
-      </div>
-    </section>
+    <>
+      <Hero />
+      <ReassuranceBand />
+      <Specialities />
+      {/* Sections visuelles masquées en production tant qu'il n'y a que du contenu de démonstration. */}
+      {showDemo && <BeforeAfterSection />}
+      <Process />
+      {showDemo && <RecentProjects services={services} projects={demoProjects} demo />}
+      <FamilyStory />
+      <Guarantees />
+      <ServiceArea />
+      <Faq />
+      <ReviewsStart />
+      <FinalCta />
+    </>
   );
 }

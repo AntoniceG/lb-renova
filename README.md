@@ -61,6 +61,18 @@ les chemins restants.
 5. Vérifier les contrastes : `npm test` (la palette doit rester AA).
 6. Créer le projet Supabase / Resend / Vercel du client (phases 5+), puis renseigner les variables d'environnement.
 
+## Contenu de démonstration et photos
+
+Aucune photo réelle n'est encore fournie. Les gabarits visuels fonctionnent sans :
+
+- **Hero** : `heroSlides` dans `src/content/home.ts`. Sans `image`, fond dégradé ; avec images (AVIF/WebP dans `public/images/hero/`), diaporama en fondu + zoom, étiquette « Métier – Ville », première image en `priority`.
+- **Avant/Après et réalisations récentes** : alimentés par `src/content/demo.ts`, affichés avec un badge « Démo » et **masqués quand `SITE_ENV=production`** (`showDemo`). Ils passent en données réelles en phase 6 (admin + base).
+- Quand les photos arrivent : renseigner `heroSlides`, puis retirer les marqueurs démo.
+
+## Mini-formulaire du hero
+
+Il n'envoie rien au serveur : le brouillon (type de projet + code postal) est stocké dans `sessionStorage` (`lib/quote-draft.ts`) pour pré-remplir le formulaire de devis complet (phase 5). Jamais de donnée personnelle dans l'URL.
+
 ## Pages internes
 
 - `/design-system` : palette, typographie, boutons (404 en production).

@@ -49,12 +49,20 @@ export const siteConfig = defineSiteConfig(
       rge: { enabled: false },
       decennale: { enabled: true, insurer: todo("INSURER") },
     },
+    promise: { callbackDelay: todo("CALLBACK_DELAY") },
+    story: {
+      since: 1945,
+      title: "Une histoire de famille",
+      teaser:
+        "Tout commence avec un grand-père venu d'Italie, tailleur de pierre. Aujourd'hui, ses petits-enfants, maçons au sein de l'entreprise, perpétuent ce métier et la même exigence du travail bien fait.",
+    },
     services: [
       {
         slug: "gros-oeuvre",
         title: "Gros œuvre",
         iconKey: "hammer",
         intro: "Dalles, ouverture de murs porteurs, maçonnerie, extensions.",
+        highlights: ["Dalles", "Ouverture de murs porteurs", "Maçonnerie", "Extensions"],
         keywords: ["gros œuvre", "maçonnerie", "ouverture mur porteur", "extension"],
       },
       {
@@ -62,6 +70,12 @@ export const siteConfig = defineSiteConfig(
         title: "Climatisation",
         iconKey: "snowflake",
         intro: "Installation et remplacement de climatisation réversible, pompe à chaleur air-air.",
+        highlights: [
+          "Installation",
+          "Remplacement",
+          "Climatisation réversible",
+          "Pompe à chaleur air-air",
+        ],
         keywords: ["climatisation", "clim réversible", "pompe à chaleur air-air"],
       },
       {
@@ -69,6 +83,7 @@ export const siteConfig = defineSiteConfig(
         title: "Couverture",
         iconKey: "house",
         intro: "Toiture, réfection, isolation de toiture et zinguerie.",
+        highlights: ["Toiture", "Réfection", "Isolation de toiture", "Zinguerie"],
         keywords: ["couverture", "toiture", "réfection toiture", "zinguerie"],
       },
     ],

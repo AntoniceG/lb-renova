@@ -89,3 +89,9 @@ Je n'invente aucun détail ; j'ai besoin de :
 - Valeur indicative d'un lead par métier (pour `generate_lead` dans Google Ads) — 🟡 phase 8
 - Message-match des annonces prévues (mots-clés ciblés → slugs `/lp/…`) — 🟡 phase 8
 - Politique de relance des leads partiels (autorisée ou non) — 🟡 phase 5
+
+## 10. Ajouts phase 3
+- `TODO_CALLBACK_DELAY` : tant qu'il n'est pas renseigné, la puce « Rappel … » et la question FAQ associée sont masquées (et le build de production échoue).
+- Photos de chantiers, paires avant/après, vidéo : **reportées** (aucune pour l'instant). Les sections avant/après et réalisations restent en démo, masquées en production.
+- Lien d'attestation décennale (PDF dans `public/`) : le bouton de téléchargement n'apparaît qu'une fois `certifications.decennale.attestationUrl` renseigné.
+- Fiche Google Business : le bouton « Voir notre fiche Google » n'apparaît qu'une fois l'URL renseignée.

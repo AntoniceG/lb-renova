@@ -40,12 +40,19 @@ function validInput(): SiteConfigInput {
       rge: { enabled: false },
       decennale: { enabled: true, insurer: "Assureur Test" },
     },
+    promise: { callbackDelay: "sous 24 h ouvrées" },
+    story: {
+      since: 1945,
+      title: "Une histoire de famille",
+      teaser: "Un texte de présentation suffisamment long pour le test.",
+    },
     services: [
       {
         slug: "gros-oeuvre",
         title: "Gros œuvre",
         iconKey: "hammer",
         intro: "Une introduction de service.",
+        highlights: ["Dalles"],
         keywords: ["gros œuvre"],
       },
     ],
