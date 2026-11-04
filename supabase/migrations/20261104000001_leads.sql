@@ -23,6 +23,9 @@ as $$
   select exists (select 1 from public.admin_profiles where user_id = (select auth.uid()));
 $$;
 
+-- Évaluée par les politiques RLS pour les utilisateurs connectés ; jamais pour les anonymes.
+revoke execute on function public.is_admin() from public, anon;
+
 -- ---------------------------------------------------------------------------
 -- Leads
 -- ---------------------------------------------------------------------------

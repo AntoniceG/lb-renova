@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
+import { formatLeadRef } from "./options";
 import { formatFrenchPhone, normalizeFrenchPhone } from "./phone";
 import { createLeadSchemas, CONSENT_VERSION, toFieldErrors } from "./schema";
 import { submitLead, type NewLeadRow, type SubmitDeps } from "./submit";
@@ -46,6 +47,13 @@ describe("normalizeFrenchPhone", () => {
   it("formate un numéro E.164 pour l'affichage", () => {
     expect(formatFrenchPhone("+33612345678")).toBe("06 12 34 56 78");
     expect(formatFrenchPhone("+14155550100")).toBe("+14155550100");
+  });
+});
+
+describe("formatLeadRef", () => {
+  it("construit une référence lisible à partir de la marque, de l'année et du numéro", () => {
+    expect(formatLeadRef(1, "2026-11-04T10:00:00.000Z")).toBe("LB-26-0001");
+    expect(formatLeadRef(42, new Date("2027-01-02T00:00:00.000Z"))).toBe("LB-27-0042");
   });
 });
 

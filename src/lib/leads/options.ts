@@ -20,10 +20,10 @@ export function getProjectTypeLabel(value: string): string {
 
 /** Référence lisible d'un lead : LB-26-0042 (initiales de la marque, année, numéro). */
 export function formatLeadRef(refNumber: number, createdAt: string | Date): string {
-  const prefix = siteConfig.brand.name
-    .split(/\s+/)
-    .map((word) => word.charAt(0))
-    .join("")
+  // Premier mot de la marque (« LB Rénova » → LB), limité à 3 lettres.
+  const prefix = (siteConfig.brand.name.split(/\s+/)[0] ?? "REF")
+    .normalize("NFD")
+    .replace(/[^A-Za-z0-9]/g, "")
     .toUpperCase()
     .slice(0, 3);
   const year = String(new Date(createdAt).getUTCFullYear()).slice(-2);

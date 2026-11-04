@@ -112,3 +112,10 @@ Les trois pages métiers (`src/content/services/*.ts`, ≥ 800 mots chacune) son
 - 🔴 **Plan Vercel : Hobby.** Usage commercial interdit sur Hobby : passer en **Pro** avant la mise en ligne.
 - 🟡 Boîte email professionnelle (OVH Email Pro / MX Plan ou Google Workspace) pour remplacer la redirection avant le lancement.
 - 🟡 Données de l'entreprise encore en `TODO_` (téléphone, adresse, horaires, raison sociale, SIRET, assureur, médiateur, contact RGPD, fiche Google) : à ajouter avant le lancement, elles ne bloquent pas la phase 5.
+
+## 13. Phase 5 : points à valider
+- 🟡 **Durées de conservation** (RGPD) : demandes incomplètes 30 jours, leads 3 ans après la dernière mise à jour. À faire valider ; la purge quotidienne n'est pas encore planifiée (`supabase/optional/schedule_purge_expired_leads.sql`, à appliquer après validation).
+- 🟡 **Texte de consentement et d'information** du formulaire (`components/quote/quote-form.tsx`) : à relire. Une politique de confidentialité complète (page dédiée) reste à rédiger en phase 9.
+- 🟡 **Leads partiels (option A)** : le contact étant la dernière étape, le statut « incomplet » n'est pas utilisé aujourd'hui. Décision à prendre : garder l'ordre actuel, ou demander le contact à l'étape 3 et rendre la description facultative à l'étape 4.
+- 🟡 **Email de notification** : envoyé à une adresse de test (`LEADS_NOTIFICATION_EMAIL`), à remplacer par la boîte de l'équipe.
+- ⚪ **n8n** : le workflow répond 200 puis s'arrête sur un nœud vide. À brancher (alerte Telegram, tableur…) selon le besoin.

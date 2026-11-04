@@ -43,6 +43,15 @@ Voir [`.env.example`](.env.example).
 | ---------------------- | ----------------------------------------------------------------------------------------------------- |
 | `NEXT_PUBLIC_SITE_URL` | URL publique (metadataBase, canonical, sitemap)                                                       |
 | `SITE_ENV`             | `production` au lancement uniquement : autorise l'indexation **et fait échouer le build s'il reste un `TODO_`** |
+| `NEXT_PUBLIC_SUPABASE_URL` | URL du projet Supabase |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Clé publique (aucun accès aux tables : tout est fermé par la RLS) |
+| `SUPABASE_SERVICE_ROLE_KEY` | Clé serveur uniquement, jamais exposée au navigateur |
+| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | Clé publique Cloudflare Turnstile (anti-robot) |
+| `TURNSTILE_SECRET_KEY` | Clé secrète Turnstile, vérifiée côté serveur |
+| `RESEND_API_KEY` | Clé d'envoi Resend (`re_…`) |
+| `RESEND_FROM_EMAIL` | Expéditeur et adresse de réponse, sur le domaine vérifié |
+| `LEADS_NOTIFICATION_EMAIL` | Destinataire de la notification de chaque nouveau lead |
+| `N8N_WEBHOOK_URL`, `N8N_WEBHOOK_SECRET` | Webhook n8n signé en HMAC (facultatifs : sans eux, l'envoi à n8n est ignoré) |
 
 Tant que `SITE_ENV` n'est pas `production`, le site envoie `noindex` et `robots.txt` interdit tout (previews, dev).
 
@@ -69,13 +78,20 @@ Aucune photo réelle n'est encore fournie. Les gabarits visuels fonctionnent san
 - **Avant/Après et réalisations récentes** : alimentés par `src/content/demo.ts`, affichés avec un badge « Démo » et **masqués quand `SITE_ENV=production`** (`showDemo`). Ils passent en données réelles en phase 6 (admin + base).
 - Quand les photos arrivent : renseigner `heroSlides`, puis retirer les marqueurs démo.
 
-## Mini-formulaire du hero
+## Devis et leads (phase 5)
 
-Il n'envoie rien au serveur : le brouillon (type de projet + code postal) est stocké dans `sessionStorage` (`lib/quote-draft.ts`) pour pré-remplir le formulaire de devis complet (phase 5). Jamais de donnée personnelle dans l'URL.
+- **Mini-formulaire du hero** : n'envoie rien. Le brouillon (type de projet + code postal) est dans `sessionStorage` (`lib/quote-draft.ts`) et pré-remplit `/devis`. Jamais de donnée personnelle dans l'URL.
+- **`/devis`** : formulaire en 4 étapes (projet, bien, description facultative, coordonnées + consentement + Turnstile). Aucun budget, aucune photo. Les mêmes schémas Zod (`lib/leads/schema.ts`) valident chaque étape côté navigateur et la soumission côté serveur.
+- **Soumission** (`app/(site)/devis/actions.ts` puis `lib/leads/submit.ts`) : validation, champ piège, Turnstile, anti-doublon (même email + même projet en 10 min), enregistrement dans Supabase **avant** tout envoi, puis (après la réponse) email de confirmation, email de notification et webhook n8n. Succès et échecs sont consignés dans `lead_events`, sans donnée personnelle.
+- **`/merci`** : page de remerciement, `noindex`, destinée à la mesure de conversion (phase 8).
+- **Base** : `supabase/migrations/` (tables `leads`, `lead_events`, `admin_profiles`, RLS fermée au public ; seul le serveur écrit avec la clé service_role). `supabase/optional/` : purge quotidienne à planifier (pg_cron) après validation des durées de conservation.
+- **n8n** : `n8n/lead-intake.workflow.json` et contrat dans `docs/N8N_WEBHOOK.md`.
+- **Tests locaux sans vrai Turnstile** : lancer `npm run dev` avec `NEXT_PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA` et `TURNSTILE_SECRET_KEY=1x0000000000000000000000000000000AA` (clés de test Cloudflare qui valident toujours).
 
 ## Pages internes
 
 - `/design-system` : palette, typographie, boutons (404 en production).
+- `/devis`, `/merci` : parcours de devis (voir ci-dessus).
 
 ## Sécurité
 
