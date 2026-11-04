@@ -103,3 +103,12 @@ Les trois pages métiers (`src/content/services/*.ts`, ≥ 800 mots chacune) son
 - **Seuils d'urbanisme** (déclaration préalable / permis / architecte) : indicatifs et susceptibles d'évoluer ; le texte renvoie à la mairie.
 - **Page `/qui-sommes-nous`** : texte actuel limité aux faits connus (grand-père venu d'Italie, tailleur de pierre ; petits-enfants maçons dans l'entreprise). Récit complet à fournir ; équipe (noms, rôles, photos) à fournir pour activer la section.
 - **Cas concret avant/après** des pages métiers : section en démo (masquée en production) en attendant de vraies photos.
+
+## 12. Préparation phase 5 (infrastructure)
+- ✅ Domaine `lb-renova.fr` (OVH, DNS OVH) relié à Vercel ; `www` redirige vers le domaine sans `www`.
+- ✅ Resend : domaine vérifié (région Europe), expéditeur `devis@lb-renova.fr`, réponses via la redirection OVH vers une boîte existante.
+- ✅ Supabase : projet `lb-renova` (Paris, plan Free). Passer en **Pro** avant le lancement (mise en pause après inactivité, pas de sauvegardes sur le plan Free).
+- ✅ Turnstile, variables d'environnement Vercel, workflow n8n `n8n/lead-intake.workflow.json` (voir `docs/N8N_WEBHOOK.md`).
+- 🔴 **Plan Vercel : Hobby.** Usage commercial interdit sur Hobby : passer en **Pro** avant la mise en ligne.
+- 🟡 Boîte email professionnelle (OVH Email Pro / MX Plan ou Google Workspace) pour remplacer la redirection avant le lancement.
+- 🟡 Données de l'entreprise encore en `TODO_` (téléphone, adresse, horaires, raison sociale, SIRET, assureur, médiateur, contact RGPD, fiche Google) : à ajouter avant le lancement, elles ne bloquent pas la phase 5.

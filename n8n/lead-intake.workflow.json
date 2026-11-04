@@ -1,0 +1,187 @@
+{
+  "name": "LB Rénova - Réception des leads",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "lb-renova-leads",
+        "responseMode": "responseNode",
+        "options": {
+          "rawBody": true
+        }
+      },
+      "id": "5c1f4b3a-0001-4a10-9a01-lbrenova0001",
+      "name": "Webhook leads",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0],
+      "webhookId": "lb-renova-leads"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Prépare la chaîne signée \"<timestamp>.<corps brut>\" ; aucun module externe requis.\nconst MAX_AGE_SECONDS = 300;\nconst item = $input.first();\nconst headers = item.json.headers ?? {};\nconst timestamp = String(headers['x-lb-timestamp'] ?? '');\nconst received = String(headers['x-lb-signature'] ?? '');\n\nlet reason = null;\nif (!item.binary?.data) reason = 'no_raw_body';\nelse if (!/^d{10}$/.test(timestamp)) reason = 'bad_timestamp';\nelse if (Math.abs(Date.now() / 1000 - Number(timestamp)) > MAX_AGE_SECONDS) reason = 'stale_timestamp';\n\nlet rawBody = '';\nif (!reason) {\n  const raw = await this.helpers.getBinaryDataBuffer(0, 'data');\n  rawBody = raw.toString('utf8');\n}\nreturn [{ json: { reason, received, rawBody, signedString: timestamp + '.' + rawBody } }];\n"
+      },
+      "id": "5c1f4b3a-0002-4a10-9a01-lbrenova0002",
+      "name": "Préparer la chaîne signée",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [240, 0]
+    },
+    {
+      "parameters": {
+        "action": "hmac",
+        "type": "SHA256",
+        "value": "={{ $json.signedString }}",
+        "dataPropertyName": "computed",
+        "secret": "__COLLER_LE_SECRET_ICI__",
+        "encoding": "hex"
+      },
+      "id": "5c1f4b3a-0007-4a10-9a01-lbrenova0007",
+      "name": "Calculer HMAC",
+      "type": "n8n-nodes-base.crypto",
+      "typeVersion": 1,
+      "position": [480, 0]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Compare la signature reçue à celle calculée (comparaison à temps constant) puis lit le JSON.\nconst prepared = $('Préparer la chaîne signée').first().json;\nconst reject = (reason) => [{ json: { valid: false, reason } }];\nlet secret = '';\ntry {\n  secret = String($node['Calculer HMAC'].parameter.secret ?? '');\n} catch {\n  return reject('cannot_read_secret_param');\n}\n\nif (secret.startsWith('__')) return reject('secret_not_configured');\nif (prepared.reason) return reject(prepared.reason);\n\nconst expected = 'sha256=' + String($input.first().json.computed ?? '');\nconst received = String(prepared.received);\nlet diff = expected.length ^ received.length;\nconst n = Math.max(expected.length, received.length);\nfor (let i = 0; i < n; i++) {\n  diff |= (expected.charCodeAt(i) || 0) ^ (received.charCodeAt(i) || 0);\n}\nif (diff !== 0) return reject('bad_signature');\n\nlet payload;\ntry {\n  payload = JSON.parse(prepared.rawBody);\n} catch {\n  return reject('bad_json');\n}\nreturn [{ json: { valid: true, payload } }];\n"
+      },
+      "id": "5c1f4b3a-0008-4a10-9a01-lbrenova0008",
+      "name": "Vérifier la signature",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [720, 0]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.valid }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "5c1f4b3a-0003-4a10-9a01-lbrenova0003",
+      "name": "Signature valide ?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [960, 0]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ ok: true }) }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "5c1f4b3a-0004-4a10-9a01-lbrenova0004",
+      "name": "Répondre 200",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1200, -100]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ ok: false }) }}",
+        "options": {
+          "responseCode": 401
+        }
+      },
+      "id": "5c1f4b3a-0005-4a10-9a01-lbrenova0005",
+      "name": "Répondre 401",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1200, 120]
+    },
+    {
+      "parameters": {},
+      "id": "5c1f4b3a-0006-4a10-9a01-lbrenova0006",
+      "name": "Lead reçu - brancher la suite ici",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [1440, -100]
+    }
+  ],
+  "connections": {
+    "Webhook leads": {
+      "main": [
+        [
+          {
+            "node": "Préparer la chaîne signée",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Préparer la chaîne signée": {
+      "main": [
+        [
+          {
+            "node": "Calculer HMAC",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculer HMAC": {
+      "main": [
+        [
+          {
+            "node": "Vérifier la signature",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vérifier la signature": {
+      "main": [
+        [
+          {
+            "node": "Signature valide ?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Signature valide ?": {
+      "main": [
+        [
+          {
+            "node": "Répondre 200",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Répondre 401",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Répondre 200": {
+      "main": [
+        [
+          {
+            "node": "Lead reçu - brancher la suite ici",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
