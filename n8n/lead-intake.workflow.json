@@ -19,7 +19,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Prépare la chaîne signée \"<timestamp>.<corps brut>\" ; aucun module externe requis.\nconst MAX_AGE_SECONDS = 300;\nconst item = $input.first();\nconst headers = item.json.headers ?? {};\nconst timestamp = String(headers['x-lb-timestamp'] ?? '');\nconst received = String(headers['x-lb-signature'] ?? '');\n\nlet reason = null;\nif (!item.binary?.data) reason = 'no_raw_body';\nelse if (!/^d{10}$/.test(timestamp)) reason = 'bad_timestamp';\nelse if (Math.abs(Date.now() / 1000 - Number(timestamp)) > MAX_AGE_SECONDS) reason = 'stale_timestamp';\n\nlet rawBody = '';\nif (!reason) {\n  const raw = await this.helpers.getBinaryDataBuffer(0, 'data');\n  rawBody = raw.toString('utf8');\n}\nreturn [{ json: { reason, received, rawBody, signedString: timestamp + '.' + rawBody } }];\n"
+        "jsCode": "// Prépare la chaîne signée \"<timestamp>.<corps brut>\" ; aucun module externe requis.\nconst MAX_AGE_SECONDS = 300;\nconst item = $input.first();\nconst headers = item.json.headers ?? {};\nconst timestamp = String(headers['x-lb-timestamp'] ?? '');\nconst received = String(headers['x-lb-signature'] ?? '');\n\nlet reason = null;\nif (!item.binary?.data) reason = 'no_raw_body';\nelse if (!/^[0-9]{10}$/.test(timestamp)) reason = 'bad_timestamp';\nelse if (Math.abs(Date.now() / 1000 - Number(timestamp)) > MAX_AGE_SECONDS) reason = 'stale_timestamp';\n\nlet rawBody = '';\nif (!reason) {\n  const raw = await this.helpers.getBinaryDataBuffer(0, 'data');\n  rawBody = raw.toString('utf8');\n}\nreturn [{ json: { reason, received, rawBody, signedString: timestamp + '.' + rawBody } }];\n"
       },
       "id": "5c1f4b3a-0002-4a10-9a01-lbrenova0002",
       "name": "Préparer la chaîne signée",
