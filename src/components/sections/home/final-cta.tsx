@@ -1,12 +1,10 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/config/site.config";
-import { showDemo } from "@/content/demo";
 import { telHref } from "@/lib/brand";
 
 interface FinalCtaProps {
   title?: string;
-  /** Ancre `#devis` : portée par le CTA de l'accueil jusqu'au formulaire multi-étapes (phase 5). */
   anchorId?: string;
 }
 
@@ -33,11 +31,6 @@ export function FinalCta({ title, anchorId }: FinalCtaProps) {
               </a>
             </Button>
           </div>
-          {showDemo && anchorId && (
-            <p className="mt-6 text-sm text-white/60">
-              Aperçu : le formulaire de devis multi-étapes est branché en phase 5.
-            </p>
-          )}
         </div>
       </div>
     </section>

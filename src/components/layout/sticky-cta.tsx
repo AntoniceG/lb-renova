@@ -2,6 +2,7 @@
 
 import { Phone } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -52,7 +53,11 @@ export function StickyCta({ quote, call }: StickyCtaProps) {
     return () => observer.disconnect();
   }, []);
 
-  const visible = scrolled && !footerVisible && !modalOpen;
+  // Inutile sur la page du devis elle-même et sur la page de remerciement.
+  const pathname = usePathname();
+  const onQuoteFlow = pathname === quote.href || pathname === "/merci";
+
+  const visible = scrolled && !footerVisible && !modalOpen && !onQuoteFlow;
 
   return (
     <div

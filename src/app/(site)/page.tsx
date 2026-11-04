@@ -39,7 +39,7 @@ export default function HomePage() {
       <ServiceArea />
       <Faq items={getFaq()} />
       <ReviewsStart />
-      <FinalCta anchorId="devis" />
+      <FinalCta />
     </>
   );
 }

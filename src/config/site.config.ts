@@ -91,7 +91,7 @@ export const siteConfig = defineSiteConfig(
       servicesLabel: "Nos spécialités",
       links: [{ label: "Qui sommes-nous", href: "/qui-sommes-nous" }],
       quoteLabel: "Devis gratuit",
-      quoteHref: "/#devis",
+      quoteHref: "/devis",
       callLabel: "Appeler",
     },
   },

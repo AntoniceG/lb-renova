@@ -2,7 +2,7 @@ import { z } from "zod";
 
 const STORAGE_KEY = "lb:quote-draft";
 
-/** Brouillon du devis partagé entre le mini-formulaire du hero et le formulaire complet (phase 5). */
+/** Brouillon du devis partagé entre le mini-formulaire du hero et le formulaire complet. */
 const quoteDraftSchema = z.object({
   projectType: z.string().min(1).max(60),
   postalCode: z.string().regex(/^\d{5}$/),
@@ -19,13 +19,33 @@ export function saveQuoteDraft(draft: QuoteDraft): void {
   }
 }
 
-export function loadQuoteDraft(): QuoteDraft | null {
+/** Valeur brute du brouillon (chaîne stable, utilisable avec useSyncExternalStore). */
+export function readQuoteDraftRaw(): string | null {
   try {
-    const raw = sessionStorage.getItem(STORAGE_KEY);
-    if (!raw) return null;
+    return sessionStorage.getItem(STORAGE_KEY);
+  } catch {
+    return null;
+  }
+}
+
+export function parseQuoteDraft(raw: string | null): QuoteDraft | null {
+  if (!raw) return null;
+  try {
     const parsed = quoteDraftSchema.safeParse(JSON.parse(raw));
     return parsed.success ? parsed.data : null;
   } catch {
     return null;
+  }
+}
+
+export function loadQuoteDraft(): QuoteDraft | null {
+  return parseQuoteDraft(readQuoteDraftRaw());
+}
+
+export function clearQuoteDraft(): void {
+  try {
+    sessionStorage.removeItem(STORAGE_KEY);
+  } catch {
+    // rien à nettoyer
   }
 }
