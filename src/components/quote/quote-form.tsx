@@ -36,6 +36,10 @@ interface QuoteFormProps {
   callbackDelay: string | null;
   phoneDisplay: string | null;
   consentNotice: ConsentNotice;
+  /** Couleur d'accent de la progression et des boutons (`gold` : refonte V2). Les erreurs restent rouges. */
+  accent?: "red" | "gold";
+  /** Page affichée après l'envoi ; `/merci` par défaut (`/v2/merci` sur la refonte). */
+  successHref?: string;
 }
 
 interface FormValues {
@@ -97,9 +101,12 @@ function QuoteFormSteps({
   callbackDelay,
   phoneDisplay,
   consentNotice,
+  accent = "red",
+  successHref = "/merci",
   draft,
 }: QuoteFormProps & { draft: { projectType: string; postalCode: string } | null }) {
   const router = useRouter();
+  const gold = accent === "gold";
   const schemas = useMemo(
     () => createLeadSchemas(projectTypes.map((option) => option.value)),
     [projectTypes],
@@ -175,7 +182,7 @@ function QuoteFormSteps({
 
       if (result.ok) {
         clearQuoteDraft();
-        router.push("/merci");
+        router.push(successHref);
         return;
       }
 
@@ -239,7 +246,9 @@ function QuoteFormSteps({
           <li
             key={item.key}
             aria-current={index === step ? "step" : undefined}
-            className={`h-1.5 rounded-full ${index <= step ? "bg-red" : "bg-line"}`}
+            className={`h-1.5 rounded-full ${
+              index <= step ? (gold ? "bg-[oklch(0.78_0.14_70)]" : "bg-red") : "bg-line"
+            }`}
           >
             <span className="sr-only">{item.title}</span>
           </li>
@@ -437,12 +446,17 @@ function QuoteFormSteps({
           <span />
         )}
         {step < STEPS.length - 1 ? (
-          <Button type="submit" variant="cta" size="lg">
+          <Button type="submit" variant={gold ? "gold" : "cta"} size="lg">
             Continuer
             <ArrowRight aria-hidden />
           </Button>
         ) : (
-          <Button type="submit" variant="cta" size="lg" disabled={submitting || !turnstileSiteKey}>
+          <Button
+            type="submit"
+            variant={gold ? "gold" : "cta"}
+            size="lg"
+            disabled={submitting || !turnstileSiteKey}
+          >
             {submitting ? "Envoi en cours…" : "Envoyer ma demande"}
             <Send aria-hidden />
           </Button>

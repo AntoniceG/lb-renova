@@ -1,3 +1,4 @@
+import { V2_QUOTE_HREF } from "@/lib/v2/nav";
 import { Phone } from "lucide-react";
 import Link from "next/link";
 import { siteConfig } from "@/config/site.config";
@@ -37,7 +38,7 @@ export function HomeHero() {
         </h1>
 
         <div className="flex flex-col items-center gap-3 sm:flex-row">
-          <Link href={nav.quoteHref} className={v2Button({ tone: "light" })}>
+          <Link href={V2_QUOTE_HREF} className={v2Button({ tone: "light" })}>
             {nav.quoteLabel}
           </Link>
           <a href={telHref(contact.phone.e164)} className={v2Button({ tone: "glass" })}>

@@ -1,5 +1,6 @@
 import { DM_Sans, Playfair_Display } from "next/font/google";
 import type { ReactNode } from "react";
+import { AttributionCapture } from "@/components/quote/attribution-capture";
 import "./v2.css";
 
 // Polices de la refonte (celles de bvrrenovation.fr). Chargées uniquement sur les pages /v2.
@@ -17,5 +18,11 @@ const text = DM_Sans({
 });
 
 export default function V2Layout({ children }: { children: ReactNode }) {
-  return <div className={`${display.variable} ${text.variable} font-v2-sans`}>{children}</div>;
+  return (
+    <div className={`${display.variable} ${text.variable} font-v2-sans`}>
+      {/* Mémorise l'origine de la visite (campagne, référent) pour la joindre au devis, comme sur le site actuel. */}
+      <AttributionCapture />
+      {children}
+    </div>
+  );
 }

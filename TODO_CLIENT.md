@@ -18,7 +18,10 @@ Légende : 🔴 bloque une phase · 🟡 nécessaire avant mise en ligne · ⚪ 
 ## 2. Coordonnées
 | Constante | Info | Besoin |
 |---|---|---|
-| `TODO_PHONE` | Téléphone affiché (+ format `tel:`) | 🔴 phase 2 |
+| **Articles publiés (refonte V2)** | 2 articles dans `src/lib/v2/articles/` (rénovation complète, climatisation) : publiés à la demande du client mais rédigés par l'assistant, sans chiffre ni règle précise. À faire relire par un professionnel du métier avant le lancement. | 🟡 avant le lancement V2 |
+| **Logos Daikin / Mitsubishi Electric (V2)** | Logos officiels sur la page climatisation (`public/v2/marques/`). Marques déposées : vérifier que l'entreprise a le droit de les afficher (statut d'installateur) et respecter la charte graphique de chaque marque. | 🟡 avant le lancement V2 |
+| **Avis clients (refonte V2)** | 5 avis **FICTIFS** dans `src/lib/v2/avis.ts` (la section est masquée en production tant qu'ils sont fictifs). À remplacer par de vrais avis : prénom, texte, note, lieu, chantier, + `fictif: false` | 🔴 avant le lancement V2 |
+| ~~`TODO_PHONE`~~ | ✅ Téléphone : **06 61 60 92 10** (`contact.phone`, format `tel:` +33661609210) | fait |
 | `TODO_EMAIL` | Email public | 🔴 phase 2 |
 | `TODO_WHATSAPP` | Numéro WhatsApp + message pré-rempli souhaité | 🟡 |
 | `TODO_HOURS` | Horaires d'ouverture / joignabilité | 🟡 |

@@ -172,10 +172,11 @@ export function HeroLogo({ name }: HeroLogoProps) {
         ref={flyerRef}
         href="/v2"
         aria-label={`${name} — accueil`}
-        className="logo-flyer focus-visible:outline-white"
+        className="logo-flyer focus-visible:outline-blue"
       >
         <span aria-hidden className="logo-flyer__ring" />
         <span className="logo-flyer__inner">
+          {/* Version à texte blanc : sur la photo du hero. */}
           <Image
             src="/v2/logo-v2.webp"
             alt=""
@@ -184,7 +185,19 @@ export function HeroLogo({ name }: HeroLogoProps) {
             loading="eager"
             fetchPriority="high"
             sizes="(max-width: 640px) 68vw, 368px"
-            className="size-full drop-shadow-[0_8px_30px_rgba(0,0,0,0.35)]"
+            className="logo-flyer__img logo-flyer__img--sombre size-full drop-shadow-[0_8px_30px_rgba(0,0,0,0.35)]"
+          />
+          {/* Version à texte marine : fond fondu par-dessus pendant le vol, pour l'en-tête blanc. */}
+          <Image
+            src="/v2/logo-v2-clair.webp"
+            alt=""
+            aria-hidden
+            width={887}
+            height={887}
+            loading="eager"
+            fetchPriority="low"
+            sizes="(max-width: 640px) 68vw, 368px"
+            className="logo-flyer__img logo-flyer__img--clair absolute inset-0 size-full"
           />
         </span>
       </Link>

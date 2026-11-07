@@ -6,7 +6,10 @@ export function HomeIntro() {
   const { eyebrow, titleLead, titleEmphasis, lead, area } = V2_HOME.intro;
 
   return (
-    <section aria-labelledby="intro-title" className="bg-(--cream) pt-16 pb-24 md:pt-24 md:pb-32">
+    <section
+      aria-labelledby="intro-title"
+      className="v2-relief bg-(--cream) pt-16 pb-24 md:pt-24 md:pb-32"
+    >
       <div className="container-page">
         <div className="mx-auto max-w-3xl text-center">
           <p className="reveal text-xs font-semibold tracking-[0.28em] text-muted uppercase">

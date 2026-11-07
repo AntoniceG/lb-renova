@@ -45,7 +45,11 @@ function Band({ band }: { band: HistoireBand }) {
  */
 export function HomeHistoire() {
   return (
-    <section id="histoire" aria-labelledby="histoire-title" className="bg-(--cream) pt-20 md:pt-28">
+    <section
+      id="histoire"
+      aria-labelledby="histoire-title"
+      className="v2-relief bg-(--cream) pt-20 md:pt-28"
+    >
       <div className="container-page">
         <div className="mx-auto max-w-2xl pb-12 text-center md:pb-16">
           <p className="reveal text-xs font-semibold tracking-[0.28em] text-muted uppercase">

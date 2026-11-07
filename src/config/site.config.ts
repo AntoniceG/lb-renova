@@ -30,7 +30,7 @@ export const siteConfig = defineSiteConfig(
       },
     },
     contact: {
-      phone: { display: todo("PHONE"), e164: todo("PHONE_E164") },
+      phone: { display: "06 61 60 92 10", e164: "+33661609210" },
       email: todo("EMAIL"),
       address: {
         street: todo("ADDRESS_STREET"),

@@ -9,6 +9,8 @@
 
 :root {
   --cream: oklch(0.982 0.009 85);
+  /* Doré de la lueur du hero : étoiles des avis, filets du menu. */
+  --gold: oklch(0.78 0.14 70);
 }
 
 /* ---------- Logo qui vole ---------- */
@@ -32,9 +34,26 @@
 }
 
 .logo-flyer__inner {
+  position: relative;
   display: block;
   width: 100%;
   height: 100%;
+}
+
+/*
+ * Pendant le vol, le logo à texte blanc (sur la photo) se fond en logo à texte marine (sur
+ * l'en-tête blanc), de 55 % à 88 % du trajet. --swap : 0 = version blanche, 1 = version marine.
+ */
+.logo-flyer {
+  --swap: clamp(0, calc((var(--flight, 0) - 0.55) * 3), 1);
+}
+
+.logo-flyer__img--sombre {
+  opacity: calc(1 - var(--swap));
+}
+
+.logo-flyer__img--clair {
+  opacity: var(--swap);
 }
 
 /* Anneau de la « petite explosion » à l'arrivée. */
@@ -42,7 +61,7 @@
   position: absolute;
   inset: 0;
   border-radius: 9999px;
-  border: 14px solid rgb(255 255 255 / 0.85);
+  border: 14px solid oklch(0.78 0.14 70 / 0.9);
   opacity: 0;
   pointer-events: none;
 }
@@ -94,6 +113,12 @@ html[data-flight-on] .v2-header {
   visibility: visible;
 }
 
+/* Pages intérieures : l'en-tête est toujours là (pas de logo qui vole). */
+.v2-header--solid {
+  --show: 1;
+  visibility: visible;
+}
+
 .v2-header__bar {
   opacity: var(--show);
   transform: translateY(calc((1 - var(--show)) * -100%));
@@ -101,6 +126,45 @@ html[data-flight-on] .v2-header {
 
 .v2-header__content {
   opacity: var(--show);
+}
+
+/*
+ * Bouton du menu des petits écrans : blanc (avec une ombre) tant qu'il est sur la photo du hero,
+ * marine dès que l'en-tête blanc est là ou que le panneau blanc est ouvert.
+ */
+.v2-burger {
+  color: #fff;
+  filter: drop-shadow(0 2px 10px rgb(0 0 0 / 0.65));
+  transition: color 200ms ease;
+}
+
+html[data-flight-on] .v2-burger,
+.v2-burger[data-solid],
+.v2-burger[data-open] {
+  color: var(--navy);
+  filter: none;
+}
+
+/* Liens du menu : un filet doré qui se déploie au survol. */
+.v2-nav-link {
+  position: relative;
+  padding-block: 0.6rem;
+}
+
+.v2-nav-link::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0.2rem;
+  height: 1px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 300ms ease;
+}
+
+.v2-nav-link:hover::after,
+.v2-nav-link:focus-visible::after {
+  transform: scaleX(1);
 }
 
 /* ---------- Invitation à défiler ---------- */
@@ -336,4 +400,34 @@ html[data-flight-on] .v2-header {
       animation-range: cover 24% cover 42%;
     }
   }
+}
+
+/* ---------- Relief doré ---------- */
+
+/*
+ * Sections crème : une ombre dorée (celle du bandeau de réassurance) qui retombe sur la section
+ * suivante, pour donner du volume. `z-index` : sans lui, la section suivante recouvrirait l'ombre.
+ */
+.v2-relief {
+  position: relative;
+  z-index: 10;
+  box-shadow: 0 16px 38px -14px oklch(0.78 0.14 70 / 0.6);
+}
+
+/* ---------- Formulaire de devis en doré ---------- */
+
+/*
+ * Le formulaire du site actuel utilise le bleu (focus, choix sélectionné, case à cocher) et le
+ * rouge (progression, boutons, erreurs). Sur la refonte : l'or remplace le bleu ici, et le
+ * composant passe lui-même ses boutons et sa progression en or (accent="gold"). Les erreurs
+ * restent rouges, c'est leur rôle. Le doré du focus est un peu plus sombre pour rester bien visible.
+ */
+.v2-or {
+  --blue: oklch(0.6 0.13 68);
+  --sky: oklch(0.965 0.045 85);
+}
+
+.v2-devis .font-display {
+  font-family: var(--font-playfair), ui-serif, Georgia, serif;
+  font-weight: 500;
 }
