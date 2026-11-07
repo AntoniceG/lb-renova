@@ -1,0 +1,339 @@
+/*
+ * Refonte V2 : styles qui ne s'écrivent pas en classes utilitaires. Importé par app/v2/layout.tsx.
+ *
+ * Le logo qui vole (components/v2/hero-logo.tsx) et l'en-tête (components/v2/v2-header.tsx) se
+ * parlent par deux marques posées sur <html> :
+ *   --flight         0 = logo dans le hero, 1 = logo rangé dans l'en-tête
+ *   data-flight-on   présent dès que l'en-tête doit apparaître
+ */
+
+:root {
+  --cream: oklch(0.982 0.009 85);
+}
+
+/* ---------- Logo qui vole ---------- */
+
+/* Au repos, le logo est dans le hero. Dès que la page défile, il passe en position fixe. */
+.logo-flyer {
+  position: absolute;
+  inset: 0;
+  display: block;
+  border-radius: 9999px;
+  transform-origin: center;
+}
+
+.logo-flyer[data-flying] {
+  position: fixed;
+  inset: 0 auto auto 0;
+  width: var(--logo-size);
+  height: var(--logo-size);
+  z-index: 60;
+  will-change: transform;
+}
+
+.logo-flyer__inner {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Anneau de la « petite explosion » à l'arrivée. */
+.logo-flyer__ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  border: 14px solid rgb(255 255 255 / 0.85);
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes logo-pop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.3);
+  }
+  70% {
+    transform: scale(0.94);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes logo-ring {
+  from {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  to {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .logo-flyer[data-docked] .logo-flyer__inner {
+    animation: logo-pop 440ms cubic-bezier(0.3, 1.6, 0.5, 1) both;
+  }
+
+  .logo-flyer[data-docked] .logo-flyer__ring {
+    animation: logo-ring 650ms ease-out both;
+  }
+}
+
+/* ---------- En-tête : apparaît pendant le vol du logo (de 40 % à 80 % du trajet) ---------- */
+
+.v2-header {
+  --show: clamp(0, calc((var(--flight, 0) - 0.4) * 2.5), 1);
+  visibility: hidden;
+}
+
+html[data-flight-on] .v2-header {
+  visibility: visible;
+}
+
+.v2-header__bar {
+  opacity: var(--show);
+  transform: translateY(calc((1 - var(--show)) * -100%));
+}
+
+.v2-header__content {
+  opacity: var(--show);
+}
+
+/* ---------- Invitation à défiler ---------- */
+
+@keyframes scroll-cue {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translateY(0.5rem);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .v2-scroll-cue {
+    animation: scroll-cue 2.4s ease-in-out infinite;
+  }
+}
+
+/* ---------- Histoire : bandes coupées en biais (home-histoire.tsx) ----------
+ *
+ * Chaque bande a deux moitiés, image et texte, taillées dans le même rectangle par une coupe en
+ * biais (dessin du client). Écran large : la coupe va de --seam-top (haut) à --seam-bottom (bas).
+ * Les bandes alternent « / » (image à gauche) et « \ » (image à droite) avec les MÊMES positions
+ * aux deux bouts : le bas de la coupe d'une bande retombe pile sous le haut de la suivante, ce qui
+ * dessine un zigzag continu. Téléphone et tablette : image au-dessus, texte en dessous, coupe
+ * légèrement inclinée. --dir vaut 1 (image à gauche) ou -1 (image à droite).
+ * La bande est un « container » : les visuels se dimensionnent sur sa largeur (unités cqw).
+ */
+
+.histoire-band {
+  --dir: 1;
+  --cut: 2.2rem;
+  --seam-top: 60%;
+  --seam-bottom: 38%;
+  display: grid;
+  overflow: hidden;
+  container-type: inline-size;
+  background: var(--cream);
+  view-timeline: --histoire-band block;
+}
+
+.histoire-band[data-side="right"] {
+  --dir: -1;
+  --seam-top: 38%;
+  --seam-bottom: 60%;
+}
+
+.histoire-slab {
+  position: relative;
+  grid-column: 1;
+}
+
+.histoire-slab--image {
+  grid-row: 1;
+  display: grid;
+  place-items: center;
+  min-height: 22rem;
+  padding: 2.5rem 1.25rem calc(var(--cut) + 2rem);
+  background: var(--cream);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--cut)), 0 100%);
+}
+
+.histoire-slab--text {
+  grid-row: 2;
+  margin-top: calc(var(--cut) * -1);
+  padding: calc(var(--cut) + 2.25rem) 1.5rem 2.75rem;
+  background: var(--navy);
+  clip-path: polygon(0 var(--cut), 100% 0, 100% 100%, 0 100%);
+}
+
+.histoire-visual {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+
+/* Photo qui remplit toute l'image de la bande. */
+.histoire-visual--full {
+  position: absolute;
+  inset: 0;
+}
+
+.histoire-copy {
+  max-width: 34rem;
+}
+
+.histoire-portrait {
+  transform: rotate(-2.5deg);
+}
+
+@media (min-width: 64rem) {
+  /* Hauteur d'une bande : fine. Les visuels se dimensionnent dessus (--band-h). */
+  .histoire-band {
+    --band-h: 24rem;
+    min-height: var(--band-h);
+  }
+
+  .histoire-slab--image,
+  .histoire-slab--text {
+    grid-row: 1;
+    margin: 0;
+    min-height: 0;
+  }
+
+  /* Image à gauche : image dans le coin haut-gauche de la coupe, texte à droite. */
+  .histoire-slab--image {
+    display: block;
+    padding: 0;
+    clip-path: polygon(0 0, var(--seam-top) 0, var(--seam-bottom) 100%, 0 100%);
+  }
+
+  .histoire-slab--text {
+    display: flex;
+    align-items: center;
+    padding: 2rem 5% 2rem 62%;
+    clip-path: polygon(var(--seam-top) 0, 100% 0, 100% 100%, var(--seam-bottom) 100%);
+  }
+
+  /*
+   * Le visuel est centré sur la moitié de la bande, au milieu de la surface que la coupe laisse
+   * à l'image (la coupe passe à 49 % à mi-hauteur, donc le centre visible est à 25 %).
+   */
+  .histoire-visual {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 50%;
+  }
+
+  /* La photo occupe seulement la partie haute de la coupe (60 % de large), pas toute la bande. */
+  .histoire-visual--full {
+    inset: 0 auto 0 0;
+    width: 60%;
+    display: block;
+  }
+
+  /* Image à droite : tout est inversé, mais la coupe garde les mêmes positions (voir --seam-*). */
+  .histoire-band[data-side="right"] .histoire-slab--image {
+    clip-path: polygon(var(--seam-top) 0, 100% 0, 100% 100%, var(--seam-bottom) 100%);
+  }
+
+  .histoire-band[data-side="right"] .histoire-slab--text {
+    padding: 2rem 62% 2rem 5%;
+    clip-path: polygon(0 0, var(--seam-top) 0, var(--seam-bottom) 100%, 0 100%);
+  }
+
+  .histoire-band[data-side="right"] .histoire-visual {
+    inset: 0 0 0 auto;
+  }
+
+  .histoire-band[data-side="right"] .histoire-visual--full {
+    inset: 0 0 0 auto;
+  }
+}
+
+@keyframes histoire-slide-image {
+  from {
+    opacity: 0;
+    transform: translateX(calc(var(--dir) * -32%));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes histoire-slide-text {
+  from {
+    opacity: 0;
+    transform: translateX(calc(var(--dir) * 32%));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes histoire-portrait-in {
+  from {
+    opacity: 0;
+    transform: translateY(1.75rem) rotate(-7deg) scale(1.1);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(-2.5deg);
+  }
+}
+
+@keyframes histoire-dot-ring {
+  from {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  to {
+    transform: scale(3.4);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .histoire-dot-ring {
+    animation: histoire-dot-ring 2.4s ease-out infinite;
+  }
+
+  /*
+   * Piloté par le défilement (sans JS) : les deux moitiés arrivent chacune de leur côté et se
+   * rejoignent sur la coupe, puis la photo du tailleur de pierre se pose sur la Sardaigne.
+   * Sans support du navigateur, les bandes s'affichent simplement assemblées.
+   */
+  @supports (animation-timeline: view()) {
+    .histoire-slab,
+    .histoire-portrait {
+      animation-fill-mode: both;
+      animation-timing-function: ease-out;
+      animation-timeline: --histoire-band;
+    }
+
+    .histoire-slab--image {
+      animation-name: histoire-slide-image;
+      animation-range: cover 0% cover 30%;
+    }
+
+    .histoire-slab--text {
+      animation-name: histoire-slide-text;
+      animation-range: cover 0% cover 30%;
+    }
+
+    .histoire-portrait {
+      animation-name: histoire-portrait-in;
+      animation-range: cover 24% cover 42%;
+    }
+  }
+}

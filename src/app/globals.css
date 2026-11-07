@@ -8,6 +8,10 @@
   --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
 
+  /* Refonte V2 (pages /v2) : polices de bvrrenovation.fr, chargées dans app/v2/layout.tsx. */
+  --font-v2-display: var(--font-playfair), ui-serif, Georgia, serif;
+  --font-v2-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+
   --color-navy: var(--navy);
   --color-navy-deep: var(--navy-deep);
   --color-blue: var(--blue);

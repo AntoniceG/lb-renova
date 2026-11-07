@@ -22,3 +22,6 @@ npm-debug.log*
 
 # Vercel
 .vercel
+
+# Photos de chantier d'origine (61 Mo) : on ne versionne que leurs versions web, dans public/
+design-v2/Photo de chantier/
