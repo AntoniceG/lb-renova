@@ -6,12 +6,16 @@ Légende : 🔴 bloque une phase · 🟡 nécessaire avant mise en ligne · ⚪ 
 ## 1. Identité & légal
 | Constante | Info | Besoin |
 |---|---|---|
-| `TODO_LEGAL_NAME` | Raison sociale exacte, forme juridique, capital | 🟡 |
-| `TODO_SIRET` / `TODO_RCS` | SIRET, RCS / ville d'immatriculation, n° TVA | 🟡 |
-| `TODO_PUBLICATION_DIRECTOR` | Directeur de la publication | 🟡 |
-| `TODO_ADDRESS` | Adresse du siège (identique à la fiche Google Business) | 🔴 phase 2 |
-| `TODO_MEDIATOR` | Médiateur de la consommation (nom + URL) | 🟡 |
-| `TODO_RGPD_CONTACT` | Email de contact RGPD, durée de conservation des leads souhaitée | 🟡 |
+| **Page « Mentions légales » (V2)** | Page créée : `/v2/mentions-legales` (lien dans le pied de page). Les champs manquants y apparaissent **surlignés en jaune** (« À compléter : … ») et se renseignent dans `src/config/site.config.ts` (bloc `legal`). Le build de production refuse de se lancer tant qu'il en reste. Textes rédigés par l'assistant : **à faire relire par un professionnel** (juriste / expert-comptable) avant le lancement. | 🟡 avant le lancement V2 |
+| `brand.legalName`, `legal.legalForm`, `legal.capital` | Raison sociale exacte, forme juridique, capital (supprimer la ligne `capital` pour une entreprise individuelle) | 🟡 |
+| `legal.siret`, `legal.registration`, `legal.vat` | SIRET (14 chiffres), RCS ou répertoire des métiers + ville, n° de TVA (ou mention de franchise en base de TVA) | 🟡 |
+| `legal.publicationDirector` | Directeur de la publication | 🟡 |
+| `contact.address` | Adresse du siège (identique à la fiche Google Business) | 🔴 phase 2 |
+| `legal.mediator` | Médiateur de la consommation (nom + site) | 🟡 |
+| `legal.insurerAddress`, `legal.insuranceCoverage`, `certifications.decennale.insurer` | Assurance décennale : assureur, adresse de l'assureur, zone couverte (ex. « France métropolitaine ») | 🟡 |
+| `legal.host.phone` | Téléphone de l'hébergeur Vercel : **à vérifier sur vercel.com/contact** (nom et adresse déjà renseignés). Pas une question pour le client. | 🟡 |
+| `contact.email` | Email de contact, aussi utilisé pour les droits RGPD (accès, effacement…) | 🟡 |
+| **Données personnelles (mentions légales)** | Durées affichées : demandes incomplètes **30 jours**, demandes de devis **3 ans** après le dernier échange. À faire valider ; la purge automatique n'est pas encore planifiée (`supabase/optional/schedule_purge_expired_leads.sql`). Une **politique de confidentialité complète** (sous-traitants nommés, transferts hors UE, etc.) reste à rédiger avant le lancement. | 🟡 |
 | `TODO_REGISTRATION_DATE` | Date d'immatriculation réelle (mentions légales uniquement, jamais en argument commercial) | 🟡 |
 | Sens de « depuis plus de 20 ans » (logo) | Ce que ça désigne ; inutilisé tant que non précisé | 🟡 phase 3 |
 
@@ -56,6 +60,7 @@ Je n'invente aucun détail ; j'ai besoin de :
 - Palette exacte (valeurs) : à figer sur le logo final — 🟡 phase 2/3
 
 ## 6. Photos & vidéos
+- **Refonte V2 : pas de nouvelles photos pour le moment** (décision du client). Les albums climatisation (1 photo), électricité, plomberie et peinture (1 photo) n'apparaissent pas sur le site tant qu'ils ont moins de 2 photos ; ils s'afficheront automatiquement dès qu'on en ajoute (`src/lib/v2/realisations.ts`). Pas de vidéo.
 - Dossier source des photos de chantiers (originaux haute définition) — 🔴 phase 3
 - Pour chaque photo : métier concerné, commune, date approximative, **autorisation d'utilisation** si des personnes/façades identifiables apparaissent — 🟡
 - Paires **avant/après** (même cadrage si possible), minimum 3 — 🔴 phase 3

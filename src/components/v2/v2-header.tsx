@@ -7,6 +7,7 @@ import { telHref } from "@/lib/brand";
 import { cn } from "@/lib/utils";
 import { V2_NAV, V2_QUOTE_HREF } from "@/lib/v2/nav";
 import { v2Button } from "./button-styles";
+import { V2HomeLink } from "./home-link";
 import { V2MobileMenu } from "./v2-mobile-menu";
 
 interface V2HeaderProps {
@@ -46,8 +47,7 @@ export function V2Header({ variant = "home" }: V2HeaderProps) {
 
         <div className="v2-header__content relative container-page flex h-[4.5rem] items-center justify-between gap-4 md:h-20">
           {solid ? (
-            <Link
-              href="/v2"
+            <V2HomeLink
               aria-label={`${brand.name} — accueil`}
               className="block size-14 shrink-0 md:size-16"
             >
@@ -60,7 +60,7 @@ export function V2Header({ variant = "home" }: V2HeaderProps) {
                 loading="eager"
                 className="size-full"
               />
-            </Link>
+            </V2HomeLink>
           ) : (
             <span
               aria-hidden

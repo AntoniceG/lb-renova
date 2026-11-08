@@ -86,6 +86,31 @@ export const siteConfigSchema = z.object({
       attestationUrl: z.string().startsWith("/").optional(),
     }),
   }),
+  /** Informations des mentions légales. Tout ce qui est encore `TODO_` s'affiche en surligné dans la page. */
+  legal: z.object({
+    /** Forme juridique : « SARL », « SAS », « Entreprise individuelle »… */
+    legalForm: orTodo(z.string().min(2)),
+    /** Capital social, ex. « 10 000 € ». Retirer la clé pour une entreprise individuelle. */
+    capital: orTodo(z.string().min(2)).optional(),
+    /** 14 chiffres, espaces permis. */
+    siret: orTodo(z.string().regex(/^(?:\d ?){14}$/)),
+    /** Immatriculation : « RCS Marseille 123 456 789 », « RM Bouches-du-Rhône »… */
+    registration: orTodo(z.string().min(2)),
+    /** N° de TVA intracommunautaire, ou la mention de franchise en base de TVA. */
+    vat: orTodo(z.string().min(2)),
+    publicationDirector: orTodo(z.string().min(2)),
+    /** Médiateur de la consommation (obligatoire pour les particuliers). */
+    mediator: z.object({ name: orTodo(z.string().min(2)), url: orTodo(z.url()) }),
+    /** Assurance décennale : adresse de l'assureur et zone couverte (ex. « France métropolitaine »). */
+    insurerAddress: orTodo(z.string().min(5)),
+    insuranceCoverage: orTodo(z.string().min(2)),
+    host: z.object({
+      name: z.string().min(2),
+      address: z.string().min(5),
+      website: z.url(),
+      phone: orTodo(z.string().min(6)),
+    }),
+  }),
   promise: z.object({
     /** Délai de rappel que l'équipe s'engage à tenir (ex. « sous 24 h ouvrées »). */
     callbackDelay: orTodo(z.string().min(2)),

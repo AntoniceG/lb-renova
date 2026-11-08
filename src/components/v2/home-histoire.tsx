@@ -48,7 +48,7 @@ export function HomeHistoire() {
     <section
       id="histoire"
       aria-labelledby="histoire-title"
-      className="v2-relief bg-(--cream) pt-20 md:pt-28"
+      className="v2-relief v2-relief--haut bg-(--cream) pt-20 md:pt-28"
     >
       <div className="container-page">
         <div className="mx-auto max-w-2xl pb-12 text-center md:pb-16">

@@ -13,7 +13,7 @@ export function HomeZone() {
     <section
       id="zone"
       aria-labelledby="zone-title"
-      className="v2-relief bg-(--cream) py-20 md:py-28"
+      className="v2-relief v2-relief--haut bg-(--cream) py-20 md:py-28"
     >
       <div className="container-page grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
         <div>

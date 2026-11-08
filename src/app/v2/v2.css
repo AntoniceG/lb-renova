@@ -414,12 +414,23 @@ html[data-flight-on] .v2-burger,
   box-shadow: 0 16px 38px -14px oklch(0.78 0.14 70 / 0.6);
 }
 
+/*
+ * Variante pour une section crème posée sur une section BLANCHE : l'ombre dorée retombe aussi vers
+ * le haut (sur la section qui précède), pas seulement vers le bas. Utilisée pour « Notre histoire »
+ * et « Zone d'intervention ».
+ */
+.v2-relief--haut {
+  box-shadow:
+    0 16px 38px -14px oklch(0.78 0.14 70 / 0.6),
+    0 -16px 38px -14px oklch(0.78 0.14 70 / 0.6);
+}
+
 /* ---------- Formulaire de devis en doré ---------- */
 
 /*
  * Le formulaire du site actuel utilise le bleu (focus, choix sélectionné, case à cocher) et le
  * rouge (progression, boutons, erreurs). Sur la refonte : l'or remplace le bleu ici, et le
- * composant passe lui-même ses boutons et sa progression en or (accent="gold"). Les erreurs
+ * composant passe lui-même sa progression en or et ses boutons en blanc cernés d'or (accent="gold"). Les erreurs
  * restent rouges, c'est leur rôle. Le doré du focus est un peu plus sombre pour rester bien visible.
  */
 .v2-or {

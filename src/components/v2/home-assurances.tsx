@@ -4,13 +4,14 @@ import { ASSURANCES } from "@/lib/v2/assurances";
  * Bandeau de réassurance : pleine largeur, posé sous le hero (il ne le chevauche pas).
  * Trois badges alignés, sans séparation entre eux ; aucun arrondi, aucun effet « bouton ».
  * Une ombre dorée (la même lueur que dans le hero et les cartes d'expertises) lui donne du relief.
- * `relative z-10` : sans cela, la section suivante recouvrirait l'ombre.
+ * `relative z-20` : sans cela, la section suivante (crème elle aussi, en `z-10`) recouvrirait
+ * l'ombre ; il faut donc rester au-dessus d'elle.
  */
 export function HomeAssurances() {
   return (
     <section
       aria-label="Nos engagements"
-      className="relative z-10 border-y border-[oklch(0.8_0.12_75/0.35)] bg-(--cream) shadow-[0_16px_38px_-14px_oklch(0.78_0.14_70/0.6)]"
+      className="relative z-20 border-y border-[oklch(0.8_0.12_75/0.35)] bg-(--cream) shadow-[0_16px_38px_-14px_oklch(0.78_0.14_70/0.6)]"
     >
       <ul className="container-page grid grid-cols-3">
         {ASSURANCES.map(({ key, label, icon: Icon }) => (

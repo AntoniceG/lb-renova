@@ -36,7 +36,7 @@ interface QuoteFormProps {
   callbackDelay: string | null;
   phoneDisplay: string | null;
   consentNotice: ConsentNotice;
-  /** Couleur d'accent de la progression et des boutons (`gold` : refonte V2). Les erreurs restent rouges. */
+  /** Accent de la progression et des boutons (`gold` : refonte V2, boutons blancs cernés d'or). Les erreurs restent rouges. */
   accent?: "red" | "gold";
   /** Page affichée après l'envoi ; `/merci` par défaut (`/v2/merci` sur la refonte). */
   successHref?: string;
@@ -446,14 +446,14 @@ function QuoteFormSteps({
           <span />
         )}
         {step < STEPS.length - 1 ? (
-          <Button type="submit" variant={gold ? "gold" : "cta"} size="lg">
+          <Button type="submit" variant={gold ? "white" : "cta"} size="lg">
             Continuer
             <ArrowRight aria-hidden />
           </Button>
         ) : (
           <Button
             type="submit"
-            variant={gold ? "gold" : "cta"}
+            variant={gold ? "white" : "cta"}
             size="lg"
             disabled={submitting || !turnstileSiteKey}
           >

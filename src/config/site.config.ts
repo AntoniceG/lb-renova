@@ -49,6 +49,24 @@ export const siteConfig = defineSiteConfig(
       rge: { enabled: false },
       decennale: { enabled: true, insurer: todo("INSURER") },
     },
+    legal: {
+      legalForm: todo("LEGAL_FORM"),
+      capital: todo("CAPITAL"),
+      siret: todo("SIRET"),
+      registration: todo("REGISTRATION"),
+      vat: todo("VAT"),
+      publicationDirector: todo("PUBLICATION_DIRECTOR"),
+      mediator: { name: todo("MEDIATOR_NAME"), url: todo("MEDIATOR_URL") },
+      insurerAddress: todo("INSURER_ADDRESS"),
+      insuranceCoverage: todo("INSURANCE_COVERAGE"),
+      host: {
+        name: "Vercel Inc.",
+        address: "440 N Barranca Ave #4133, Covina, CA 91723, États-Unis",
+        website: "https://vercel.com",
+        // Seul le numéro n'est pas vérifié (une source tierce donne un numéro, à confirmer sur vercel.com/contact).
+        phone: todo("HOST_PHONE"),
+      },
+    },
     promise: { callbackDelay: "sous 48 h" },
     story: {
       since: 1945,

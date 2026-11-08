@@ -8,6 +8,7 @@ import { telHref } from "@/lib/brand";
 import { V2_NAV, V2_QUOTE_HREF } from "@/lib/v2/nav";
 import { PILIERS } from "@/lib/v2/piliers";
 import { ZONE } from "@/lib/v2/zone";
+import { V2HomeLink } from "./home-link";
 
 /**
  * Pied de page de la refonte. N'affiche que les coordonnées réellement renseignées : tant que
@@ -27,7 +28,7 @@ export function V2Footer() {
       <TricolorRule />
       <div className="container-page grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-5">
         <div>
-          <Link href="/v2" aria-label={`${brand.name} — accueil`} className="inline-block">
+          <V2HomeLink aria-label={`${brand.name} — accueil`} className="inline-block">
             <Image
               src="/v2/logo-v2.webp"
               alt=""
@@ -36,7 +37,7 @@ export function V2Footer() {
               sizes="120px"
               className="size-28"
             />
-          </Link>
+          </V2HomeLink>
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-white/70">{brand.tagline}</p>
         </div>
 
@@ -130,10 +131,16 @@ export function V2Footer() {
       </div>
 
       <div className="border-t border-white/10">
-        <div className="container-page py-6 text-xs text-white/55">
+        <div className="container-page flex flex-col gap-1 py-5 text-xs text-white/55 sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {new Date().getFullYear()} {owner}. Tous droits réservés.
           </p>
+          <Link
+            href="/v2/mentions-legales"
+            className="inline-flex min-h-9 items-center hover:text-white/80"
+          >
+            Mentions légales
+          </Link>
         </div>
       </div>
     </footer>

@@ -40,6 +40,23 @@ function validInput(): SiteConfigInput {
       rge: { enabled: false },
       decennale: { enabled: true, insurer: "Assureur Test" },
     },
+    legal: {
+      legalForm: "SARL",
+      capital: "1 000 €",
+      siret: "123 456 789 00012",
+      registration: "RCS Aix-en-Provence 123 456 789",
+      vat: "FR00123456789",
+      publicationDirector: "Prénom Nom",
+      mediator: { name: "Médiateur Test", url: "https://mediateur.example.fr" },
+      insurerAddress: "1 rue de l'Assurance, 13100 Aix-en-Provence",
+      insuranceCoverage: "France métropolitaine",
+      host: {
+        name: "Hébergeur Test",
+        address: "1 rue Test, 13100 Aix-en-Provence",
+        website: "https://hebergeur.example.fr",
+        phone: "04 00 00 00 00",
+      },
+    },
     promise: { callbackDelay: "sous 24 h ouvrées" },
     story: {
       since: 1945,

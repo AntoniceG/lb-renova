@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useRef } from "react";
+import { V2HomeLink } from "./home-link";
 
 /** Repère posé par l'en-tête : l'endroit exact où le logo vient se ranger. */
 const HEADER_SLOT = "[data-logo-slot='header']";
@@ -168,9 +168,8 @@ export function HeroLogo({ name }: HeroLogoProps) {
       data-logo-slot="hero"
       className="relative aspect-square w-[min(68vw,23rem,46svh)]"
     >
-      <Link
+      <V2HomeLink
         ref={flyerRef}
-        href="/v2"
         aria-label={`${name} — accueil`}
         className="logo-flyer focus-visible:outline-blue"
       >
@@ -200,7 +199,7 @@ export function HeroLogo({ name }: HeroLogoProps) {
             className="logo-flyer__img logo-flyer__img--clair absolute inset-0 size-full"
           />
         </span>
-      </Link>
+      </V2HomeLink>
     </div>
   );
 }
