@@ -3,7 +3,7 @@
 import { ArrowLeft, ArrowRight, Send } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore, type FormEvent } from "react";
-import { submitQuote } from "@/app/(site)/devis/actions";
+import { submitQuote } from "@/app/devis/actions";
 import { Button } from "@/components/ui/button";
 import { readAttribution } from "@/lib/attribution";
 import type { ProjectTypeOption } from "@/lib/leads/options";
@@ -38,7 +38,7 @@ interface QuoteFormProps {
   consentNotice: ConsentNotice;
   /** Accent de la progression et des boutons (`gold` : refonte V2, boutons blancs cernés d'or). Les erreurs restent rouges. */
   accent?: "red" | "gold";
-  /** Page affichée après l'envoi ; `/merci` par défaut (`/v2/merci` sur la refonte). */
+  /** Page affichée après l'envoi ; `/merci` par défaut (`/merci` sur la refonte). */
   successHref?: string;
 }
 

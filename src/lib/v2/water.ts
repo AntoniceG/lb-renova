@@ -44,6 +44,9 @@ export interface WaterSource {
 
 const MAX_DROPS = 8;
 
+/** Pixels d'écran couverts par la largeur entière de la photo sur un ordinateur (1 280 px / 0,9). */
+const REFERENCE_PX_PER_UV_X = 1400;
+
 const VERTEX = `
 attribute vec2 aPos;
 varying vec2 vUv;
@@ -64,6 +67,7 @@ uniform vec2 uOffset;
 uniform float uTime;
 uniform float uAmp;
 uniform float uFreq;
+uniform float uFreqX;     // finesse dans le sens de la largeur (adaptée à la largeur de l'écran)
 uniform float uPointer;
 uniform float uHorizon;
 uniform float uAspect;    // largeur / hauteur de la photo
@@ -97,10 +101,10 @@ void main() {
     float z = 1.0 / (d + 0.05);                // perspective : le lointain est compressé
 
     // Houle : décale les reflets d'un côté puis de l'autre
-    float n = noise(vec2(uv.x * 7.0 * uFreq, z * 0.9) + vec2(uTime * 0.2, uTime * 0.3));
+    float n = noise(vec2(uv.x * 7.0 * uFreqX, z * 0.9) + vec2(uTime * 0.2, uTime * 0.3));
     float swell = sin(z * 3.2 * uFreq + uTime * 1.5 + n * 6.0);
     // Clapot : petites rides plus rapides
-    float chop = sin(uv.x * 60.0 * uFreq * (0.5 + depth) + z * 2.4 - uTime * 1.3 + n * 5.0);
+    float chop = sin(uv.x * 60.0 * uFreqX * (0.5 + depth) + z * 2.4 - uTime * 1.3 + n * 5.0);
 
     float strength = (0.35 + depth * 2.2) * uAmp * 0.011 * mask;
     disp.x += (swell * 0.7 + chop * 0.35) * strength;
@@ -213,6 +217,7 @@ export function createWaterRenderer(options: WaterOptions): WaterRenderer | null
     time: u("uTime"),
     amp: u("uAmp"),
     freq: u("uFreq"),
+    freqX: u("uFreqX"),
     pointer: u("uPointer"),
     horizon: u("uHorizon"),
     aspect: u("uAspect"),
@@ -237,6 +242,19 @@ export function createWaterRenderer(options: WaterOptions): WaterRenderer | null
   let fpsFrames = 0;
   let fpsStart = 0;
   let view = { scaleX: 1, scaleY: 1, offsetX: 0, offsetY: 0 };
+  // Largeur de l'écran (en pixels CSS) rapportée à la part de photo visible : « combien de pixels
+  // occupe la largeur entière de la photo ». Sert à garder des ondulations de même taille à l'écran.
+  let pxPerUvX = REFERENCE_PX_PER_UV_X;
+
+  /**
+   * Les petites ondulations sont calculées sur la largeur de la PHOTO : sur un téléphone, 3 fois plus
+   * étroit qu'un ordinateur, elles étaient 2,5 fois plus serrées (effet « marbré », peu naturel). On les
+   * élargit donc quand l'écran est étroit, pour retrouver à peu près la même taille de vague à
+   * l'écran. Sur ordinateur (facteur plafonné à 1), rien ne change.
+   */
+  function widthFactor() {
+    return Math.min(1, Math.max(0.3, pxPerUvX / REFERENCE_PX_PER_UV_X));
+  }
 
   function computeView() {
     const screenAspect = canvas.width / Math.max(canvas.height, 1);
@@ -260,6 +278,7 @@ export function createWaterRenderer(options: WaterOptions): WaterRenderer | null
       gl!.viewport(0, 0, w, h);
     }
     computeView();
+    pxPerUvX = rect.width / view.scaleX;
   }
 
   function draw() {
@@ -271,6 +290,7 @@ export function createWaterRenderer(options: WaterOptions): WaterRenderer | null
     g.uniform1f(uniforms.time, clock);
     g.uniform1f(uniforms.amp, params.amplitude);
     g.uniform1f(uniforms.freq, params.fineness);
+    g.uniform1f(uniforms.freqX, params.fineness * widthFactor());
     g.uniform1f(uniforms.pointer, params.pointer);
     g.uniform1f(uniforms.horizon, source.horizon);
     g.uniform1f(uniforms.aspect, imageAspect);

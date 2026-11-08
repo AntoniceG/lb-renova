@@ -1,21 +1,26 @@
 import type { Metadata, Viewport } from "next";
-import { Bricolage_Grotesque, Figtree } from "next/font/google";
+import { DM_Sans, Playfair_Display } from "next/font/google";
 import type { ReactNode } from "react";
+import { AttributionCapture } from "@/components/quote/attribution-capture";
 import { env } from "@/config/env";
 import { siteConfig } from "@/config/site.config";
 import { brandCssVars } from "@/lib/brand";
+import { SHARE_IMAGE } from "@/lib/seo";
 import "./globals.css";
+import "./site.css";
 
-const display = Bricolage_Grotesque({
+// Polices du site (celles de bvrrenovation.fr). `next/font` les héberge lui-même : aucune
+// requête vers Google au moment de la visite.
+const display = Playfair_Display({
   subsets: ["latin"],
-  axes: ["opsz", "wdth"],
-  variable: "--font-bricolage",
+  style: ["normal", "italic"],
+  variable: "--font-playfair",
   display: "swap",
 });
 
-const text = Figtree({
+const text = DM_Sans({
   subsets: ["latin"],
-  variable: "--font-figtree",
+  variable: "--font-dm-sans",
   display: "swap",
 });
 
@@ -27,7 +32,13 @@ export const metadata: Metadata = {
   description: brand.description,
   // Les previews et le développement ne sont jamais indexés.
   robots: env.isProduction ? undefined : { index: false, follow: false },
-  openGraph: { siteName: brand.name, locale: "fr_FR", type: "website" },
+  openGraph: {
+    siteName: brand.name,
+    locale: "fr_FR",
+    type: "website",
+    images: [SHARE_IMAGE],
+  },
+  twitter: { card: "summary_large_image", images: [SHARE_IMAGE.url] },
 };
 
 export const viewport: Viewport = {
@@ -46,7 +57,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       className={`${display.variable} ${text.variable}`}
       style={brandCssVars(brand.colors)}
     >
-      <body>{children}</body>
+      <body>
+        {/* Mémorise l'origine de la visite (campagne, référent) pour la joindre au devis. */}
+        <AttributionCapture />
+        {children}
+      </body>
     </html>
   );
 }

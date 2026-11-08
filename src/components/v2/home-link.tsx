@@ -4,8 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ComponentProps, MouseEvent } from "react";
 
-/** Page d'accueil de la refonte (deviendra « / » à la migration). */
-export const V2_HOME_HREF = "/v2";
+/** Page d'accueil du site. */
+export const V2_HOME_HREF = "/";
 
 type V2HomeLinkProps = Omit<ComponentProps<typeof Link>, "href">;
 

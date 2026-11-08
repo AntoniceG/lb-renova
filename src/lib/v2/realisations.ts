@@ -8,6 +8,8 @@ export interface Photo {
   alt: string;
   width: number;
   height: number;
+  /** Aperçu flou minuscule (data URL), affiché pendant le chargement de la vraie photo. */
+  blur: string;
 }
 
 export interface Album {
@@ -121,7 +123,9 @@ const ALBUM_PHOTOS: Readonly<Record<string, readonly number[]>> = {
   peinture: [39],
 };
 
-const sizes = dimensions as Readonly<Record<string, { width: number; height: number }>>;
+const sizes = dimensions as Readonly<
+  Record<string, { width: number; height: number; blur: string }>
+>;
 
 function toPhoto(number: number): Photo | undefined {
   const size = sizes[String(number)];

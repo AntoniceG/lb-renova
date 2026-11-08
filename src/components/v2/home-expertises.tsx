@@ -29,7 +29,7 @@ function Wrap({
   if (isPilier(slug)) {
     return (
       <Link
-        href={`/v2/${slug}`}
+        href={`/${slug}`}
         aria-label={`${title} : en savoir plus`}
         className={`${className} focus-visible:outline-blue`}
       >
@@ -40,7 +40,7 @@ function Wrap({
   if (!hasAlbum(slug)) return <div className={className}>{children}</div>;
   return (
     <Link
-      href={`/v2/realisations/${slug}`}
+      href={`/realisations/${slug}`}
       aria-label={`${title} : voir les réalisations`}
       className={`${className} focus-visible:outline-blue`}
     >

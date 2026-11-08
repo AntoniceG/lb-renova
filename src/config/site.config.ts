@@ -13,7 +13,7 @@ export const siteConfig = defineSiteConfig(
       legalName: todo("LEGAL_NAME"),
       tagline: "Rénover • Bâtir • Valoriser",
       description:
-        "Entreprise de rénovation à Aix-en-Provence et alentours : gros œuvre, climatisation, couverture. Devis gratuit.",
+        "Rénovation complète, gros œuvre et climatisation à Marseille et Aix-en-Provence. Entreprise familiale, devis gratuit.",
       // Palette provisoire (bleu-blanc-rouge), à recalibrer sur le logo final. Valeurs en oklch.
       colors: {
         navy: "oklch(0.27 0.07 262)",
@@ -37,13 +37,12 @@ export const siteConfig = defineSiteConfig(
         postalCode: todo("ADDRESS_POSTAL_CODE"),
         city: todo("ADDRESS_CITY"),
       },
-      hours: todo("HOURS"),
-      googleBusinessUrl: todo("GOOGLE_BUSINESS_URL"),
+      // Facultatifs (voir site.schema.ts) : `hours`, `googleBusinessUrl` (lien de la fiche Google Business).
     },
     area: {
-      baseCity: "Aix-en-Provence",
+      baseCity: "Marseille",
       radiusKm: 50,
-      priorityCities: ["Aix-en-Provence", "Marseille", "Gardanne", "Salon-de-Provence", "Pertuis"],
+      priorityCities: ["Marseille", "Aix-en-Provence", "Gardanne", "Salon-de-Provence", "Pertuis"],
     },
     certifications: {
       rge: { enabled: false },

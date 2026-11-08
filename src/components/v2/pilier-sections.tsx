@@ -8,6 +8,7 @@ import { telHref } from "@/lib/brand";
 import { PILIERS, type Marque, type Pilier } from "@/lib/v2/piliers";
 import type { Album } from "@/lib/v2/realisations";
 import { v2Button } from "./button-styles";
+import { PhotoImage } from "./photo-image";
 
 /** En-tête de la page : fil d'Ariane, titre avec la ville, accroche, boutons. */
 export function PilierHero({ pilier }: { pilier: Pilier }) {
@@ -18,7 +19,7 @@ export function PilierHero({ pilier }: { pilier: Pilier }) {
         <nav aria-label="Fil d'Ariane" className="text-xs tracking-[0.14em] text-muted uppercase">
           <ol className="flex flex-wrap items-center gap-x-2 gap-y-1">
             <li>
-              <Link href="/v2" className="hover:text-navy">
+              <Link href="/" className="hover:text-navy">
                 Accueil
               </Link>
             </li>
@@ -154,7 +155,7 @@ export function PilierPhotos({ album }: { album: Album }) {
             Nos réalisations en <em className="text-blue">{album.title.toLowerCase()}</em>
           </h2>
           <Link
-            href={`/v2/realisations/${album.slug}`}
+            href={`/realisations/${album.slug}`}
             className="group inline-flex items-center gap-2 text-xs font-semibold tracking-[0.18em] text-navy uppercase focus-visible:outline-blue"
           >
             Voir les {album.photos.length} photos
@@ -167,9 +168,8 @@ export function PilierPhotos({ album }: { album: Album }) {
         <ul className="mt-10 grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4">
           {apercu.map((photo) => (
             <li key={photo.number} className="relative aspect-[4/3] overflow-hidden bg-navy/5">
-              <Image
-                src={photo.src}
-                alt={photo.alt}
+              <PhotoImage
+                photo={photo}
                 fill
                 sizes="(max-width: 768px) 50vw, 380px"
                 className="object-cover"
@@ -253,7 +253,7 @@ export function PilierAutres({ currentSlug }: { currentSlug: string }) {
           {autres.map(({ slug, title }) => (
             <li key={slug}>
               <Link
-                href={`/v2/${slug}`}
+                href={`/${slug}`}
                 className="inline-flex min-h-11 items-center border border-navy/25 px-5 text-xs font-semibold tracking-[0.16em] text-navy uppercase transition-colors hover:border-navy hover:bg-navy hover:text-white focus-visible:outline-blue"
               >
                 {title}
@@ -262,7 +262,7 @@ export function PilierAutres({ currentSlug }: { currentSlug: string }) {
           ))}
           <li>
             <Link
-              href="/v2/realisations"
+              href="/realisations"
               className="inline-flex min-h-11 items-center border border-navy/25 px-5 text-xs font-semibold tracking-[0.16em] text-navy uppercase transition-colors hover:border-navy hover:bg-navy hover:text-white focus-visible:outline-blue"
             >
               Toutes nos réalisations

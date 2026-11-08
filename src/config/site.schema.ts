@@ -67,8 +67,10 @@ export const siteConfigSchema = z.object({
       postalCode: orTodo(z.string().regex(/^\d{5}$/)),
       city: orTodo(z.string().min(2)),
     }),
-    hours: orTodo(z.string().min(2)),
-    googleBusinessUrl: orTodo(z.url()),
+    /** Horaires : facultatif (n'est affiché nulle part pour l'instant). */
+    hours: orTodo(z.string().min(2)).optional(),
+    /** Fiche Google Business : facultatif ; s'il est renseigné, il est transmis à Google (schema.org `sameAs`). */
+    googleBusinessUrl: orTodo(z.url()).optional(),
   }),
   area: z.object({
     baseCity: z.string().min(2),

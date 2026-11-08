@@ -42,7 +42,9 @@ export function V2Footer() {
         </div>
 
         <nav aria-label="Pied de page">
-          <h2 className="text-xs font-semibold tracking-[0.22em] text-white/60 uppercase">Menu</h2>
+          <h2 className="font-v2-sans text-xs font-semibold tracking-[0.22em] text-white/60 uppercase">
+            Menu
+          </h2>
           <ul className="mt-5 space-y-1 text-base">
             {V2_NAV.map(({ label, href }) => (
               <li key={href}>
@@ -63,14 +65,14 @@ export function V2Footer() {
         </nav>
 
         <nav aria-label="Nos métiers">
-          <h2 className="text-xs font-semibold tracking-[0.22em] text-white/60 uppercase">
+          <h2 className="font-v2-sans text-xs font-semibold tracking-[0.22em] text-white/60 uppercase">
             Nos métiers
           </h2>
           <ul className="mt-5 space-y-1 text-base">
             {PILIERS.map(({ slug, title }) => (
               <li key={slug}>
                 <Link
-                  href={`/v2/${slug}`}
+                  href={`/${slug}`}
                   className="inline-flex min-h-9 items-center hover:text-white/75"
                 >
                   {title}
@@ -79,7 +81,7 @@ export function V2Footer() {
             ))}
             <li>
               <Link
-                href="/v2/realisations"
+                href="/realisations"
                 className="inline-flex min-h-9 items-center hover:text-white/75"
               >
                 Toutes nos réalisations
@@ -89,7 +91,7 @@ export function V2Footer() {
         </nav>
 
         <div>
-          <h2 className="text-xs font-semibold tracking-[0.22em] text-white/60 uppercase">
+          <h2 className="font-v2-sans text-xs font-semibold tracking-[0.22em] text-white/60 uppercase">
             Contact
           </h2>
           <ul className="mt-5 space-y-3 text-base">
@@ -121,7 +123,7 @@ export function V2Footer() {
         </div>
 
         <div>
-          <h2 className="text-xs font-semibold tracking-[0.22em] text-white/60 uppercase">
+          <h2 className="font-v2-sans text-xs font-semibold tracking-[0.22em] text-white/60 uppercase">
             Secteur
           </h2>
           <p className="mt-5 text-base leading-relaxed text-white/80">
@@ -136,7 +138,7 @@ export function V2Footer() {
             © {new Date().getFullYear()} {owner}. Tous droits réservés.
           </p>
           <Link
-            href="/v2/mentions-legales"
+            href="/mentions-legales"
             className="inline-flex min-h-9 items-center hover:text-white/80"
           >
             Mentions légales

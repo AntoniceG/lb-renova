@@ -48,7 +48,7 @@ export function ArticleBody({ blocks }: { blocks: readonly ArticleBlock[] }) {
                   <li key={item} className="flex gap-4">
                     <span
                       aria-hidden
-                      className="w-8 shrink-0 font-v2-display text-2xl text-(--gold) italic"
+                      className="w-8 shrink-0 font-v2-display text-2xl text-(--gold-ink) italic"
                     >
                       {itemIndex + 1}
                     </span>

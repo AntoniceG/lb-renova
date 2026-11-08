@@ -1,27 +1,34 @@
 import Link from "next/link";
-import { SiteShell } from "@/components/layout/site-shell";
-import { Button } from "@/components/ui/button";
+import { v2Button } from "@/components/v2/button-styles";
+import { V2PageShell } from "@/components/v2/v2-page-shell";
 import { siteConfig } from "@/config/site.config";
 
 export default function NotFound() {
   const { nav } = siteConfig;
   return (
-    <SiteShell>
-      <section className="container-page py-24 text-center md:py-32">
-        <p className="eyebrow">Erreur 404</p>
-        <h1 className="mx-auto mt-5 max-w-2xl text-display">Cette page n&apos;existe pas.</h1>
-        <p className="mx-auto mt-5 max-w-md text-lg text-muted">
-          Le lien est peut-être erroné ou la page a été déplacée.
-        </p>
-        <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-          <Button size="xl" asChild>
-            <Link href="/">Retour à l&apos;accueil</Link>
-          </Button>
-          <Button variant="outline" size="xl" asChild>
-            <Link href={nav.quoteHref}>{nav.quoteLabel}</Link>
-          </Button>
+    <V2PageShell>
+      <section className="bg-(--cream) pt-36 pb-24 md:pt-48 md:pb-32">
+        <div className="container-page max-w-2xl text-center">
+          <p className="text-xs font-semibold tracking-[0.28em] text-muted uppercase">Erreur 404</p>
+          <h1 className="mt-5 font-v2-display text-5xl leading-[1.05] text-balance text-navy md:text-7xl">
+            Cette page <em className="text-blue">n&apos;existe pas</em>
+          </h1>
+          <p className="mx-auto mt-7 max-w-md text-lg leading-relaxed text-ink/80">
+            Le lien est peut-être erroné ou la page a été déplacée.
+          </p>
+          <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Link href="/" className={v2Button({ tone: "navy" })}>
+              Retour à l&apos;accueil
+            </Link>
+            <Link
+              href={nav.quoteHref}
+              className="inline-flex min-h-12 items-center border border-navy/30 px-8 text-[0.8rem] font-semibold tracking-[0.16em] text-navy uppercase transition-colors hover:border-navy focus-visible:outline-blue"
+            >
+              {nav.quoteLabel}
+            </Link>
+          </div>
         </div>
       </section>
-    </SiteShell>
+    </V2PageShell>
   );
 }

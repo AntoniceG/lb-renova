@@ -3,7 +3,7 @@ import { env } from "@/config/env";
 import { AVIS, type Avis } from "@/lib/v2/avis";
 import { cn } from "@/lib/utils";
 
-function Stars({ note }: { note: Avis["note"] }) {
+function Stars({ note, onDark }: { note: Avis["note"]; onDark: boolean }) {
   return (
     <p role="img" aria-label={`${note} sur 5`} className="flex items-center gap-0.5">
       {Array.from({ length: 5 }, (_, index) => (
@@ -11,7 +11,12 @@ function Stars({ note }: { note: Avis["note"] }) {
           key={index}
           aria-hidden
           strokeWidth={1.5}
-          className={cn("size-4", index < note ? "fill-current text-(--gold)" : "text-current/25")}
+          className={cn(
+            "size-4",
+            index < note
+              ? cn("fill-current", onDark ? "text-(--gold)" : "text-(--gold-ink)")
+              : "text-current/25",
+          )}
         />
       ))}
     </p>
@@ -27,25 +32,33 @@ function Card({ avis, featured }: { avis: Avis; featured: boolean }) {
       )}
     >
       <div>
-        <Stars note={avis.note} />
+        <Stars note={avis.note} onDark={featured} />
         <blockquote
           className={cn(
-            "mt-5",
+            "mt-5 text-base leading-relaxed",
+            // Téléphone et tablette (cartes qui défilent) : tous les avis ont le même texte.
+            // La grande carte n'est mise en valeur (serif italique plus grand) que sur ordinateur.
             featured
-              ? "font-v2-display text-2xl leading-snug italic md:text-[1.75rem]"
-              : "text-base leading-relaxed text-ink/85",
+              ? "lg:font-v2-display lg:text-[1.75rem] lg:leading-snug lg:italic"
+              : "text-ink/85",
           )}
         >
           <span
             aria-hidden
-            className={cn("mr-1 font-v2-display text-(--gold)", featured && "text-4xl")}
+            className={cn(
+              "mr-1 font-v2-display",
+              featured ? "text-(--gold) lg:text-4xl" : "text-(--gold-ink-small)",
+            )}
           >
             «
           </span>
           {avis.texte}
           <span
             aria-hidden
-            className={cn("ml-1 font-v2-display text-(--gold)", featured && "text-4xl")}
+            className={cn(
+              "ml-1 font-v2-display",
+              featured ? "text-(--gold) lg:text-4xl" : "text-(--gold-ink-small)",
+            )}
           >
             »
           </span>

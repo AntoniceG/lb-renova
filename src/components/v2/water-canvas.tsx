@@ -3,6 +3,7 @@
 import { getImageProps } from "next/image";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { cn } from "@/lib/utils";
+import { whenIdleAfterLoad } from "@/lib/v2/after-load";
 import { LANDSCAPE_QUERY, PORT_LANDSCAPE, PORT_PORTRAIT } from "@/lib/v2/sources";
 import { createWaterRenderer, type WaterParams, type WaterRenderer } from "@/lib/v2/water";
 
@@ -50,17 +51,26 @@ export function WaterCanvas({ params, className, onFps }: WaterCanvasProps) {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const renderer = createWaterRenderer({
-      canvas,
-      source: landscape ? PORT_LANDSCAPE : PORT_PORTRAIT,
-      params: paramsRef.current,
-      still,
-      onReady: () => setReady(true),
-      onFail: () => setReady(false),
-      onFps: (fps) => onFpsRef.current?.(fps),
+    let renderer: WaterRenderer | null = null;
+
+    // Les vagues ne démarrent qu'une fois la page chargée et le navigateur au repos : la photo
+    // fixe, le logo et le titre s'affichent d'abord, sans que la grande image de l'eau et le
+    // calcul graphique leur volent la bande passante et le processeur (surtout sur téléphone).
+    const cancelStart = whenIdleAfterLoad(() => {
+      renderer = createWaterRenderer({
+        canvas,
+        source: landscape ? PORT_LANDSCAPE : PORT_PORTRAIT,
+        params: paramsRef.current,
+        still,
+        onReady: () => setReady(true),
+        onFail: () => setReady(false),
+        onFps: (fps) => onFpsRef.current?.(fps),
+      });
+      rendererRef.current = renderer;
     });
-    rendererRef.current = renderer;
+
     return () => {
+      cancelStart();
       renderer?.destroy();
       rendererRef.current = null;
       setReady(false);

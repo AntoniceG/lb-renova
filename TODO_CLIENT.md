@@ -6,7 +6,7 @@ Légende : 🔴 bloque une phase · 🟡 nécessaire avant mise en ligne · ⚪ 
 ## 1. Identité & légal
 | Constante | Info | Besoin |
 |---|---|---|
-| **Page « Mentions légales » (V2)** | Page créée : `/v2/mentions-legales` (lien dans le pied de page). Les champs manquants y apparaissent **surlignés en jaune** (« À compléter : … ») et se renseignent dans `src/config/site.config.ts` (bloc `legal`). Le build de production refuse de se lancer tant qu'il en reste. Textes rédigés par l'assistant : **à faire relire par un professionnel** (juriste / expert-comptable) avant le lancement. | 🟡 avant le lancement V2 |
+| **Page « Mentions légales » (V2)** | Page créée : `/mentions-legales` (lien dans le pied de page). Les champs manquants y apparaissent **surlignés en jaune** (« À compléter : … ») et se renseignent dans `src/config/site.config.ts` (bloc `legal`). Le build de production refuse de se lancer tant qu'il en reste. Textes rédigés par l'assistant : **à faire relire par un professionnel** (juriste / expert-comptable) avant le lancement. | 🟡 avant le lancement V2 |
 | `brand.legalName`, `legal.legalForm`, `legal.capital` | Raison sociale exacte, forme juridique, capital (supprimer la ligne `capital` pour une entreprise individuelle) | 🟡 |
 | `legal.siret`, `legal.registration`, `legal.vat` | SIRET (14 chiffres), RCS ou répertoire des métiers + ville, n° de TVA (ou mention de franchise en base de TVA) | 🟡 |
 | `legal.publicationDirector` | Directeur de la publication | 🟡 |
@@ -28,14 +28,14 @@ Légende : 🔴 bloque une phase · 🟡 nécessaire avant mise en ligne · ⚪ 
 | ~~`TODO_PHONE`~~ | ✅ Téléphone : **06 61 60 92 10** (`contact.phone`, format `tel:` +33661609210) | fait |
 | `TODO_EMAIL` | Email public | 🔴 phase 2 |
 | `TODO_WHATSAPP` | Numéro WhatsApp + message pré-rempli souhaité | 🟡 |
-| `TODO_HOURS` | Horaires d'ouverture / joignabilité | 🟡 |
-| `TODO_GOOGLE_BUSINESS_URL` | URL de la fiche Google Business + lien direct « laisser un avis » | 🟡 |
+| `contact.hours` | Horaires d'ouverture / joignabilité (facultatif : non affiché pour l'instant) | ⚪ |
+| `contact.googleBusinessUrl` | URL de la fiche Google Business + lien direct « laisser un avis » (facultatif ; transmis à Google s'il est renseigné) | ⚪ |
 | `TODO_SOCIALS` | Liens réseaux sociaux existants | ⚪ |
 | `TODO_CALENDAR_URL` | Lien Cal.com/Calendly pour les visites techniques | ⚪ |
 | ~~`TODO_CALLBACK_DELAY`~~ | ✅ Délai de rappel affiché : **« sous 48 h »** (`promise.callbackDelay`). L'équipe s'engage à le tenir. | fait |
 
 ## 3. Zone d'intervention
-- ✅ Ville de base : **Aix-en-Provence**, rayon **50 km**
+- ✅ Ville de base : **Marseille** (depuis la refonte), rayon **50 km**
 - **Communes prioritaires** pour les pages `/zones` (3–5). Proposition à valider : Aix-en-Provence, Marseille, Gardanne, Salon-de-Provence, Pertuis — 🔴 phase 2
 - **Adresse du siège** (identique à la fiche Google Business) — 🔴 phase 2
 - Pour chaque commune lancée : 1 réalisation locale réelle, spécificités du bâti, projets types — 🟡 phase 7
@@ -56,7 +56,7 @@ Je n'invente aucun détail ; j'ai besoin de :
 
 ## 5. Identité visuelle
 - Logo final (SVG si possible, versions fond clair / fond sombre / favicon carré) — 🔴 phase 2 (provisoire accepté)
-- ✅ Parti pris : bleu-blanc-rouge, gage de qualité ; ✅ typographie : Bricolage Grotesque + Figtree
+- ✅ Parti pris : bleu-blanc-rouge, gage de qualité ; ✅ typographie (refonte) : Playfair Display + DM Sans
 - Palette exacte (valeurs) : à figer sur le logo final — 🟡 phase 2/3
 
 ## 6. Photos & vidéos

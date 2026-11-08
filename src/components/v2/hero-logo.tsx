@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { whenIdleAfterLoad } from "@/lib/v2/after-load";
 import { V2HomeLink } from "./home-link";
 
 /** Repère posé par l'en-tête : l'endroit exact où le logo vient se ranger. */
@@ -62,6 +63,18 @@ interface HeroLogoProps {
 export function HeroLogo({ name }: HeroLogoProps) {
   const slotRef = useRef<HTMLDivElement>(null);
   const flyerRef = useRef<HTMLAnchorElement>(null);
+  const [lightLogo, setLightLogo] = useState(false);
+
+  // Logo marine : chargé quand la page est au repos, ou dès le premier défilement si c'est plus tôt.
+  useEffect(() => {
+    const show = () => setLightLogo(true);
+    const cancel = whenIdleAfterLoad(show, 4000);
+    window.addEventListener("scroll", show, { once: true, passive: true });
+    return () => {
+      cancel();
+      window.removeEventListener("scroll", show);
+    };
+  }, []);
 
   useEffect(() => {
     const slot = slotRef.current;
@@ -186,18 +199,23 @@ export function HeroLogo({ name }: HeroLogoProps) {
             sizes="(max-width: 640px) 68vw, 368px"
             className="logo-flyer__img logo-flyer__img--sombre size-full drop-shadow-[0_8px_30px_rgba(0,0,0,0.35)]"
           />
-          {/* Version à texte marine : fond fondu par-dessus pendant le vol, pour l'en-tête blanc. */}
-          <Image
-            src="/v2/logo-v2-clair.webp"
-            alt=""
-            aria-hidden
-            width={887}
-            height={887}
-            loading="eager"
-            fetchPriority="low"
-            sizes="(max-width: 640px) 68vw, 368px"
-            className="logo-flyer__img logo-flyer__img--clair absolute inset-0 size-full"
-          />
+          {/*
+            Version à texte marine : fond fondu par-dessus pendant le vol, pour l'en-tête blanc.
+            Elle ne sert qu'après le premier défilement : on ne la télécharge qu'une fois la page
+            chargée, pour laisser toute la bande passante à la photo et au logo du premier écran.
+          */}
+          {lightLogo && (
+            <Image
+              src="/v2/logo-v2-clair.webp"
+              alt=""
+              aria-hidden
+              width={887}
+              height={887}
+              loading="eager"
+              sizes="(max-width: 640px) 68vw, 368px"
+              className="logo-flyer__img logo-flyer__img--clair absolute inset-0 size-full"
+            />
+          )}
         </span>
       </V2HomeLink>
     </div>

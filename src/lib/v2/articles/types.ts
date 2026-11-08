@@ -12,7 +12,7 @@ export interface ArticleImage {
 }
 
 export interface Article {
-  /** Fin de l'adresse : /v2/articles/<slug>. Lettres minuscules, chiffres et tirets. */
+  /** Fin de l'adresse : /articles/<slug>. Lettres minuscules, chiffres et tirets. */
   slug: string;
   title: string;
   /** Résumé pour la liste et pour Google : 155 caractères au plus. */

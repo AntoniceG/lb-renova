@@ -3,12 +3,13 @@
 /*
  * Les couleurs de marque (--navy, --blue, --red…) sont injectées sur <html> depuis
  * src/config/site.config.ts (voir lib/brand.ts). Ce fichier ne contient que des alias.
+ * Les styles propres au site (logo qui vole, en-tête, histoire, relief doré…) sont dans site.css.
  */
 @theme inline {
-  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
-  --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
-
-  /* Refonte V2 (pages /v2) : polices de bvrrenovation.fr, chargées dans app/v2/layout.tsx. */
+  /* Polices du site, chargées dans app/layout.tsx : Playfair Display (titres), DM Sans (texte). */
+  --font-display: var(--font-playfair), ui-serif, Georgia, serif;
+  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  /* Mêmes polices sous leurs noms historiques (classes font-v2-display / font-v2-sans). */
   --font-v2-display: var(--font-playfair), ui-serif, Georgia, serif;
   --font-v2-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
 
@@ -82,53 +83,7 @@
   }
 }
 
-/* Titres éditoriaux fluides ; la largeur variable de Bricolage resserre les très gros titres. */
-@utility text-display {
-  font-family: var(--font-display);
-  font-size: clamp(2.25rem, 1.35rem + 4.2vw, 4.75rem);
-  line-height: 1.02;
-  letter-spacing: -0.03em;
-  font-weight: 800;
-}
-
-@utility text-title {
-  font-family: var(--font-display);
-  font-size: clamp(1.75rem, 1.2rem + 2.2vw, 3rem);
-  line-height: 1.08;
-  letter-spacing: -0.025em;
-  font-weight: 700;
-}
-
-@utility eyebrow {
-  font-size: 0.75rem;
-  line-height: 1;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: var(--red-ink);
-}
-
 /* ---------- Animations (CSS natif, aucune bibliothèque) ---------- */
-
-@keyframes kenburns {
-  from {
-    transform: scale(1);
-  }
-  to {
-    transform: scale(1.06);
-  }
-}
-
-@keyframes hero-progress {
-  from {
-    transform: scaleX(0);
-    transform-origin: left;
-  }
-  to {
-    transform: scaleX(1);
-    transform-origin: left;
-  }
-}
 
 @keyframes reveal-up {
   from {
@@ -141,17 +96,7 @@
   }
 }
 
-.hero-progress {
-  animation-name: hero-progress;
-  animation-timing-function: linear;
-  animation-fill-mode: both;
-}
-
 @media (prefers-reduced-motion: no-preference) {
-  .hero-layer[data-active="true"] img {
-    animation: kenburns 9s ease-out both;
-  }
-
   /*
    * Apparition au scroll pilotée par la timeline de vue (sans JS). Sans support du navigateur,
    * ou avec « réduire les animations », le contenu est simplement visible d'emblée.

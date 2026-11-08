@@ -1,0 +1,486 @@
+/*
+ * Styles du site qui ne s'écrivent pas en classes utilitaires. Importé par app/layout.tsx.
+ * (Le préfixe « v2 » de certaines classes vient de la refonte : nom historique, sans conséquence.)
+ *
+ * Le logo qui vole (components/v2/hero-logo.tsx) et l'en-tête (components/v2/v2-header.tsx) se
+ * parlent par deux marques posées sur <html> :
+ *   --flight         0 = logo dans le hero, 1 = logo rangé dans l'en-tête
+ *   data-flight-on   présent dès que l'en-tête doit apparaître
+ */
+
+:root {
+  --cream: oklch(0.982 0.009 85);
+  /* Doré de la lueur du hero : étoiles des avis, filets du menu. */
+  --gold: oklch(0.78 0.14 70);
+  /*
+   * Dorés plus foncés pour du texte ou des icônes sur fond CLAIR (le doré de base est trop pâle :
+   * contraste 2:1 sur blanc, il faut au moins 3:1 pour un grand texte et 4,5:1 pour un petit).
+   *   --gold-ink        3,7:1 sur blanc : grands chiffres, étoiles, icônes
+   *   --gold-ink-small  5:1 sur blanc   : petit texte
+   */
+  --gold-ink: oklch(0.62 0.13 68);
+  --gold-ink-small: oklch(0.55 0.12 66);
+}
+
+/* ---------- Logo qui vole ---------- */
+
+/* Au repos, le logo est dans le hero. Dès que la page défile, il passe en position fixe. */
+.logo-flyer {
+  position: absolute;
+  inset: 0;
+  display: block;
+  border-radius: 9999px;
+  transform-origin: center;
+}
+
+.logo-flyer[data-flying] {
+  position: fixed;
+  inset: 0 auto auto 0;
+  width: var(--logo-size);
+  height: var(--logo-size);
+  z-index: 60;
+  will-change: transform;
+}
+
+.logo-flyer__inner {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/*
+ * Pendant le vol, le logo à texte blanc (sur la photo) se fond en logo à texte marine (sur
+ * l'en-tête blanc), de 55 % à 88 % du trajet. --swap : 0 = version blanche, 1 = version marine.
+ */
+.logo-flyer {
+  --swap: clamp(0, calc((var(--flight, 0) - 0.55) * 3), 1);
+}
+
+.logo-flyer__img--sombre {
+  opacity: calc(1 - var(--swap));
+}
+
+.logo-flyer__img--clair {
+  opacity: var(--swap);
+}
+
+/* Anneau de la « petite explosion » à l'arrivée. */
+.logo-flyer__ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  border: 14px solid oklch(0.78 0.14 70 / 0.9);
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes logo-pop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.3);
+  }
+  70% {
+    transform: scale(0.94);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes logo-ring {
+  from {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  to {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .logo-flyer[data-docked] .logo-flyer__inner {
+    animation: logo-pop 440ms cubic-bezier(0.3, 1.6, 0.5, 1) both;
+  }
+
+  .logo-flyer[data-docked] .logo-flyer__ring {
+    animation: logo-ring 650ms ease-out both;
+  }
+}
+
+/* ---------- En-tête : apparaît pendant le vol du logo (de 40 % à 80 % du trajet) ---------- */
+
+.v2-header {
+  --show: clamp(0, calc((var(--flight, 0) - 0.4) * 2.5), 1);
+  visibility: hidden;
+}
+
+html[data-flight-on] .v2-header {
+  visibility: visible;
+}
+
+/* Pages intérieures : l'en-tête est toujours là (pas de logo qui vole). */
+.v2-header--solid {
+  --show: 1;
+  visibility: visible;
+}
+
+.v2-header__bar {
+  opacity: var(--show);
+  transform: translateY(calc((1 - var(--show)) * -100%));
+}
+
+.v2-header__content {
+  opacity: var(--show);
+}
+
+/*
+ * Bouton du menu des petits écrans : blanc (avec une ombre) tant qu'il est sur la photo du hero,
+ * marine dès que l'en-tête blanc est là ou que le panneau blanc est ouvert.
+ */
+.v2-burger {
+  color: #fff;
+  filter: drop-shadow(0 2px 10px rgb(0 0 0 / 0.65));
+  transition: color 200ms ease;
+}
+
+html[data-flight-on] .v2-burger,
+.v2-burger[data-solid],
+.v2-burger[data-open] {
+  color: var(--navy);
+  filter: none;
+}
+
+/* Liens du menu : un filet doré qui se déploie au survol. */
+.v2-nav-link {
+  position: relative;
+  padding-block: 0.6rem;
+}
+
+.v2-nav-link::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0.2rem;
+  height: 1px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 300ms ease;
+}
+
+.v2-nav-link:hover::after,
+.v2-nav-link:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* ---------- Invitation à défiler ---------- */
+
+@keyframes scroll-cue {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translateY(0.5rem);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .v2-scroll-cue {
+    animation: scroll-cue 2.4s ease-in-out infinite;
+  }
+}
+
+/* ---------- Histoire : bandes coupées en biais (home-histoire.tsx) ----------
+ *
+ * Chaque bande a deux moitiés, image et texte, taillées dans le même rectangle par une coupe en
+ * biais (dessin du client). Écran large : la coupe va de --seam-top (haut) à --seam-bottom (bas).
+ * Les bandes alternent « / » (image à gauche) et « \ » (image à droite) avec les MÊMES positions
+ * aux deux bouts : le bas de la coupe d'une bande retombe pile sous le haut de la suivante, ce qui
+ * dessine un zigzag continu. Téléphone et tablette : image au-dessus, texte en dessous, coupe
+ * légèrement inclinée. --dir vaut 1 (image à gauche) ou -1 (image à droite).
+ * La bande est un « container » : les visuels se dimensionnent sur sa largeur (unités cqw).
+ */
+
+.histoire-band {
+  --dir: 1;
+  --cut: 2.2rem;
+  --seam-top: 60%;
+  --seam-bottom: 38%;
+  display: grid;
+  overflow: hidden;
+  container-type: inline-size;
+  background: var(--cream);
+  view-timeline: --histoire-band block;
+}
+
+.histoire-band[data-side="right"] {
+  --dir: -1;
+  --seam-top: 38%;
+  --seam-bottom: 60%;
+}
+
+.histoire-slab {
+  position: relative;
+  grid-column: 1;
+}
+
+.histoire-slab--image {
+  grid-row: 1;
+  display: grid;
+  place-items: center;
+  min-height: 22rem;
+  padding: 2.5rem 1.25rem calc(var(--cut) + 2rem);
+  background: var(--cream);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--cut)), 0 100%);
+}
+
+.histoire-slab--text {
+  grid-row: 2;
+  margin-top: calc(var(--cut) * -1);
+  padding: calc(var(--cut) + 2.25rem) 1.5rem 2.75rem;
+  background: var(--navy);
+  clip-path: polygon(0 var(--cut), 100% 0, 100% 100%, 0 100%);
+}
+
+.histoire-visual {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+
+/* Photo qui remplit toute l'image de la bande. */
+.histoire-visual--full {
+  position: absolute;
+  inset: 0;
+}
+
+.histoire-copy {
+  max-width: 34rem;
+}
+
+.histoire-portrait {
+  transform: rotate(-2.5deg);
+}
+
+@media (min-width: 64rem) {
+  /* Hauteur d'une bande : fine. Les visuels se dimensionnent dessus (--band-h). */
+  .histoire-band {
+    --band-h: 24rem;
+    min-height: var(--band-h);
+  }
+
+  .histoire-slab--image,
+  .histoire-slab--text {
+    grid-row: 1;
+    margin: 0;
+    min-height: 0;
+  }
+
+  /* Image à gauche : image dans le coin haut-gauche de la coupe, texte à droite. */
+  .histoire-slab--image {
+    display: block;
+    padding: 0;
+    clip-path: polygon(0 0, var(--seam-top) 0, var(--seam-bottom) 100%, 0 100%);
+  }
+
+  .histoire-slab--text {
+    display: flex;
+    align-items: center;
+    padding: 2rem 5% 2rem 62%;
+    clip-path: polygon(var(--seam-top) 0, 100% 0, 100% 100%, var(--seam-bottom) 100%);
+  }
+
+  /*
+   * Le visuel est centré sur la moitié de la bande, au milieu de la surface que la coupe laisse
+   * à l'image (la coupe passe à 49 % à mi-hauteur, donc le centre visible est à 25 %).
+   */
+  .histoire-visual {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 50%;
+  }
+
+  /* La photo occupe seulement la partie haute de la coupe (60 % de large), pas toute la bande. */
+  .histoire-visual--full {
+    inset: 0 auto 0 0;
+    width: 60%;
+    display: block;
+  }
+
+  /* Image à droite : tout est inversé, mais la coupe garde les mêmes positions (voir --seam-*). */
+  .histoire-band[data-side="right"] .histoire-slab--image {
+    clip-path: polygon(var(--seam-top) 0, 100% 0, 100% 100%, var(--seam-bottom) 100%);
+  }
+
+  .histoire-band[data-side="right"] .histoire-slab--text {
+    padding: 2rem 62% 2rem 5%;
+    clip-path: polygon(0 0, var(--seam-top) 0, var(--seam-bottom) 100%, 0 100%);
+  }
+
+  .histoire-band[data-side="right"] .histoire-visual {
+    inset: 0 0 0 auto;
+  }
+
+  .histoire-band[data-side="right"] .histoire-visual--full {
+    inset: 0 0 0 auto;
+  }
+}
+
+@keyframes histoire-slide-image {
+  from {
+    opacity: 0;
+    transform: translateX(calc(var(--dir) * -32%));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes histoire-slide-text {
+  from {
+    opacity: 0;
+    transform: translateX(calc(var(--dir) * 32%));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes histoire-portrait-in {
+  from {
+    opacity: 0;
+    transform: translateY(1.75rem) rotate(-7deg) scale(1.1);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(-2.5deg);
+  }
+}
+
+@keyframes histoire-dot-ring {
+  from {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  to {
+    transform: scale(3.4);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .histoire-dot-ring {
+    animation: histoire-dot-ring 2.4s ease-out infinite;
+  }
+
+  /*
+   * Piloté par le défilement (sans JS) : les deux moitiés arrivent chacune de leur côté et se
+   * rejoignent sur la coupe, puis la photo du tailleur de pierre se pose sur la Sardaigne.
+   * Sans support du navigateur, les bandes s'affichent simplement assemblées.
+   *
+   * Quand l'animation se joue (elle partait trop tôt, dès les premiers pixels de la bande) :
+   *   - ordinateur : « contain » = la bande est ENTIÈREMENT à l'écran. Elle démarre à cet instant
+   *     et dure 40 % de la marge qui reste (hauteur de l'écran moins hauteur de la bande) ;
+   *   - téléphone / tablette : une bande empilée est presque aussi haute que l'écran et ne tient
+   *     jamais en entier : on attend donc que 55 % de la bande soit visible (« entry 55 % »), et
+   *     l'animation se termine à son arrivée complète (« entry 100 % »).
+   * Pour retarder ou avancer encore : changer les pourcentages ci-dessous.
+   */
+  @supports (animation-timeline: view()) {
+    .histoire-slab,
+    .histoire-portrait {
+      animation-fill-mode: both;
+      animation-timing-function: ease-out;
+      animation-timeline: --histoire-band;
+    }
+
+    .histoire-slab--image {
+      animation-name: histoire-slide-image;
+      animation-range: entry 55% entry 100%;
+    }
+
+    .histoire-slab--text {
+      animation-name: histoire-slide-text;
+      animation-range: entry 55% entry 100%;
+    }
+
+    .histoire-portrait {
+      animation-name: histoire-portrait-in;
+      animation-range: entry 80% entry 105%;
+    }
+
+    @media (min-width: 64rem) {
+      .histoire-slab--image,
+      .histoire-slab--text {
+        animation-range: contain 0% contain 40%;
+      }
+
+      .histoire-portrait {
+        animation-range: contain 30% contain 58%;
+      }
+    }
+  }
+}
+
+/* ---------- Relief doré ---------- */
+
+/*
+ * Réglage unique de l'ombre dorée : pour l'alléger ou la renforcer, changer l'opacité (le dernier
+ * nombre, 0.32) ici. Elle était à 0.6 (jugée trop chargée), puis ramenée à 0.32.
+ */
+:root {
+  --gold-glow: 0 12px 30px -16px oklch(0.78 0.14 70 / 0.32);
+  --gold-glow-up: 0 -12px 30px -16px oklch(0.78 0.14 70 / 0.32);
+}
+
+/*
+ * Sections crème : une ombre dorée qui retombe sur la section suivante, pour donner du volume.
+ * `z-index` : sans lui, la section suivante recouvrirait l'ombre.
+ */
+.v2-relief {
+  position: relative;
+  z-index: 10;
+  box-shadow: var(--gold-glow);
+}
+
+/*
+ * Variante pour une section crème posée sur une section BLANCHE : l'ombre dorée retombe aussi vers
+ * le haut (sur la section qui précède), pas seulement vers le bas. Utilisée pour « Notre histoire »
+ * et « Zone d'intervention ».
+ */
+.v2-relief--haut {
+  box-shadow: var(--gold-glow), var(--gold-glow-up);
+}
+
+/*
+ * Variante pour une section crème suivie d'une autre section crème (bandeau de réassurance, puis
+ * introduction) : elle doit passer au-dessus de la suivante, sinon celle-ci recouvre son ombre.
+ */
+.v2-relief--devant {
+  z-index: 20;
+}
+
+/* ---------- Formulaire de devis en doré ---------- */
+
+/*
+ * Le formulaire du site actuel utilise le bleu (focus, choix sélectionné, case à cocher) et le
+ * rouge (progression, boutons, erreurs). Sur la refonte : l'or remplace le bleu ici, et le
+ * composant passe lui-même sa progression en or et ses boutons en blanc cernés d'or (accent="gold"). Les erreurs
+ * restent rouges, c'est leur rôle. Le doré du focus est un peu plus sombre pour rester bien visible.
+ */
+.v2-or {
+  --blue: oklch(0.6 0.13 68);
+  --sky: oklch(0.965 0.045 85);
+}
+
+.v2-devis .font-display {
+  font-weight: 500;
+}

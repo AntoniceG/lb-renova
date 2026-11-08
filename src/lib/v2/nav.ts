@@ -1,4 +1,9 @@
+import { env } from "@/config/env";
 import { publishedArticles } from "./articles";
+import { AVIS } from "./avis";
+
+/** Même règle que la section Avis : en production, elle disparaît tant qu'un avis est fictif. */
+const avisVisibles = !(env.isProduction && AVIS.some((avis) => avis.fictif));
 
 export interface V2NavLink {
   label: string;
@@ -6,21 +11,18 @@ export interface V2NavLink {
 }
 
 /**
- * Menu de la refonte. Les liens pointent vers des ancres de la page d'accueil V2, avec `/v2` devant
- * pour qu'ils marchent aussi depuis les autres pages. « Articles » n'apparaît que s'il y a au moins
- * un article publiable (en production, les brouillons ne comptent pas).
+ * Menu du site. Les liens vers les sections de la page d'accueil commencent par `/#` pour marcher
+ * aussi depuis les autres pages. « Articles » n'apparaît que s'il y a au moins un article publiable
+ * (en production, les brouillons ne comptent pas).
  */
 export const V2_NAV: readonly V2NavLink[] = [
-  { label: "Expertises", href: "/v2#expertises" },
-  { label: "Réalisations", href: "/v2/realisations" },
-  { label: "Notre histoire", href: "/v2#histoire" },
-  { label: "Avis", href: "/v2#avis" },
-  ...(publishedArticles().length > 0 ? [{ label: "Articles", href: "/v2/articles" }] : []),
-  { label: "Secteur", href: "/v2#zone" },
+  { label: "Expertises", href: "/#expertises" },
+  { label: "Réalisations", href: "/realisations" },
+  { label: "Notre histoire", href: "/#histoire" },
+  ...(avisVisibles ? [{ label: "Avis", href: "/#avis" }] : []),
+  ...(publishedArticles().length > 0 ? [{ label: "Articles", href: "/articles" }] : []),
+  { label: "Secteur", href: "/#zone" },
 ];
 
-/**
- * Page du formulaire de devis de la refonte (même formulaire que le site actuel, habillé en doré).
- * À la migration, la page devient `/devis` : remettre cette constante à "/devis".
- */
-export const V2_QUOTE_HREF = "/v2/devis";
+/** Page du formulaire de devis (tous les boutons « Devis gratuit » y mènent). */
+export const V2_QUOTE_HREF = "/devis";

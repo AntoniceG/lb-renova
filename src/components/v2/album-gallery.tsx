@@ -1,9 +1,9 @@
 "use client";
 
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
-import Image from "next/image";
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import type { Photo } from "@/lib/v2/realisations";
+import { PhotoImage } from "./photo-image";
 
 interface AlbumGalleryProps {
   photos: readonly Photo[];
@@ -48,13 +48,12 @@ export function AlbumGallery({ photos, album }: AlbumGalleryProps) {
               aria-label={`Agrandir la photo ${index + 1} sur ${total} : ${item.alt}`}
               className="group block w-full overflow-hidden bg-navy/5 focus-visible:outline-blue"
             >
-              <Image
-                src={item.src}
-                alt={item.alt}
-                width={item.width}
-                height={item.height}
+              <PhotoImage
+                photo={item}
                 sizes="(max-width: 768px) 50vw, (max-width: 1280px) 33vw, 380px"
-                className="h-auto w-full transition-transform duration-700 group-hover:scale-[1.04]"
+                // Les premières vignettes sont visibles dès l'ouverture : pas de chargement différé.
+                loading={index < 4 ? "eager" : "lazy"}
+                className="block h-auto w-full transition-transform duration-700 group-hover:scale-[1.04]"
               />
             </button>
           </li>
@@ -83,14 +82,11 @@ export function AlbumGallery({ photos, album }: AlbumGalleryProps) {
               <X aria-hidden className="size-8" />
             </button>
 
-            <Image
+            <PhotoImage
               key={photo.src}
-              src={photo.src}
-              alt={photo.alt}
-              width={photo.width}
-              height={photo.height}
+              photo={photo}
               sizes="100vw"
-              className="max-h-[78svh] w-auto max-w-full object-contain"
+              className="block max-h-[78svh] w-auto max-w-full object-contain"
             />
 
             <p className="text-center text-sm text-white/80" aria-live="polite">
