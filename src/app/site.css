@@ -138,6 +138,41 @@ html[data-flight-on] .v2-header {
 }
 
 /*
+ * Halo qui « respire » autour d'un bouton (bouton « Devis gratuit » de l'en-tête), comme l'anneau du
+ * point rouge de Pise : un anneau doré part du bouton, grandit et s'efface, en boucle toutes les
+ * 2,4 s. Sur une pastille allongée, un agrandissement la déformerait : l'anneau est donc une ombre
+ * dont l'épaisseur grandit (16 px), régulière tout autour. Le halo est un élément à part (::after),
+ * transparent et insensible au clic : il ne touche ni à l'ombre ni aux clics du bouton.
+ * Aucun mouvement si le visiteur a demandé de réduire les animations.
+ */
+@keyframes v2-halo {
+  from {
+    box-shadow: 0 0 0 0 oklch(0.78 0.14 70 / 0.7);
+  }
+  to {
+    box-shadow: 0 0 0 16px oklch(0.78 0.14 70 / 0);
+  }
+}
+
+.v2-halo {
+  position: relative;
+}
+
+.v2-halo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .v2-halo::after {
+    animation: v2-halo 2.4s ease-out infinite;
+  }
+}
+
+/*
  * Bouton du menu des petits écrans : blanc (avec une ombre) tant qu'il est sur la photo du hero,
  * marine dès que l'en-tête blanc est là ou que le panneau blanc est ouvert.
  */

@@ -93,7 +93,10 @@ export function V2Header({ variant = "home" }: V2HeaderProps) {
               <Phone aria-hidden className="size-4" />
               <span className="hidden sm:inline lg:hidden xl:inline">{contact.phone.display}</span>
             </a>
-            <Link href={V2_QUOTE_HREF} className={v2Button({ tone: "navy", size: "compact" })}>
+            <Link
+              href={V2_QUOTE_HREF}
+              className={cn(v2Button({ tone: "navy", size: "compact" }), "v2-halo")}
+            >
               {nav.quoteLabel}
             </Link>
           </div>
