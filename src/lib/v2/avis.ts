@@ -17,8 +17,8 @@ export interface Avis {
  * attendant de vrais témoignages. Garde-fous :
  *   - à la demande du client, aucun bandeau ne l'indique plus sur la page d'aperçu : le seul
  *     rempart est donc le suivant ;
- *   - en production (SITE_ENV=production), la section ne s'affiche pas du tout dès qu'un seul avis
- *     est encore fictif : de faux témoignages ne peuvent pas partir en ligne ;
+ *   - sur le site publié (SITE_ENV=production, ou déploiement de production Vercel), la section ne
+ *     s'affiche pas du tout dès qu'un seul avis est encore fictif : de faux témoignages ne peuvent pas partir en ligne ;
  *   - aucune donnée structurée (étoiles dans Google) n'est générée à partir d'eux.
  * Pour passer aux vrais avis : remplacer le contenu de ce tableau (prénom, texte, note, lieu, chantier)
  * et mettre `fictif: false`.

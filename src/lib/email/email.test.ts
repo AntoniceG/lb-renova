@@ -32,6 +32,25 @@ const data: LeadEmailData = {
 };
 
 describe("emails", () => {
+  it("affiche le logo : image jointe en ligne, citée par son identifiant", () => {
+    for (const email of [
+      renderConfirmationEmail(brand, data),
+      renderNotificationEmail(brand, data),
+    ]) {
+      const [logo] = email.inlineImages;
+      expect(email.inlineImages).toHaveLength(1);
+      expect(logo?.contentId).toBe("logo-lb-renova");
+      expect(email.html).toContain(`src="cid:${logo?.contentId}"`);
+      expect(email.html).toContain(`alt="${brand.name}"`);
+      // un vrai PNG (signature des 8 premiers octets), pas un fichier vide
+      expect(
+        Buffer.from(logo?.base64 ?? "", "base64")
+          .subarray(0, 4)
+          .toString("hex"),
+      ).toBe("89504e47");
+    }
+  });
+
   it("échappe tout le contenu saisi par le visiteur", () => {
     const confirmation = renderConfirmationEmail(brand, data).html;
     const notification = renderNotificationEmail(brand, data).html;

@@ -1,3 +1,5 @@
+import { EMAIL_LOGO_BASE64 } from "./logo";
+
 export interface EmailBrand {
   name: string;
   /** Délai de rappel promis, ex. « sous 48 h » ; `null` tant qu'il n'est pas défini. */
@@ -24,11 +26,32 @@ export interface LeadEmailData {
   referrer?: string;
 }
 
+/** Image jointe EN LIGNE (affichée dans le corps du message, via `<img src="cid:…">`). */
+export interface InlineImage {
+  filename: string;
+  /** Contenu du fichier, en base64. */
+  base64: string;
+  /** Identifiant cité par le message : `<img src="cid:logo-lb-renova">`. */
+  contentId: string;
+}
+
 export interface RenderedEmail {
   subject: string;
   html: string;
   text: string;
+  inlineImages: InlineImage[];
 }
+
+/**
+ * Le logo est joint au message plutôt que lié depuis le site : il s'affiche même quand la messagerie
+ * bloque les images distantes, et pendant les essais, quand le site n'est pas encore en ligne.
+ */
+const LOGO_CID = "logo-lb-renova";
+const LOGO_IMAGE: InlineImage = {
+  filename: "logo-lb-renova.png",
+  base64: EMAIL_LOGO_BASE64,
+  contentId: LOGO_CID,
+};
 
 const NAVY = "#1a2a5e";
 const RED = "#c8312a";
@@ -68,7 +91,7 @@ function layout(brand: EmailBrand, title: string, bodyHtml: string): string {
 <body style="margin:0;background:#f3f5fa;font-family:Arial,Helvetica,sans-serif;color:${INK};">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f3f5fa;padding:24px 12px;"><tr><td align="center">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background:#ffffff;border-radius:12px;overflow:hidden;">
-<tr><td style="background:${NAVY};padding:20px 28px;color:#ffffff;font-size:20px;font-weight:bold;">${escapeHtml(brand.name)}<div style="height:3px;width:56px;background:${RED};margin-top:10px;"></div></td></tr>
+<tr><td align="center" style="background:${NAVY};padding:24px 28px 20px;color:#ffffff;font-size:20px;font-weight:bold;"><img src="cid:${LOGO_CID}" width="120" height="120" alt="${escapeHtml(brand.name)}" style="display:block;border:0;outline:none;text-decoration:none;color:#ffffff;font-size:20px;font-weight:bold;"><div style="height:3px;width:56px;background:${RED};margin:14px auto 0;"></div></td></tr>
 <tr><td style="padding:28px;font-size:16px;line-height:1.55;">${bodyHtml}</td></tr>
 </table></td></tr></table></body></html>`;
 }
@@ -131,7 +154,7 @@ ${urgent ? `<p style="margin:0 0 12px;">${escapeHtml(urgent)}</p>` : ""}
     .filter((line, index, all) => !(line === "" && all[index - 1] === ""))
     .join("\n");
 
-  return { subject, html, text };
+  return { subject, html, text, inlineImages: [LOGO_IMAGE] };
 }
 
 /** Email de notification interne : toutes les informations utiles pour rappeler le prospect. */
@@ -173,5 +196,5 @@ ${origin.length > 0 ? `<p style="margin:16px 0 0;color:${MUTED};font-size:13px;"
     .filter((line) => line !== "")
     .join("\n");
 
-  return { subject, html, text };
+  return { subject, html, text, inlineImages: [LOGO_IMAGE] };
 }

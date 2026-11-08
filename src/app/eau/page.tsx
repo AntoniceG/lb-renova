@@ -5,7 +5,8 @@ import { env } from "@/config/env";
 import { pageMetadata } from "@/lib/seo";
 
 // Banc d'essai interne pour régler les vagues du hero : jamais montré dans Google, et absent du
-// site en ligne (SITE_ENV=production). Il reste disponible en développement et en aperçu.
+// site publié (SITE_ENV=production ou déploiement de production Vercel). Il reste disponible en
+// développement et dans les aperçus privés.
 export const metadata: Metadata = pageMetadata({
   title: "Banc d'essai — l'eau du port",
   description: "Page de réglage interne.",
@@ -14,6 +15,6 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default function WaterLabPage() {
-  if (env.isProduction) notFound();
+  if (env.isPublicDeployment) notFound();
   return <WaterLab />;
 }

@@ -8,7 +8,9 @@
 //   icon.png                                  192 x 192 : l'icône de l'onglet du navigateur (légère : le
 //                                             navigateur la télécharge pendant le chargement de la page)
 //   apple-icon.png                            180 x 180 : l'icône sur l'écran d'accueil d'un iPhone
+//   src/lib/email/logo.ts                      le logo (PNG 240 px, texte blanc) intégré aux e-mails, en base64
 // À relancer si le logo ou la photo du port change.
+import { writeFileSync } from "node:fs";
 import sharp from "sharp";
 
 const LARGEUR = 1200;
@@ -54,5 +56,21 @@ async function icone(taille, marge, arrondi, sortie) {
 }
 await icone(192, 14, 44, "src/app/icon.png");
 await icone(180, 14, 0, "src/app/apple-icon.png");
+
+// --- E-mails : le logo à texte blanc (sur le bandeau marine), joint en ligne à chaque message.
+// Un PNG (le WebP n'est pas lu partout, Outlook notamment), léger : 240 px pour un affichage à 120 px.
+const logoEmail = await sharp("public/v2/logo-v2.webp")
+  .resize(240, 240)
+  .png({ compressionLevel: 9, palette: true, quality: 90 })
+  .toBuffer();
+writeFileSync(
+  "src/lib/email/logo.ts",
+  `// Généré par design-v2/preparer-les-icones.mjs : ne pas modifier à la main.
+// Logo (PNG 240 x 240, texte blanc, fond transparent) joint en ligne aux e-mails.
+export const EMAIL_LOGO_BASE64 =
+  "${logoEmail.toString("base64")}";
+`,
+);
+console.log(`Logo des e-mails : ${Math.round(logoEmail.length / 1024)} Ko.`);
 
 console.log("Image de partage (public/partage.jpg) et icônes (src/app/) produites.");

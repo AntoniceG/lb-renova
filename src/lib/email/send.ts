@@ -20,6 +20,11 @@ export async function sendEmail(to: string, email: RenderedEmail): Promise<void>
     subject: email.subject,
     html: email.html,
     text: email.text,
+    attachments: email.inlineImages.map((image) => ({
+      filename: image.filename,
+      content: Buffer.from(image.base64, "base64"),
+      contentId: image.contentId,
+    })),
   });
   if (error) throw new Error(`Resend : ${error.message}`);
 }

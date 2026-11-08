@@ -77,12 +77,12 @@ function Card({ avis, featured }: { avis: Avis; featured: boolean }) {
 
 /**
  * Avis clients : une grande carte, quatre petites. Sur téléphone, les cartes défilent côte à côte.
- * Tant qu'un avis est fictif (voir lib/v2/avis.ts), la section disparaît en production plutôt
+ * Tant qu'un avis est fictif (voir lib/v2/avis.ts), la section disparaît sur le site publié plutôt
  * que d'afficher de faux témoignages. Hors production, rien ne le signale à l'écran.
  */
 export function HomeAvis() {
   const provisoire = AVIS.some((avis) => avis.fictif);
-  if (provisoire && env.isProduction) return null;
+  if (provisoire && env.isPublicDeployment) return null;
 
   return (
     <section id="avis" aria-labelledby="avis-title" className="bg-white py-20 md:py-28">

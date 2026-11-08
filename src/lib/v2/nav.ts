@@ -2,8 +2,8 @@ import { env } from "@/config/env";
 import { publishedArticles } from "./articles";
 import { AVIS } from "./avis";
 
-/** Même règle que la section Avis : en production, elle disparaît tant qu'un avis est fictif. */
-const avisVisibles = !(env.isProduction && AVIS.some((avis) => avis.fictif));
+/** Même règle que la section Avis : sur le site publié, elle disparaît tant qu'un avis est fictif. */
+const avisVisibles = !(env.isPublicDeployment && AVIS.some((avis) => avis.fictif));
 
 export interface V2NavLink {
   label: string;
