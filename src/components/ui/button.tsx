@@ -12,7 +12,7 @@ const buttonVariants = cva(
         cta: "bg-red text-white shadow-cta hover:bg-red-hover",
         // Refonte V2 : bouton blanc, cerné d'un filet et d'une ombre dorés pour ressortir sur fond blanc.
         white:
-          "border border-[oklch(0.78_0.14_70)] bg-white text-navy-deep shadow-[0_14px_32px_-12px_oklch(0.78_0.14_70/0.75)] hover:bg-[oklch(0.98_0.03_85)]",
+          "border border-[oklch(0.78_0.14_70)] bg-white text-navy-deep shadow-[0_10px_24px_-14px_oklch(0.78_0.14_70/0.5)] hover:bg-[oklch(0.98_0.03_85)]",
         outline: "border border-line bg-white text-ink hover:border-navy/40 hover:bg-surface",
         ghost: "text-ink hover:bg-surface",
         ghostLight: "border border-white/25 bg-white/5 text-white backdrop-blur hover:bg-white/10",

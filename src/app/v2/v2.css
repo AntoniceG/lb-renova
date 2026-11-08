@@ -376,6 +376,14 @@ html[data-flight-on] .v2-burger,
    * Piloté par le défilement (sans JS) : les deux moitiés arrivent chacune de leur côté et se
    * rejoignent sur la coupe, puis la photo du tailleur de pierre se pose sur la Sardaigne.
    * Sans support du navigateur, les bandes s'affichent simplement assemblées.
+   *
+   * Quand l'animation se joue (elle partait trop tôt, dès les premiers pixels de la bande) :
+   *   - ordinateur : « contain » = la bande est ENTIÈREMENT à l'écran. Elle démarre à cet instant
+   *     et dure 40 % de la marge qui reste (hauteur de l'écran moins hauteur de la bande) ;
+   *   - téléphone / tablette : une bande empilée est presque aussi haute que l'écran et ne tient
+   *     jamais en entier : on attend donc que 55 % de la bande soit visible (« entry 55 % »), et
+   *     l'animation se termine à son arrivée complète (« entry 100 % »).
+   * Pour retarder ou avancer encore : changer les pourcentages ci-dessous.
    */
   @supports (animation-timeline: view()) {
     .histoire-slab,
@@ -387,17 +395,28 @@ html[data-flight-on] .v2-burger,
 
     .histoire-slab--image {
       animation-name: histoire-slide-image;
-      animation-range: cover 0% cover 30%;
+      animation-range: entry 55% entry 100%;
     }
 
     .histoire-slab--text {
       animation-name: histoire-slide-text;
-      animation-range: cover 0% cover 30%;
+      animation-range: entry 55% entry 100%;
     }
 
     .histoire-portrait {
       animation-name: histoire-portrait-in;
-      animation-range: cover 24% cover 42%;
+      animation-range: entry 80% entry 105%;
+    }
+
+    @media (min-width: 64rem) {
+      .histoire-slab--image,
+      .histoire-slab--text {
+        animation-range: contain 0% contain 40%;
+      }
+
+      .histoire-portrait {
+        animation-range: contain 30% contain 58%;
+      }
     }
   }
 }
@@ -405,13 +424,22 @@ html[data-flight-on] .v2-burger,
 /* ---------- Relief doré ---------- */
 
 /*
- * Sections crème : une ombre dorée (celle du bandeau de réassurance) qui retombe sur la section
- * suivante, pour donner du volume. `z-index` : sans lui, la section suivante recouvrirait l'ombre.
+ * Réglage unique de l'ombre dorée : pour l'alléger ou la renforcer, changer l'opacité (le dernier
+ * nombre, 0.32) ici. Elle était à 0.6 (jugée trop chargée), puis ramenée à 0.32.
+ */
+:root {
+  --gold-glow: 0 12px 30px -16px oklch(0.78 0.14 70 / 0.32);
+  --gold-glow-up: 0 -12px 30px -16px oklch(0.78 0.14 70 / 0.32);
+}
+
+/*
+ * Sections crème : une ombre dorée qui retombe sur la section suivante, pour donner du volume.
+ * `z-index` : sans lui, la section suivante recouvrirait l'ombre.
  */
 .v2-relief {
   position: relative;
   z-index: 10;
-  box-shadow: 0 16px 38px -14px oklch(0.78 0.14 70 / 0.6);
+  box-shadow: var(--gold-glow);
 }
 
 /*
@@ -420,9 +448,15 @@ html[data-flight-on] .v2-burger,
  * et « Zone d'intervention ».
  */
 .v2-relief--haut {
-  box-shadow:
-    0 16px 38px -14px oklch(0.78 0.14 70 / 0.6),
-    0 -16px 38px -14px oklch(0.78 0.14 70 / 0.6);
+  box-shadow: var(--gold-glow), var(--gold-glow-up);
+}
+
+/*
+ * Variante pour une section crème suivie d'une autre section crème (bandeau de réassurance, puis
+ * introduction) : elle doit passer au-dessus de la suivante, sinon celle-ci recouvre son ombre.
+ */
+.v2-relief--devant {
+  z-index: 20;
 }
 
 /* ---------- Formulaire de devis en doré ---------- */

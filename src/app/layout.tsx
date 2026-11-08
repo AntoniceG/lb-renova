@@ -39,6 +39,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
       lang="fr"
+      // Le défilement doux (globals.css) est coupé le temps d'un changement de page. Sans cette
+      // marque, Next.js 16 remonte « en douceur » et, depuis le haut d'une page, la nouvelle page
+      // s'ouvrait EN BAS (bouton « Devis gratuit » du hero, logo…).
+      data-scroll-behavior="smooth"
       className={`${display.variable} ${text.variable}`}
       style={brandCssVars(brand.colors)}
     >

@@ -64,8 +64,8 @@ function Card({ avis, featured }: { avis: Avis; featured: boolean }) {
 
 /**
  * Avis clients : une grande carte, quatre petites. Sur téléphone, les cartes défilent côte à côte.
- * Tant que les avis sont fictifs (voir lib/v2/avis.ts), un bandeau le dit ; en production, la
- * section disparaît plutôt que d'afficher de faux témoignages.
+ * Tant qu'un avis est fictif (voir lib/v2/avis.ts), la section disparaît en production plutôt
+ * que d'afficher de faux témoignages. Hors production, rien ne le signale à l'écran.
  */
 export function HomeAvis() {
   const provisoire = AVIS.some((avis) => avis.fictif);
@@ -85,13 +85,6 @@ export function HomeAvis() {
             Ils nous ont fait <em className="text-blue">confiance</em>
           </h2>
         </div>
-
-        {provisoire && (
-          <p className="mx-auto mt-8 max-w-xl border border-dashed border-red/60 bg-red/5 px-4 py-3 text-center text-sm text-red-ink">
-            Avis fictifs, pour la mise en page uniquement : à remplacer par de vrais avis avant la
-            mise en ligne.
-          </p>
-        )}
 
         <ul
           aria-label="Avis de nos clients"

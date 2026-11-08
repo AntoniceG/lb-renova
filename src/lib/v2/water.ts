@@ -23,10 +23,12 @@ export interface WaterParams {
   showMask: boolean;
 }
 
+// Réglages choisis par le client sur la page d'essai (/v2/eau) : hauteur 3 (le maximum du
+// curseur), vitesse 1,30, finesse 2. Avant : 1,5 / 1,2 / 1.
 export const DEFAULT_WATER_PARAMS: WaterParams = {
-  amplitude: 1.5,
-  speed: 1.2,
-  fineness: 1,
+  amplitude: 3,
+  speed: 1.3,
+  fineness: 2,
   pointer: 1,
   focusY: 0.75,
   showMask: false,

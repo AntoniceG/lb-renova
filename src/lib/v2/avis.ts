@@ -15,8 +15,10 @@ export interface Avis {
  *
  * Ces cinq avis sont inventés (prénoms et textes d'exemple) pour pouvoir dessiner la section en
  * attendant de vrais témoignages. Garde-fous :
- *   - la section affiche un bandeau « avis fictifs » tant qu'il en reste ;
- *   - en production (SITE_ENV=production), la section ne s'affiche pas du tout si tous sont fictifs ;
+ *   - à la demande du client, aucun bandeau ne l'indique plus sur la page d'aperçu : le seul
+ *     rempart est donc le suivant ;
+ *   - en production (SITE_ENV=production), la section ne s'affiche pas du tout dès qu'un seul avis
+ *     est encore fictif : de faux témoignages ne peuvent pas partir en ligne ;
  *   - aucune donnée structurée (étoiles dans Google) n'est générée à partir d'eux.
  * Pour passer aux vrais avis : remplacer le contenu de ce tableau (prénom, texte, note, lieu, chantier)
  * et mettre `fictif: false`.
