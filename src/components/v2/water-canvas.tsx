@@ -83,7 +83,9 @@ export function WaterCanvas({ params, className, onFps }: WaterCanvasProps) {
     fill: true,
     sizes: "100vw",
     loading: "eager" as const,
-    fetchPriority: "high" as const,
+    // Priorité normale : c'est le logo (plus petit, mais c'est lui le plus grand élément « utile »
+    // du premier écran) qui doit recevoir la bande passante en premier, pas la photo de fond.
+    fetchPriority: "auto" as const,
     style: { objectFit: "cover" as const, objectPosition: `50% ${params.focusY * 100}%` },
   };
   const wide = getImageProps({ ...common, src: PORT_LANDSCAPE.image }).props;

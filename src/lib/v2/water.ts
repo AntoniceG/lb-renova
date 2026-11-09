@@ -172,7 +172,12 @@ function loadImage(url: string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
     const image = new Image();
     image.decoding = "async";
-    image.onload = () => resolve(image);
+    // On attend le décodage de l'image HORS du fil principal : sans cela, `texImage2D` la décode
+    // d'un bloc au moment du téléversement, ce qui fige la page (surtout sur téléphone).
+    image.onload = () => {
+      const decoded = typeof image.decode === "function" ? image.decode() : Promise.resolve();
+      decoded.catch(() => undefined).then(() => resolve(image));
+    };
     image.onerror = () => reject(new Error(`Image introuvable : ${url}`));
     image.src = url;
   });
