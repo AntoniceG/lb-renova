@@ -94,6 +94,25 @@ describe("articles", () => {
       expect(article.description.length).toBeLessThanOrEqual(155);
     },
   );
+
+  it.each(publishedArticles().map((a) => [a.slug, a] as const))(
+    "%s : titre dans la limite, FAQ complète, aucun prix",
+    (_slug, article) => {
+      expect(`${article.title} | LB Rénova`.length).toBeLessThanOrEqual(60);
+      for (const { question, reponse } of article.faq ?? []) {
+        expect(question.endsWith("?")).toBe(true);
+        expect(reponse.length).toBeGreaterThan(40);
+      }
+      const text = JSON.stringify(article).toLowerCase();
+      expect(text).not.toMatch(/\d\s?(€|euros?)/);
+      expect(text).not.toMatch(/maprimerenov|prime renov|éco-ptz|aide de l'état/);
+    },
+  );
+
+  it("les slugs sont uniques", () => {
+    const slugs = publishedArticles().map((a) => a.slug);
+    expect(new Set(slugs).size).toBe(slugs.length);
+  });
 });
 
 describe("sitemap", () => {

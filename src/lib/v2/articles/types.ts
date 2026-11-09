@@ -35,4 +35,9 @@ export interface Article {
    */
   draft: boolean;
   blocks: readonly ArticleBlock[];
+  /**
+   * Questions fréquentes en fin d'article (2 à 4). Affichées sur la page ET balisées pour Google :
+   * réponses courtes et directes, sans prix ni chiffre inventé.
+   */
+  faq?: readonly { question: string; reponse: string }[];
 }

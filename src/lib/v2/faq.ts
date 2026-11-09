@@ -18,6 +18,10 @@ const villes = [...ZONE.principales, ...ZONE.autres];
  */
 export const FAQ: readonly Question[] = [
   {
+    question: "Qui est LB Rénova ?",
+    reponse: `${siteConfig.brand.name} est une entreprise familiale de rénovation qui intervient à ${villes.slice(0, -1).join(", ")} et ${villes.at(-1)}. Le savoir-faire de la famille remonte à ${siteConfig.story.since} : un grand-père venu d'Italie, tailleur de pierre, dont les petits-enfants, maçons, travaillent aujourd'hui dans l'entreprise.`,
+  },
+  {
     question: "Le devis est-il gratuit ?",
     reponse: `Oui, le devis est gratuit. Décrivez votre projet en quelques étapes sur la page devis : nous vous rappelons ${callbackDelay}.`,
   },
@@ -29,6 +33,11 @@ export const FAQ: readonly Question[] = [
   {
     question: "Quels métiers pouvez-vous réunir sur un même chantier ?",
     reponse: `${metiers.slice(0, -1).join(", ")} et ${metiers.at(-1)}. Un projet peut mêler plusieurs de ces métiers : c'est justement l'intérêt d'avoir un seul interlocuteur.`,
+  },
+  {
+    question: "Combien coûte une rénovation ?",
+    reponse:
+      "Le prix dépend de la surface, de l'état du logement et des métiers concernés : aucun chiffre sérieux ne peut être donné sans avoir vu le chantier. Le devis est gratuit ; décrivez votre projet et nous revenons vers vous pour en parler.",
   },
   {
     question: "Où intervenez-vous ?",

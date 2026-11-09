@@ -3,6 +3,7 @@ import { absoluteUrl } from "@/lib/seo";
 import { publishedArticles } from "@/lib/v2/articles";
 import { PILIER_SLUGS } from "@/lib/v2/piliers";
 import { ALBUMS } from "@/lib/v2/realisations";
+import { publishedVilles } from "@/lib/v2/villes";
 
 /**
  * Plan du site pour Google (`/sitemap.xml`). Il se met à jour tout seul : un nouvel article ou un
@@ -21,6 +22,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     page("/", 1),
     ...PILIER_SLUGS.map((slug) => page(`/${slug}`, 0.9)),
     page("/devis", 0.8),
+    ...publishedVilles().map(({ slug }) => page(`/zones/${slug}`, 0.7)),
     page("/realisations", 0.7),
     ...ALBUMS.map(({ slug }) => page(`/realisations/${slug}`, 0.5)),
     ...(publishedArticles().length > 0 ? [page("/articles", 0.6)] : []),

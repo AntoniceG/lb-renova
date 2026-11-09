@@ -8,6 +8,7 @@ import { notFound } from "next/navigation";
 import { ArticleBody } from "@/components/v2/article-body";
 import { v2Button } from "@/components/v2/button-styles";
 import { HomeCta } from "@/components/v2/home-cta";
+import { HomeFaq } from "@/components/v2/home-faq";
 import { V2PageShell } from "@/components/v2/v2-page-shell";
 import { siteConfig } from "@/config/site.config";
 import { formatDate, getArticle, publishedArticles, readingMinutes } from "@/lib/v2/articles";
@@ -152,6 +153,18 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           </div>
         </div>
       </article>
+
+      {article.faq && article.faq.length > 0 && (
+        <HomeFaq
+          eyebrow="Questions fréquentes"
+          title={
+            <>
+              Sur ce <em className="text-blue">sujet</em>
+            </>
+          }
+          items={article.faq}
+        />
+      )}
 
       {autres.length > 0 && (
         <section aria-labelledby="lire-aussi" className="v2-relief bg-(--cream) py-14 md:py-20">

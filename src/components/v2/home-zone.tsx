@@ -1,8 +1,20 @@
 import { V2_QUOTE_HREF } from "@/lib/v2/nav";
 import Link from "next/link";
 import { siteConfig } from "@/config/site.config";
+import { villeHref } from "@/lib/v2/villes";
 import { ZONE } from "@/lib/v2/zone";
 import { v2Button } from "./button-styles";
+
+/** Le nom d'une ville, en lien vers sa page quand elle est publiée (jamais de lien mort). */
+function VilleLink({ name }: { name: string }) {
+  const href = villeHref(name);
+  if (!href) return <>{name}</>;
+  return (
+    <Link href={href} className="underline-offset-4 hover:underline focus-visible:outline-blue">
+      {name}
+    </Link>
+  );
+}
 
 /** Secteur d'intervention : Marseille et Aix-en-Provence en grand, les autres communes en dessous. */
 export function HomeZone() {
@@ -44,13 +56,15 @@ export function HomeZone() {
                 key={ville}
                 className="reveal border-b border-navy/15 py-5 font-v2-display text-4xl text-navy md:text-5xl"
               >
-                {ville}
+                <VilleLink name={ville} />
               </li>
             ))}
           </ul>
           <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm font-semibold tracking-[0.14em] text-muted uppercase">
             {autres.map((ville) => (
-              <li key={ville}>{ville}</li>
+              <li key={ville}>
+                <VilleLink name={ville} />
+              </li>
             ))}
             <li>et alentours</li>
           </ul>

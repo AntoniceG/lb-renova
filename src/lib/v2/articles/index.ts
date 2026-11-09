@@ -1,5 +1,9 @@
 import { env } from "@/config/env";
 import { climatisationBienChoisir } from "./climatisation-bien-choisir";
+import { comparerDesDevis } from "./comparer-des-devis-de-travaux";
+import { entretienClimatisationReversible } from "./entretien-climatisation-reversible";
+import { garderSaMaisonFraicheEte } from "./garder-sa-maison-fraiche-ete";
+import { ouvrirUnMurPorteur } from "./ouvrir-un-mur-porteur";
 import { renovationCompleteParOuCommencer } from "./renovation-complete-par-ou-commencer";
 import type { Article, ArticleBlock } from "./types";
 
@@ -9,7 +13,15 @@ export type { Article, ArticleBlock, ArticleImage } from "./types";
  * Tous les articles. Pour en publier un : créer un fichier dans ce dossier (voir les exemples),
  * l'ajouter ici, et mettre `draft: false` une fois relu. Les brouillons n'apparaissent jamais en production.
  */
-const ARTICLES: readonly Article[] = [renovationCompleteParOuCommencer, climatisationBienChoisir];
+const ARTICLES: readonly Article[] = [
+  renovationCompleteParOuCommencer,
+  climatisationBienChoisir,
+  // Brouillons (2026-11-09) : visibles en aperçu seulement, à relire avant `draft: false`.
+  comparerDesDevis,
+  ouvrirUnMurPorteur,
+  garderSaMaisonFraicheEte,
+  entretienClimatisationReversible,
+];
 
 /** Les articles visibles, du plus récent au plus ancien. */
 export function publishedArticles(): readonly Article[] {
