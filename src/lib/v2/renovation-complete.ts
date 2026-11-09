@@ -9,7 +9,7 @@ import type { ServiceContent } from "@/content/services";
  */
 export const renovationComplete: ServiceContent = {
   slug: "renovation-complete",
-  metaTitle: "Rénovation complète à Marseille et Aix-en-Provence",
+  metaTitle: "Rénovation complète à Marseille et Aix",
   metaDescription:
     "Rénovation complète à Marseille et Aix-en-Provence : gros œuvre, plomberie, électricité, placo, carrelage, peinture. Un seul interlocuteur. Devis gratuit.",
   lead: "De la maçonnerie à la peinture, un seul interlocuteur pour l'ensemble de votre chantier : rénovation complète d'une maison ou d'un appartement, avec plusieurs corps de métier réunis autour d'un même projet.",

@@ -1,5 +1,7 @@
 import { Plus } from "lucide-react";
 import type { ReactNode } from "react";
+import { JsonLd } from "@/components/json-ld";
+import { faqJsonLd } from "@/lib/seo";
 import { FAQ, type Question } from "@/lib/v2/faq";
 
 interface HomeFaqProps {
@@ -21,6 +23,7 @@ export function HomeFaq({
 }: HomeFaqProps) {
   return (
     <section id="faq" aria-labelledby="faq-title" className="bg-white py-20 md:py-28">
+      <JsonLd data={faqJsonLd(items)} />
       <div className="container-page">
         <div className="mx-auto max-w-3xl">
           <div className="text-center">

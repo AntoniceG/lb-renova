@@ -62,11 +62,14 @@ export const siteConfigSchema = z.object({
     }),
     email: orTodo(z.email()),
     whatsapp: orTodo(z.string().regex(/^\+\d{9,15}$/)).optional(),
-    address: z.object({
-      street: orTodo(z.string().min(2)),
-      postalCode: orTodo(z.string().regex(/^\d{5}$/)),
-      city: orTodo(z.string().min(2)),
-    }),
+    /** Adresse du siège : facultative (la ligne n'apparaît que si elle est renseignée). */
+    address: z
+      .object({
+        street: orTodo(z.string().min(2)),
+        postalCode: orTodo(z.string().regex(/^\d{5}$/)),
+        city: orTodo(z.string().min(2)),
+      })
+      .optional(),
     /** Horaires : facultatif (n'est affiché nulle part pour l'instant). */
     hours: orTodo(z.string().min(2)).optional(),
     /** Fiche Google Business : facultatif ; s'il est renseigné, il est transmis à Google (schema.org `sameAs`). */
@@ -83,34 +86,38 @@ export const siteConfigSchema = z.object({
     rge: z.object({ enabled: z.boolean() }),
     decennale: z.object({
       enabled: z.boolean(),
-      insurer: orTodo(z.string().min(2)),
+      /** Assureur : facultatif (la ligne n'apparaît que s'il est renseigné). */
+      insurer: orTodo(z.string().min(2)).optional(),
       /** Lien vers l'attestation PDF ; le bouton de téléchargement n'apparaît que s'il est renseigné. */
       attestationUrl: z.string().startsWith("/").optional(),
     }),
   }),
-  /** Informations des mentions légales. Tout ce qui est encore `TODO_` s'affiche en surligné dans la page. */
+  /**
+   * Informations des mentions légales. Une ligne facultative absente n'apparaît pas sur la page ;
+   * une valeur obligatoire encore en `TODO_` s'y affiche en surligné.
+   */
   legal: z.object({
     /** Forme juridique : « SARL », « SAS », « Entreprise individuelle »… */
     legalForm: orTodo(z.string().min(2)),
     /** Capital social, ex. « 10 000 € ». Retirer la clé pour une entreprise individuelle. */
     capital: orTodo(z.string().min(2)).optional(),
-    /** 14 chiffres, espaces permis. */
-    siret: orTodo(z.string().regex(/^(?:\d ?){14}$/)),
+    /** SIRET (14 chiffres) ou SIREN (9 chiffres), espaces permis ; l'intitulé affiché suit la longueur. */
+    siret: orTodo(z.string().regex(/^(?:\d ?){14}$|^(?:\d ?){9}$/)),
     /** Immatriculation : « RCS Marseille 123 456 789 », « RM Bouches-du-Rhône »… */
-    registration: orTodo(z.string().min(2)),
+    registration: orTodo(z.string().min(2)).optional(),
     /** N° de TVA intracommunautaire, ou la mention de franchise en base de TVA. */
-    vat: orTodo(z.string().min(2)),
+    vat: orTodo(z.string().min(2)).optional(),
     publicationDirector: orTodo(z.string().min(2)),
     /** Médiateur de la consommation (obligatoire pour les particuliers). */
-    mediator: z.object({ name: orTodo(z.string().min(2)), url: orTodo(z.url()) }),
+    mediator: z.object({ name: orTodo(z.string().min(2)), url: orTodo(z.url()) }).optional(),
     /** Assurance décennale : adresse de l'assureur et zone couverte (ex. « France métropolitaine »). */
-    insurerAddress: orTodo(z.string().min(5)),
-    insuranceCoverage: orTodo(z.string().min(2)),
+    insurerAddress: orTodo(z.string().min(5)).optional(),
+    insuranceCoverage: orTodo(z.string().min(2)).optional(),
     host: z.object({
       name: z.string().min(2),
       address: z.string().min(5),
       website: z.url(),
-      phone: orTodo(z.string().min(6)),
+      phone: orTodo(z.string().min(6)).optional(),
     }),
   }),
   promise: z.object({

@@ -24,9 +24,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     page("/realisations", 0.7),
     ...ALBUMS.map(({ slug }) => page(`/realisations/${slug}`, 0.5)),
     ...(publishedArticles().length > 0 ? [page("/articles", 0.6)] : []),
-    ...publishedArticles().map(({ slug, date }) => ({
+    ...publishedArticles().map(({ slug, date, updated }) => ({
       ...page(`/articles/${slug}`, 0.6),
-      lastModified: date,
+      lastModified: updated ?? date,
     })),
     page("/mentions-legales", 0.1),
   ];

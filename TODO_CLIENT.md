@@ -6,15 +6,10 @@ Légende : 🔴 bloque une phase · 🟡 nécessaire avant mise en ligne · ⚪ 
 ## 1. Identité & légal
 | Constante | Info | Besoin |
 |---|---|---|
-| **Page « Mentions légales » (V2)** | Page créée : `/mentions-legales` (lien dans le pied de page). Les champs manquants y apparaissent **surlignés en jaune** (« À compléter : … ») et se renseignent dans `src/config/site.config.ts` (bloc `legal`). Le build de production refuse de se lancer tant qu'il en reste. Textes rédigés par l'assistant : **à faire relire par un professionnel** (juriste / expert-comptable) avant le lancement. | 🟡 avant le lancement V2 |
-| `brand.legalName`, `legal.legalForm`, `legal.capital` | Raison sociale exacte, forme juridique, capital (supprimer la ligne `capital` pour une entreprise individuelle) | 🟡 |
-| `legal.siret`, `legal.registration`, `legal.vat` | SIRET (14 chiffres), RCS ou répertoire des métiers + ville, n° de TVA (ou mention de franchise en base de TVA) | 🟡 |
-| `legal.publicationDirector` | Directeur de la publication | 🟡 |
-| `contact.address` | Adresse du siège (identique à la fiche Google Business) | 🔴 phase 2 |
-| `legal.mediator` | Médiateur de la consommation (nom + site) | 🟡 |
-| `legal.insurerAddress`, `legal.insuranceCoverage`, `certifications.decennale.insurer` | Assurance décennale : assureur, adresse de l'assureur, zone couverte (ex. « France métropolitaine ») | 🟡 |
-| `legal.host.phone` | Téléphone de l'hébergeur Vercel : **à vérifier sur vercel.com/contact** (nom et adresse déjà renseignés). Pas une question pour le client. | 🟡 |
-| `contact.email` | Email de contact, aussi utilisé pour les droits RGPD (accès, effacement…) | 🟡 |
+| **Page « Mentions légales »** | Page `/mentions-legales` (lien dans le pied de page). **Une ligne sans information n'est pas affichée** : on la renseigne dans `src/config/site.config.ts` (bloc `legal`, `contact.address`…) et elle apparaît. Textes rédigés par l'assistant : **à faire relire par un professionnel** avant le lancement. | 🟡 |
+| ✅ Reçu du client (2026-11-09) | Léon Bracaloni (dénomination et directeur de la publication), forme « Artisan », capital 1 000 €, n° 942 074 022, e-mail leonbrac08@gmail.com. **À CONFIRMER avec le client** : « Artisan » est un statut, pas une forme juridique (entreprise individuelle ? EURL/SASU ?) ; un **capital** n'existe pas pour une entreprise individuelle ; le n° fourni a **9 chiffres = un SIREN** (un SIRET en a 14). Le téléphone fourni (06 59 40 18 62) **diffère** de celui du site (06 61 60 92 10) : lequel garder ? | 🟡 |
+| **Lignes volontairement ABSENTES** (non fournies) | **immatriculation** (RM ou RCS, `legal.registration`), **n° de TVA** ou mention de franchise (`legal.vat`), **médiateur de la consommation** (`legal.mediator`, la section entière disparaît ; obligatoire pour vendre aux particuliers), **assureur décennale** (`certifications.decennale.insurer`, `legal.insurerAddress`, `legal.insuranceCoverage`). Le site peut désormais se construire en production sans elles, mais la page est alors **incomplète au regard de la loi** : à obtenir du client. | 🔴 avant le lancement officiel |
+| `legal.host.phone` | Téléphone de l'hébergeur Vercel : à vérifier sur vercel.com/contact (ligne absente tant qu'il n'est pas confirmé). Pas une question pour le client. | ⚪ |
 | **Données personnelles (mentions légales)** | Durées affichées : demandes incomplètes **30 jours**, demandes de devis **3 ans** après le dernier échange. À faire valider ; la purge automatique n'est pas encore planifiée (`supabase/optional/schedule_purge_expired_leads.sql`). Une **politique de confidentialité complète** (sous-traitants nommés, transferts hors UE, etc.) reste à rédiger avant le lancement. | 🟡 |
 | `TODO_REGISTRATION_DATE` | Date d'immatriculation réelle (mentions légales uniquement, jamais en argument commercial) | 🟡 |
 | Sens de « depuis plus de 20 ans » (logo) | Ce que ça désigne ; inutilisé tant que non précisé | 🟡 phase 3 |
@@ -37,7 +32,7 @@ Légende : 🔴 bloque une phase · 🟡 nécessaire avant mise en ligne · ⚪ 
 ## 3. Zone d'intervention
 - ✅ Ville de base : **Marseille** (depuis la refonte), rayon **50 km**
 - **Communes prioritaires** pour les pages `/zones` (3–5). Proposition à valider : Aix-en-Provence, Marseille, Gardanne, Salon-de-Provence, Pertuis — 🔴 phase 2
-- **Adresse du siège** (identique à la fiche Google Business) — 🔴 phase 2
+- ✅ **Adresse du siège** reçue (2026-11-09) : Chemin du plan du port, 83400 Hyères (`contact.address`). À confirmer : c'est bien le siège, et la fiche Google Business doit afficher la même adresse.
 - Pour chaque commune lancée : 1 réalisation locale réelle, spécificités du bâti, projets types — 🟡 phase 7
 
 ## 3 bis. Histoire de famille (storytelling « depuis 1945 »)

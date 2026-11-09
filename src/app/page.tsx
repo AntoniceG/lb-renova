@@ -12,12 +12,13 @@ import { HomeZone } from "@/components/v2/home-zone";
 import { V2Footer } from "@/components/v2/v2-footer";
 import { V2Header } from "@/components/v2/v2-header";
 import { siteConfig } from "@/config/site.config";
-import { businessJsonLd, pageMetadata } from "@/lib/seo";
+import { businessJsonLd, pageMetadata, websiteJsonLd } from "@/lib/seo";
 
 const { brand } = siteConfig;
 
 export const metadata: Metadata = pageMetadata({
-  title: `Rénovation complète à Marseille et Aix-en-Provence | ${brand.name}`,
+  // Différent du titre de la page « Rénovation complète » (deux pages ne doivent pas se concurrencer).
+  title: `Entreprise de rénovation à Marseille et Aix | ${brand.name}`,
   absoluteTitle: true,
   description: brand.description,
   path: "/",
@@ -26,7 +27,7 @@ export const metadata: Metadata = pageMetadata({
 export default function HomePage() {
   return (
     <>
-      <JsonLd data={businessJsonLd()} />
+      <JsonLd data={[businessJsonLd(), websiteJsonLd()]} />
       <V2Header />
       <main>
         <HomeHero />

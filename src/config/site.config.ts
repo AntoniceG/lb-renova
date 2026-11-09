@@ -1,5 +1,5 @@
 import { env } from "./env";
-import { defineSiteConfig, todo } from "./site.schema";
+import { defineSiteConfig } from "./site.schema";
 
 /**
  * SEUL fichier à modifier pour réutiliser le template sur une autre entreprise.
@@ -10,7 +10,7 @@ export const siteConfig = defineSiteConfig(
   {
     brand: {
       name: "LB Rénova",
-      legalName: todo("LEGAL_NAME"),
+      legalName: "Léon Bracaloni",
       tagline: "Rénover • Bâtir • Valoriser",
       description:
         "Rénovation complète, gros œuvre et climatisation à Marseille et Aix-en-Provence. Entreprise familiale, devis gratuit.",
@@ -31,12 +31,10 @@ export const siteConfig = defineSiteConfig(
     },
     contact: {
       phone: { display: "06 61 60 92 10", e164: "+33661609210" },
-      email: todo("EMAIL"),
-      address: {
-        street: todo("ADDRESS_STREET"),
-        postalCode: todo("ADDRESS_POSTAL_CODE"),
-        city: todo("ADDRESS_CITY"),
-      },
+      email: "leonbrac08@gmail.com",
+      // Adresse du siège (communiquée par le client le 2026-11-09) : affichée dans les mentions légales
+      // et le pied de page, et transmise à Google.
+      address: { street: "Chemin du plan du port", postalCode: "83400", city: "Hyères" },
       // Facultatifs (voir site.schema.ts) : `hours`, `googleBusinessUrl` (lien de la fiche Google Business).
     },
     area: {
@@ -46,24 +44,22 @@ export const siteConfig = defineSiteConfig(
     },
     certifications: {
       rge: { enabled: false },
-      decennale: { enabled: true, insurer: todo("INSURER") },
+      // Assureur, adresse de l'assureur, zone couverte : non fournis (voir `legal`), donc absents de la page.
+      decennale: { enabled: true },
     },
     legal: {
-      legalForm: todo("LEGAL_FORM"),
-      capital: todo("CAPITAL"),
-      siret: todo("SIRET"),
-      registration: todo("REGISTRATION"),
-      vat: todo("VAT"),
-      publicationDirector: todo("PUBLICATION_DIRECTOR"),
-      mediator: { name: todo("MEDIATOR_NAME"), url: todo("MEDIATOR_URL") },
-      insurerAddress: todo("INSURER_ADDRESS"),
-      insuranceCoverage: todo("INSURANCE_COVERAGE"),
+      // Infos transmises par le client. Non fournies, donc absentes de la page des mentions légales :
+      // immatriculation (RM), n° de TVA, médiateur, assureur décennale (adresse, zone couverte).
+      legalForm: "Artisan",
+      capital: "1 000 €",
+      // 9 chiffres : c'est un SIREN (un SIRET en compte 14) ; l'intitulé de la page s'adapte.
+      siret: "942 074 022",
+      publicationDirector: "Léon Bracaloni",
       host: {
         name: "Vercel Inc.",
         address: "440 N Barranca Ave #4133, Covina, CA 91723, États-Unis",
         website: "https://vercel.com",
-        // Seul le numéro n'est pas vérifié (une source tierce donne un numéro, à confirmer sur vercel.com/contact).
-        phone: todo("HOST_PHONE"),
+        // Téléphone de l'hébergeur : non vérifié, donc absent de la page.
       },
     },
     promise: { callbackDelay: "sous 48 h" },

@@ -29,6 +29,8 @@ interface PageMetadataInput {
   type?: "website" | "article";
   /** Articles : date de publication AAAA-MM-JJ. */
   publishedTime?: string;
+  /** Articles : date de dernière révision AAAA-MM-JJ (seulement si le contenu a réellement changé). */
+  modifiedTime?: string;
   /** Page à ne pas montrer dans Google (remerciement, banc d'essai). */
   noindex?: boolean;
 }
@@ -45,6 +47,7 @@ export function pageMetadata({
   path,
   type = "website",
   publishedTime,
+  modifiedTime,
   noindex = false,
 }: PageMetadataInput): Metadata {
   const fullTitle = absoluteTitle ? title : `${title} | ${brand.name}`;
@@ -61,6 +64,7 @@ export function pageMetadata({
       type,
       images: [SHARE_IMAGE],
       ...(publishedTime ? { publishedTime } : {}),
+      ...(modifiedTime ? { modifiedTime } : {}),
     },
     twitter: {
       card: "summary_large_image",
@@ -96,7 +100,8 @@ const areaServed = () =>
  */
 export function businessJsonLd() {
   const { address } = contact;
-  const hasAddress = ![address.street, address.postalCode, address.city].some(isTodo);
+  const hasAddress =
+    address !== undefined && ![address.street, address.postalCode, address.city].some(isTodo);
   return {
     "@context": "https://schema.org",
     "@type": "GeneralContractor",
@@ -110,7 +115,7 @@ export function businessJsonLd() {
     slogan: brand.tagline,
     ...(isTodo(contact.phone.e164) ? {} : { telephone: contact.phone.e164 }),
     ...(isTodo(contact.email) ? {} : { email: contact.email }),
-    ...(hasAddress
+    ...(hasAddress && address
       ? {
           address: {
             "@type": "PostalAddress",
@@ -125,6 +130,36 @@ export function businessJsonLd() {
     ...(contact.googleBusinessUrl && !isTodo(contact.googleBusinessUrl)
       ? { sameAs: [contact.googleBusinessUrl] }
       : {}),
+  };
+}
+
+/** Le site lui-même : aide Google et les assistants IA à relier le site à l'entreprise. */
+export function websiteJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${env.siteUrl}/#site`,
+    name: brand.name,
+    url: env.siteUrl,
+    inLanguage: "fr-FR",
+    publisher: { "@id": businessId() },
+  };
+}
+
+/**
+ * Questions fréquentes. À n'utiliser que pour des questions AFFICHÉES sur la page (règle de Google) :
+ * le composant de FAQ l'émet lui-même, à partir des mêmes questions que celles qu'il affiche.
+ */
+export function faqJsonLd(items: readonly { question: string; reponse: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    inLanguage: "fr-FR",
+    mainEntity: items.map(({ question, reponse }) => ({
+      "@type": "Question",
+      name: question,
+      acceptedAnswer: { "@type": "Answer", text: reponse },
+    })),
   };
 }
 
@@ -170,12 +205,15 @@ export function articleJsonLd({
   description,
   path,
   datePublished,
+  dateModified,
   image,
 }: {
   headline: string;
   description: string;
   path: string;
   datePublished: string;
+  /** Date de la dernière révision de fond ; à défaut, la date de publication. */
+  dateModified?: string;
   image?: string;
 }) {
   return {
@@ -184,6 +222,7 @@ export function articleJsonLd({
     headline,
     description,
     datePublished,
+    dateModified: dateModified ?? datePublished,
     inLanguage: "fr-FR",
     mainEntityOfPage: absoluteUrl(path),
     image: absoluteUrl(image ?? DEFAULT_IMAGE),

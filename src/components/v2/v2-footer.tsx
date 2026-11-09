@@ -19,8 +19,10 @@ export function V2Footer() {
   const { address } = contact;
   const hasEmail = !isTodo(contact.email);
   const hasAddress =
-    !isTodo(address.street) && !isTodo(address.postalCode) && !isTodo(address.city);
-  const owner = isTodo(brand.legalName) ? brand.name : brand.legalName;
+    address !== undefined &&
+    !isTodo(address.street) &&
+    !isTodo(address.postalCode) &&
+    !isTodo(address.city);
   const villes = [...ZONE.principales, ...ZONE.autres];
 
   return (
@@ -109,7 +111,7 @@ export function V2Footer() {
                 </a>
               </li>
             )}
-            {hasAddress && (
+            {hasAddress && address && (
               <li className="flex items-start gap-3">
                 <MapPin aria-hidden className="mt-1 size-4 shrink-0 text-white/60" />
                 <span>
@@ -135,7 +137,7 @@ export function V2Footer() {
       <div className="border-t border-white/10">
         <div className="container-page flex flex-col gap-1 py-5 text-xs text-white/55 sm:flex-row sm:items-center sm:justify-between">
           <p>
-            © {new Date().getFullYear()} {owner}. Tous droits réservés.
+            © {new Date().getFullYear()} {brand.name}. Tous droits réservés.
           </p>
           <Link
             href="/mentions-legales"

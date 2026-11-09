@@ -6,7 +6,11 @@ import { notFound } from "next/navigation";
 import { AlbumGallery } from "@/components/v2/album-gallery";
 import { HomeCta } from "@/components/v2/home-cta";
 import { V2PageShell } from "@/components/v2/v2-page-shell";
+import { siteConfig } from "@/config/site.config";
 import { ALBUMS, getAlbum } from "@/lib/v2/realisations";
+
+/** « | LB Rénova » : ce que `pageMetadata` ajoute derrière le titre. */
+const TITLE_BRAND_SUFFIX = ` | ${siteConfig.brand.name}`.length;
 
 interface AlbumPageProps {
   params: Promise<{ metier: string }>;
@@ -23,9 +27,15 @@ export async function generateMetadata({ params }: AlbumPageProps): Promise<Meta
   const { metier } = await params;
   const album = getAlbum(metier);
   if (!album) return {};
+  // Google coupe un titre au-delà de 60 caractères (marque comprise) : version courte si besoin.
+  const longTitle = `${album.title} à Marseille et Aix : réalisations`;
+  const title =
+    longTitle.length + TITLE_BRAND_SUFFIX > 60 ? `${album.title} : nos réalisations` : longTitle;
+  // Certaines introductions sont très courtes (une phrase) : on complète si la limite le permet.
+  const extended = `${album.intro} Photos de chantiers et devis gratuit.`;
   return pageMetadata({
-    title: `${album.title} à Marseille et Aix : réalisations`,
-    description: album.intro,
+    title,
+    description: extended.length <= 155 ? extended : album.intro,
     path: `/realisations/${album.slug}`,
   });
 }

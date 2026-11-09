@@ -19,6 +19,11 @@ export interface Article {
   description: string;
   /** Date de publication, au format AAAA-MM-JJ. */
   date: string;
+  /**
+   * Date de la dernière révision de fond, AAAA-MM-JJ (après `date`). À renseigner seulement quand
+   * le contenu a réellement changé : une fausse date de « fraîcheur » est repérée par Google.
+   */
+  updated?: string;
   /** Étiquette affichée (un métier, ou « Conseils »). */
   category: string;
   /** Page métier liée, en fin d'article (slug : renovation-complete, gros-oeuvre, climatisation). */

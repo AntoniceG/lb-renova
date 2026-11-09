@@ -7,7 +7,7 @@ import type { Article } from "./types";
  */
 export const climatisationBienChoisir: Article = {
   slug: "climatisation-reversible-bien-choisir",
-  title: "Climatisation réversible : comment bien choisir ?",
+  title: "Climatisation réversible : comment la choisir ?",
   description:
     "Puissance, type d'unité, emplacement, entretien : les points à regarder avant d'installer une climatisation réversible chez soi.",
   date: "2026-11-07",

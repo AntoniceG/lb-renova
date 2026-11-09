@@ -34,6 +34,7 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
     path: `/articles/${article.slug}`,
     type: "article",
     publishedTime: article.date,
+    modifiedTime: article.updated,
   });
 }
 
@@ -55,6 +56,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             description: article.description,
             path: `/articles/${article.slug}`,
             datePublished: article.date,
+            dateModified: article.updated,
             image: article.cover?.src,
           }),
           breadcrumbJsonLd([
@@ -98,7 +100,9 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                 {article.description}
               </p>
               <p className="mt-6 text-sm text-muted">
-                {formatDate(article.date)} · {readingMinutes(article)} min de lecture
+                {formatDate(article.date)}
+                {article.updated && ` · mis à jour le ${formatDate(article.updated)}`} ·{" "}
+                {readingMinutes(article)} min de lecture
               </p>
             </div>
           </div>

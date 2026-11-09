@@ -11,7 +11,7 @@ const { brand, contact, certifications, legal } = siteConfig;
 
 export const metadata: Metadata = pageMetadata({
   title: "Mentions légales",
-  description: `Mentions légales du site ${brand.name} : éditeur, hébergeur, assurance décennale, médiation de la consommation et données personnelles.`,
+  description: `Mentions légales du site ${brand.name} : éditeur, hébergeur, assurance décennale et données personnelles.`,
   path: "/mentions-legales",
 });
 
@@ -29,6 +29,11 @@ function Fill({ value, label }: { value: string; label: string }) {
       À compléter : {label}
     </mark>
   );
+}
+
+/** Vrai si l'information a été fournie (absente ou encore en `TODO_` : la ligne n'est pas affichée). */
+function known(value: string | undefined): value is string {
+  return value !== undefined && !isTodo(value);
 }
 
 /** Lien vers un site extérieur (ou repère « à compléter » si l'adresse n'est pas encore connue). */
@@ -55,6 +60,7 @@ function Liste({ children }: { children: ReactNode }) {
 }
 
 function Ligne({ label, children }: { label: string; children: ReactNode }) {
+  if (children === null || children === undefined || children === false) return null;
   return (
     <div className="grid gap-1 sm:grid-cols-[13rem_1fr] sm:gap-6">
       <dt className="text-xs font-semibold tracking-[0.16em] text-muted uppercase sm:pt-1">
@@ -81,8 +87,13 @@ function Bloc({ id, title, children }: { id: string; title: string; children: Re
 
 export default function V2LegalPage() {
   const { address } = contact;
-  const hasAddress = ![address.street, address.postalCode, address.city].some(isTodo);
+  const siege =
+    address && known(address.street) && known(address.postalCode) && known(address.city)
+      ? `${address.street}, ${address.postalCode} ${address.city}`
+      : null;
   const owner = isTodo(brand.legalName) ? brand.name : brand.legalName;
+  // 9 chiffres = SIREN, 14 = SIRET : l'intitulé suit ce que le client a fourni.
+  const numeroLabel = legal.siret.replace(/\D/g, "").length === 9 ? "SIREN" : "SIRET";
 
   return (
     <V2PageShell>
@@ -120,27 +131,15 @@ export default function V2LegalPage() {
               <Ligne label="Forme juridique">
                 <Fill value={legal.legalForm} label="forme juridique" />
               </Ligne>
-              {legal.capital !== undefined && (
-                <Ligne label="Capital social">
-                  <Fill value={legal.capital} label="capital social" />
-                </Ligne>
+              {known(legal.capital) && <Ligne label="Capital social">{legal.capital}</Ligne>}
+              {siege && <Ligne label="Siège social">{siege}</Ligne>}
+              <Ligne label={numeroLabel}>
+                <Fill value={legal.siret} label={numeroLabel} />
+              </Ligne>
+              {known(legal.registration) && (
+                <Ligne label="Immatriculation">{legal.registration}</Ligne>
               )}
-              <Ligne label="Siège social">
-                {hasAddress ? (
-                  `${address.street}, ${address.postalCode} ${address.city}`
-                ) : (
-                  <Fill value={address.street} label="adresse du siège" />
-                )}
-              </Ligne>
-              <Ligne label="SIRET">
-                <Fill value={legal.siret} label="SIRET" />
-              </Ligne>
-              <Ligne label="Immatriculation">
-                <Fill value={legal.registration} label="RCS ou répertoire des métiers" />
-              </Ligne>
-              <Ligne label="N° de TVA">
-                <Fill value={legal.vat} label="TVA" />
-              </Ligne>
+              {known(legal.vat) && <Ligne label="N° de TVA">{legal.vat}</Ligne>}
               <Ligne label="Téléphone">
                 <a href={telHref(contact.phone.e164)} className={linkClass}>
                   {contact.phone.display}
@@ -162,9 +161,7 @@ export default function V2LegalPage() {
               <Ligne label="Site">
                 <Site url={legal.host.website} label="site de l'hébergeur" />
               </Ligne>
-              <Ligne label="Téléphone">
-                <Fill value={legal.host.phone} label="téléphone de l'hébergeur" />
-              </Ligne>
+              {known(legal.host.phone) && <Ligne label="Téléphone">{legal.host.phone}</Ligne>}
             </Liste>
           </Bloc>
 
@@ -174,36 +171,40 @@ export default function V2LegalPage() {
                 {brand.name} est couverte par une assurance de responsabilité civile décennale pour
                 les travaux qu&apos;elle réalise.
               </p>
+              {(known(certifications.decennale.insurer) ||
+                known(legal.insurerAddress) ||
+                known(legal.insuranceCoverage)) && (
+                <Liste>
+                  {known(certifications.decennale.insurer) && (
+                    <Ligne label="Assureur">{certifications.decennale.insurer}</Ligne>
+                  )}
+                  {known(legal.insurerAddress) && (
+                    <Ligne label="Adresse de l'assureur">{legal.insurerAddress}</Ligne>
+                  )}
+                  {known(legal.insuranceCoverage) && (
+                    <Ligne label="Zone couverte">{legal.insuranceCoverage}</Ligne>
+                  )}
+                </Liste>
+              )}
+            </Bloc>
+          )}
+
+          {legal.mediator && known(legal.mediator.name) && known(legal.mediator.url) && (
+            <Bloc id="mediation" title="Médiation de la consommation">
+              <p>
+                Tout consommateur a le droit de recourir gratuitement à un médiateur de la
+                consommation pour résoudre à l&apos;amiable un litige qui l&apos;oppose à un
+                professionnel. Avant de le saisir, adressez d&apos;abord votre réclamation par écrit
+                à {owner}.
+              </p>
               <Liste>
-                <Ligne label="Assureur">
-                  <Fill value={certifications.decennale.insurer} label="assureur" />
-                </Ligne>
-                <Ligne label="Adresse de l'assureur">
-                  <Fill value={legal.insurerAddress} label="adresse de l'assureur" />
-                </Ligne>
-                <Ligne label="Zone couverte">
-                  <Fill value={legal.insuranceCoverage} label="zone couverte" />
+                <Ligne label="Médiateur">{legal.mediator.name}</Ligne>
+                <Ligne label="Site">
+                  <Site url={legal.mediator.url} label="site du médiateur" />
                 </Ligne>
               </Liste>
             </Bloc>
           )}
-
-          <Bloc id="mediation" title="Médiation de la consommation">
-            <p>
-              Tout consommateur a le droit de recourir gratuitement à un médiateur de la
-              consommation pour résoudre à l&apos;amiable un litige qui l&apos;oppose à un
-              professionnel. Avant de le saisir, adressez d&apos;abord votre réclamation par écrit à{" "}
-              {owner}.
-            </p>
-            <Liste>
-              <Ligne label="Médiateur">
-                <Fill value={legal.mediator.name} label="nom du médiateur" />
-              </Ligne>
-              <Ligne label="Site">
-                <Site url={legal.mediator.url} label="site du médiateur" />
-              </Ligne>
-            </Liste>
-          </Bloc>
 
           <Bloc id="donnees" title="Données personnelles">
             <p>

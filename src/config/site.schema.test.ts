@@ -104,6 +104,29 @@ describe("siteConfigSchema", () => {
     );
   });
 
+  it("accepte un SIREN (9 chiffres) comme un SIRET (14), et refuse les autres longueurs", () => {
+    const input = validInput();
+    input.legal.siret = "942 074 022";
+    expect(siteConfigSchema.safeParse(input).success).toBe(true);
+    input.legal.siret = "12345678901234";
+    expect(siteConfigSchema.safeParse(input).success).toBe(true);
+    input.legal.siret = "1234567890";
+    expect(siteConfigSchema.safeParse(input).success).toBe(false);
+  });
+
+  it("accepte l'absence de l'adresse, de l'immatriculation, du médiateur et de l'assureur", () => {
+    const input = validInput();
+    delete input.contact.address;
+    delete input.legal.registration;
+    delete input.legal.vat;
+    delete input.legal.mediator;
+    delete input.legal.insurerAddress;
+    delete input.legal.insuranceCoverage;
+    delete input.legal.host.phone;
+    delete input.certifications.decennale.insurer;
+    expect(() => defineSiteConfig(input, { production: true })).not.toThrow();
+  });
+
   it("refuse un email invalide qui n'est pas une constante TODO_", () => {
     const input = validInput();
     input.contact.email = "pas-un-email";
