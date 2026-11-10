@@ -10,7 +10,7 @@
 //   apple-icon.png                            180 x 180 : l'icône sur l'écran d'accueil d'un iPhone
 //   src/lib/email/logo.ts                      le logo (PNG 240 px, texte blanc) intégré aux e-mails, en base64
 // À relancer si le logo ou la photo du port change.
-import { writeFileSync } from "node:fs";
+import { readFileSync, unlinkSync, writeFileSync } from "node:fs";
 import sharp from "sharp";
 
 const LARGEUR = 1200;
@@ -56,6 +56,23 @@ async function icone(taille, marge, arrondi, sortie) {
 }
 await icone(192, 14, 44, "src/app/icon.png");
 await icone(180, 14, 0, "src/app/apple-icon.png");
+
+// --- favicon.ico : Google le demande en premier ; 48 px (multiple de 48, exigé par Google).
+// Un .ico peut contenir directement une image PNG : on l'enveloppe dans l'en-tête du format.
+await icone(48, 3, 10, "design-v2/.favicon-48.png");
+const png48 = readFileSync("design-v2/.favicon-48.png");
+const entete = Buffer.alloc(22);
+entete.writeUInt16LE(0, 0); // réservé
+entete.writeUInt16LE(1, 2); // type : icône
+entete.writeUInt16LE(1, 4); // une seule image
+entete[6] = 48; // largeur
+entete[7] = 48; // hauteur
+entete.writeUInt16LE(1, 10); // plans
+entete.writeUInt16LE(32, 12); // bits par pixel
+entete.writeUInt32LE(png48.length, 14); // taille de l'image
+entete.writeUInt32LE(22, 18); // position de l'image
+writeFileSync("src/app/favicon.ico", Buffer.concat([entete, png48]));
+unlinkSync("design-v2/.favicon-48.png");
 
 // --- E-mails : le logo à texte blanc (sur le bandeau marine), joint en ligne à chaque message.
 // Un PNG (le WebP n'est pas lu partout, Outlook notamment), léger : 240 px pour un affichage à 120 px.
