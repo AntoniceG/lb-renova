@@ -32,7 +32,7 @@ export function V2Footer() {
         <div>
           <V2HomeLink aria-label={`${brand.name} — accueil`} className="inline-block">
             <Image
-              src="/v2/logo-v2.webp"
+              src="/v2/logo-20ans.webp"
               alt=""
               width={887}
               height={887}

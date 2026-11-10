@@ -52,7 +52,7 @@ export function V2Header({ variant = "home" }: V2HeaderProps) {
               className="block size-14 shrink-0 md:size-16"
             >
               <Image
-                src="/v2/logo-v2-clair.webp"
+                src="/v2/logo-20ans-clair.webp"
                 alt=""
                 width={887}
                 height={887}

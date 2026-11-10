@@ -29,7 +29,7 @@ const voile = Buffer.from(
      <rect width="100%" height="100%" fill="url(#g)"/>
    </svg>`,
 );
-const logoPartage = await sharp("public/v2/logo-v2.webp").resize(470, 470).toBuffer();
+const logoPartage = await sharp("public/v2/logo-20ans.webp").resize(470, 470).toBuffer();
 const partage = await sharp(photo)
   .composite([
     { input: voile },
@@ -46,7 +46,7 @@ async function icone(taille, marge, arrondi, sortie) {
        <rect width="100%" height="100%" rx="${arrondi}" fill="#ffffff"/>
      </svg>`,
   );
-  const logo = await sharp("public/v2/logo-v2-clair.webp")
+  const logo = await sharp("public/v2/logo-20ans-clair.webp")
     .resize(taille - marge * 2, taille - marge * 2)
     .toBuffer();
   await sharp(fond)
@@ -59,7 +59,7 @@ await icone(180, 14, 0, "src/app/apple-icon.png");
 
 // --- E-mails : le logo à texte blanc (sur le bandeau marine), joint en ligne à chaque message.
 // Un PNG (le WebP n'est pas lu partout, Outlook notamment), léger : 240 px pour un affichage à 120 px.
-const logoEmail = await sharp("public/v2/logo-v2.webp")
+const logoEmail = await sharp("public/v2/logo-20ans.webp")
   .resize(240, 240)
   .png({ compressionLevel: 9, palette: true, quality: 90 })
   .toBuffer();

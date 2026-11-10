@@ -3,10 +3,10 @@
 // Usage :  node design-v2/Logo/preparer-le-logo.mjs "#0A3BA6"
 //
 // Produit, dans public/v2/ :
-//   logo-v2.webp        version pour FONDS SOMBRES (texte blanc) : hero, pied de page
-//                       (source : LB_RENOVA_logo_sombre_v2.svg, une image sur fond noir)
-//   logo-v2-clair.webp  version pour FONDS CLAIRS (texte marine) : en-tête blanc
-//                       (source : LB_RENOVA_logo_clair_v2.svg, une image sur fond blanc)
+//   logo-20ans.webp        version pour FONDS SOMBRES (texte blanc) : hero, pied de page
+//                       (source : LB_RENOVA_20_ans_sombre.svg, une image sur fond noir)
+//   logo-20ans-clair.webp  version pour FONDS CLAIRS (texte marine) : en-tête blanc
+//                       (source : LB_RENOVA_20_ans_clair.svg, une image sur fond blanc)
 // avec, pour les deux :
 //   1. un vrai fond transparent ;
 //   2. le bleu du rond repeint avec le code couleur donné, en gardant un léger dégradé.
@@ -16,10 +16,10 @@
 import { readFileSync } from "node:fs";
 import sharp from "sharp";
 
-const SOURCE_SOMBRE = "design-v2/Logo/LB_RENOVA_logo_sombre_v2.svg";
-const SOURCE_CLAIR = "design-v2/Logo/LB_RENOVA_logo_clair_v2.svg";
-const DESTINATION_SOMBRE = "public/v2/logo-v2.webp";
-const DESTINATION_CLAIR = "public/v2/logo-v2-clair.webp";
+const SOURCE_SOMBRE = "design-v2/Logo/LB_RENOVA_20_ans_sombre.svg";
+const SOURCE_CLAIR = "design-v2/Logo/LB_RENOVA_20_ans_clair.svg";
+const DESTINATION_SOMBRE = "public/v2/logo-20ans.webp";
+const DESTINATION_CLAIR = "public/v2/logo-20ans-clair.webp";
 
 /** Sous cette valeur, c'est du bruit de compression du fond : on le rend transparent. */
 const NOISE_FLOOR = 16;

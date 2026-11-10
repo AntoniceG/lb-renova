@@ -79,7 +79,7 @@ export function WaterLab() {
       {showLogo && (
         <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-7 px-4 pb-16">
           <Image
-            src="/v2/logo-v2.webp"
+            src="/v2/logo-20ans.webp"
             alt="LB Rénova — de père en fils depuis 1945"
             width={887}
             height={887}

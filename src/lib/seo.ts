@@ -109,7 +109,7 @@ export function businessJsonLd() {
     name: brand.name,
     ...(isTodo(brand.legalName) ? {} : { legalName: brand.legalName }),
     url: env.siteUrl,
-    logo: absoluteUrl("/v2/logo-v2-clair.webp"),
+    logo: absoluteUrl("/v2/logo-20ans-clair.webp"),
     image: absoluteUrl(DEFAULT_IMAGE),
     description: brand.description,
     slogan: brand.tagline,
@@ -231,7 +231,7 @@ export function articleJsonLd({
       "@type": "Organization",
       name: brand.name,
       url: env.siteUrl,
-      logo: { "@type": "ImageObject", url: absoluteUrl("/v2/logo-v2-clair.webp") },
+      logo: { "@type": "ImageObject", url: absoluteUrl("/v2/logo-20ans-clair.webp") },
     },
   };
 }

@@ -190,7 +190,7 @@ export function HeroLogo({ name }: HeroLogoProps) {
         <span className="logo-flyer__inner">
           {/* Version à texte blanc : sur la photo du hero. */}
           <Image
-            src="/v2/logo-v2.webp"
+            src="/v2/logo-20ans.webp"
             alt=""
             width={887}
             height={887}
@@ -206,7 +206,7 @@ export function HeroLogo({ name }: HeroLogoProps) {
           */}
           {lightLogo && (
             <Image
-              src="/v2/logo-v2-clair.webp"
+              src="/v2/logo-20ans-clair.webp"
               alt=""
               aria-hidden
               width={887}
