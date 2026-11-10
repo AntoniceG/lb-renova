@@ -39,27 +39,33 @@ const partage = await sharp(photo)
   .toBuffer();
 await sharp(partage).toFile("public/partage.jpg");
 
-// --- Icônes : le logo à texte marine sur un carré blanc.
-async function icone(taille, marge, arrondi, sortie) {
-  const fond = Buffer.from(
-    `<svg width="${taille}" height="${taille}" xmlns="http://www.w3.org/2000/svg">
-       <rect width="100%" height="100%" rx="${arrondi}" fill="#ffffff"/>
-     </svg>`,
-  );
-  const logo = await sharp("public/v2/logo-20ans-clair.webp")
-    .resize(taille - marge * 2, taille - marge * 2)
-    .toBuffer();
-  await sharp(fond)
-    .composite([{ input: logo, left: marge, top: marge }])
-    .png({ compressionLevel: 9, palette: true, quality: 90 })
-    .toFile(sortie);
+// --- Icônes : monogramme LB (voir la fonction icone).
+/**
+ * Icône du site : monogramme « LB » blanc sur carré marine, filet bleu-blanc-rouge dessous. Les lettres
+ * sont dessinées en traits (pas de police : elles s'affichent pareil partout) et lisibles même à 16 px.
+ * Couleurs : marine de la marque (#1A2A5E), bleu vif, blanc, rouge de la marque.
+ */
+async function icone(taille, arrondi, sortie) {
+  const svg = `<svg width="${taille}" height="${taille}" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+    <rect width="512" height="512" rx="${arrondi}" fill="#1A2A5E"/>
+    <g fill="none" stroke="#ffffff" stroke-width="46">
+      <path d="M112 120 V350 H232"/>
+      <path d="M296 120 V352"/>
+      <path d="M296 143 H356 a49 49 0 0 1 0 98 H296"/>
+      <path d="M296 241 H368 a55 55 0 0 1 0 111 H296"/>
+    </g>
+    <rect x="90" y="410" width="110" height="26" fill="#3F6FE0"/>
+    <rect x="200" y="410" width="112" height="26" fill="#ffffff"/>
+    <rect x="312" y="410" width="110" height="26" fill="#D6322A"/>
+  </svg>`;
+  await sharp(Buffer.from(svg)).resize(taille, taille).png({ compressionLevel: 9 }).toFile(sortie);
 }
-await icone(192, 14, 44, "src/app/icon.png");
-await icone(180, 14, 0, "src/app/apple-icon.png");
+await icone(192, 44, "src/app/icon.png");
+await icone(180, 0, "src/app/apple-icon.png");
 
 // --- favicon.ico : Google le demande en premier ; 48 px (multiple de 48, exigé par Google).
 // Un .ico peut contenir directement une image PNG : on l'enveloppe dans l'en-tête du format.
-await icone(48, 3, 10, "design-v2/.favicon-48.png");
+await icone(48, 10, "design-v2/.favicon-48.png");
 const png48 = readFileSync("design-v2/.favicon-48.png");
 const entete = Buffer.alloc(22);
 entete.writeUInt16LE(0, 0); // réservé
