@@ -61,8 +61,8 @@ async function readPixels(sourcePath) {
 async function save({ data, info }, destination) {
   // 740 px suffisent (le logo s'affiche à 368 px au plus, soit 736 px sur un écran très net) : fichier plus léger.
   const result = await sharp(data, { raw: info })
-    .resize(740, 740, { kernel: "lanczos3" })
-    .webp({ quality: 78, alphaQuality: 85, effort: 6, smartSubsample: true })
+    .resize(640, 640, { kernel: "lanczos3" })
+    .webp({ quality: 74, alphaQuality: 80, effort: 6, smartSubsample: true })
     .toFile(destination);
   console.log(`${destination} (${Math.round(result.size / 1024)} Ko)`);
 }
