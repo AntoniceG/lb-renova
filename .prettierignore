@@ -4,3 +4,5 @@ coverage
 docs
 package-lock.json
 *.md
+# Fichier de vérification Google Search Console : doit rester tel quel
+public/google*.html
