@@ -31,7 +31,7 @@ export const siteConfig = defineSiteConfig(
     },
     contact: {
       phone: { display: "06 61 60 92 10", e164: "+33661609210" },
-      email: "leonbrac08@gmail.com",
+      email: "bracalonileon@gmail.com",
       // Adresse du siège (communiquée par le client le 2026-11-09) : affichée dans les mentions légales
       // et le pied de page, et transmise à Google.
       address: { street: "Chemin du plan du port", postalCode: "83400", city: "Hyères" },
